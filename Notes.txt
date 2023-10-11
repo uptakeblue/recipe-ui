@@ -1,0 +1,26 @@
+
+horzontal justify:
+display: "flex"
+justifyContent: "flex-start"/"flex-start"
+
+vertical justify:
+display: "flex"
+alignItems: "top"/"center"/"bottom"
+
+
+NPM
+----------------------------------
+npm start
+
+
+Flask from command line:
+----------------------------------
+D:
+CD D:\Michael\Documents\Github\calendar-api
+.venv\Scripts\activate
+flask --app app.py run
+
+
+CD C:\Users\Michael\Documents\Github\calendar-api
+.venv\Scripts\activate
+flask --app app.py run
