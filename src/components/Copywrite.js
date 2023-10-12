@@ -18,6 +18,7 @@ export default function Copywrite(props) {
       justifyContent='center'
       marginTop={2}
       color='white'
+      paddingBottom={2}
     >
       Copyright 2006-{dayjs().format('YYYY')} © Michael Rubin, All rights
       reserved

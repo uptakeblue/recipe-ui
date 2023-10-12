@@ -8,7 +8,6 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 // pages
 import Home from './home';
-import Search from './search';
 
 // custom components
 import { BodyColor } from '../components/CustomTheme';
@@ -17,14 +16,11 @@ import { BodyColor } from '../components/CustomTheme';
 
 export default function Index(props) {
   const {
-    calendarMonthItems,
-    getCalendarMonthItems,
-    searchResults,
-    getSearchResults,
+    getRecipeMap,
+    recipeSearchResults,
+    getRecipeSearchResults,
     keyword,
     setKeyword,
-    searchDate,
-    setSearchDate,
   } = props;
 
   document.body.style.backgroundColor = BodyColor;
@@ -35,22 +31,8 @@ export default function Index(props) {
           path='/'
           element={
             <Home
-              calendarMonthItems={calendarMonthItems}
-              getCalendarMonthItems={getCalendarMonthItems}
-              searchDate={searchDate}
-            />
-          }
-        />
-        <Route
-          path='/search'
-          element={
-            <Search
-              searchResults={searchResults}
-              getSearchResults={getSearchResults}
-              keyword={keyword}
-              setKeyword={setKeyword}
-              getCalendarMonthItems={getCalendarMonthItems}
-              setSearchDate={setSearchDate}
+              recipeSearchResults={recipeSearchResults}
+              getRecipeSearchResults={getRecipeSearchResults}
             />
           }
         />

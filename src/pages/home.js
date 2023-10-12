@@ -11,15 +11,18 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import Container from '@mui/material/Container';
-import Divider from '@mui/material/Divider';
+import TextField from '@mui/material/TextField';
+import { IconButton, InputAdornment } from '@mui/material';
+
+// icons
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import SearchIcon from '@mui/icons-material/Search';
+import ClearIcon from '@mui/icons-material/Clear';
 
 // components
 import { CustomColorScheme } from '../components/CustomTheme';
 import Appbar from '../components/Appbar';
 import Copywrite from '../components/Copywrite';
-import YearMonthDialog from '../components/YearMonthDialog';
-import DateitemDialog from '../components/DateitemDialog';
-import { TableCellHead, TableCellBody } from '../components/TableCells';
 
 
 const StyledButton = styled(Button)(({ theme }) => ({
@@ -32,212 +35,131 @@ const StyledButton = styled(Button)(({ theme }) => ({
 
 export default function Home(props) {
   const {
-    calendarMonthItems,
-    getCalendarMonthItems,
-    searchDate,
+    recipeSearchResults,
+    getRecipeSearchResults,
   } = props;
 
   // constants ///////////////////
+  const [localKeyword, setLocalKeyword] = useState('');
+  // const [pageTitle, setPageTitle] = useState('Recipes');
 
+  const PageTitle = () => {
+    let title = localKeyword
+      ? `Search Results for "${localKeyword}"`
+      : 'All Recipes'
+    return (
+      <Typography
+        variant='h5'
+        display='flex'
+        alignItems='center'
+        color={CustomColorScheme['weekend']}
+      >
+        {title}
+      </Typography>);
+
+  }
   const navigate = useNavigate();
 
-  const emptyDateitem = {
-    cellcolor: '',
-    date: null,
-    description: '',
-    detail: '',
-    dateitemId: null,
-    isHighlighted: false,
-    includeInTasklist: false,
-    defaultValue: false,
-    numDays: 1,
-    startdate: null,
-    title: '',
-  };
-
-  const [modalOpen, setModalOpen] = useState(false);
-  const [year, setYear] = useState(dayjs().year());
-  const [openDateitemDialog, setOpenDateitemDialog] = useState(false);
-  const [dateitemObj, setDateitemObj] = useState(emptyDateitem);
 
   // event handlers //////////////
+  const handleGetSearchResults = (keyword) => {
+    setLocalKeyword(keyword);
+    getRecipeSearchResults(keyword);
+  }
 
-  const handleYearmMonthDialogOpen = (event) => {
-    setYear(dayjs(calendarMonthItems.monthdateCurrent).year());
-    setModalOpen(true);
-  };
-
-  const handleDateitemDialogOpenNew = (dateStr) => {
-    let ditem = emptyDateitem;
-    ditem.startdate = dateStr;
-    ditem.date = dateStr;
-    setDateitemObj(ditem);
-    setOpenDateitemDialog(true);
-  };
-
-  const handleDateitemDialogOpen = (dateitemId) => {
-    let ditem = calendarMonthItems.dateitems[dateitemId];
-    setDateitemObj(ditem);
-    setOpenDateitemDialog(true);
-  };
+  const handleEnterKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      getRecipeSearchResults(localKeyword);
+    } else if (event.key === 'Escape') {
+      handleGetSearchResults('');
+    }
+  }
 
   // components //////////////////
 
-  const ToolbarPlugin = () => {
-    return (
-      calendarMonthItems && (
-        <Stack direction='row'>
-          <StyledButton
-            sx={{
-              color: 'white',
-            }}
-            onClick={() =>
-              handleMonthChange(calendarMonthItems.monthdatePrevious)
-            }
-          >
-            {'<< prev'}
-          </StyledButton>
-          <Box
-            flexGrow={1}
-            textAlign='center'
-          >
-            <Typography
-              variant='h6'
-              component='span'
-              sx={{
-                cursor: 'pointer',
-              }}
-              onClick={() => handleYearmMonthDialogOpen()}
-            >
-              {dayjs(calendarMonthItems.monthdateCurrent).format('MMMM YYYY')}
-            </Typography>
-          </Box>
-          <StyledButton
-            sx={{
-              color: 'white',
-            }}
-            onClick={() => handleMonthChange(calendarMonthItems.monthdateNext)}
-          >
-            {'next >>'}
-          </StyledButton>
-        </Stack>
-      )
-    );
-  };
 
-  // event handlers  /////////////
-
-  const handleMonthChange = (monthdate) => {
-    getCalendarMonthItems(monthdate);
-  };
+  // recipeSearchResults && console.log(recipeSearchResults.recipes[0])
 
   // render //////////////////////
   return (
     <>
-      <Appbar component={<ToolbarPlugin />} />
+      <Appbar />
       <Container
         maxWidth='false'
         sx={{
-          paddingY: 1,
-          bgcolor: CustomColorScheme['body'],
+          maxWidth: 900,
         }}
       >
         <Stack
-          direction='row'
-          spacing={0}
-          sx={{ backgroundColor: 'white' }}
+          direction="row"
+          paddingY={1}
         >
-          <TableCellHead
-            index={0}
-            val='Sunday'
+          <PageTitle />
+          <Box
+            display='flex'
+            flexGrow={1}
           />
-          <TableCellHead
-            index={1}
-            val='Monday'
+          <TextField
+            size='small'
+            variant="filled"
+            label=' Keyword'
+            value={localKeyword}
+            sx={{
+              marginY: 1,
+              paddingX: 1,
+              '& .MuiFormLabel-root': {
+                marginLeft: 1,
+              },
+              '& .MuiFilledInput-root': {
+
+              },
+              '& label.Mui-focused': {
+                color: 'inherit',
+                marginLeft: 1,
+              },
+              '& .MuiInput-underline:after': {
+                borderBottomColor: CustomColorScheme['text'],
+              },
+            }}
+            onChange={(e) => setLocalKeyword(e.target.value)}
+            onKeyDown={(e) => handleEnterKeyPress(e)}
+            InputProps={{
+              endAdornment: (
+                <>
+                  <InputAdornment position='end'>
+                    <IconButton
+                      onClick={() => getRecipeSearchResults(localKeyword)}
+                    >
+                      <SearchIcon />
+                    </IconButton>
+                  </InputAdornment>
+                  <InputAdornment position='end'>
+                    <IconButton
+                      onClick={() => handleGetSearchResults('')}
+                    >
+                      <ClearIcon />
+                    </IconButton>
+                  </InputAdornment>
+                </>
+              )
+            }}
           />
-          <TableCellHead
-            index={1}
-            val='Tueday'
-          />
-          <TableCellHead
-            index={1}
-            val='Wednesday'
-          />
-          <TableCellHead
-            index={1}
-            val='Thursday'
-          />
-          <TableCellHead
-            index={1}
-            val='Friday'
-          />
-          <TableCellHead
-            index={1}
-            val='Saturday'
-          />
+
         </Stack>
-        {calendarMonthItems &&
-          Object.keys(calendarMonthItems.weeks).map((idx) => {
+        {recipeSearchResults &&
+          Object.keys(recipeSearchResults.recipes).map((idx) => {
+            let recipe = recipeSearchResults.recipes[idx];
             return (
-              <Stack
+              <Box
                 key={idx}
-                direction='row'
-                spacing={0}
-                backgroundColor='white'
-              >
-                {calendarMonthItems.weeks[idx].map((dayObject, idx) => {
-                  return (
-                    <TableCellBody
-                      key={idx}
-                      dayObject={dayObject}
-                      index={idx}
-                      handleDateitemDialogOpenNew={handleDateitemDialogOpenNew}
-                      handleDateitemDialogOpen={handleDateitemDialogOpen}
-                      searchDate={searchDate}
-                    />
-                  );
-                })}
-              </Stack>
+                bgcolor={CustomColorScheme['mediumBrown']}
+                padding={1}
+                marginY={0.25}
+              >{recipe.title}</Box>
             );
           })}
-        <Stack
-          marginTop={0.5}
-          direction='row'
-          spacing={1}
-          display='flex'
-          justifyContent='center'
-          divider={
-            <Divider
-              orientation='vertical'
-              flexItem
-            />
-          }
-        >
-          <StyledButton>admin</StyledButton>
-          <StyledButton
-            onClick={() => handleMonthChange(dayjs().format('YYYY-MM-DD'))}
-          >
-            today
-          </StyledButton>
-          <StyledButton onClick={() => navigate('/search')}>
-            search
-          </StyledButton>
-          <StyledButton>logout</StyledButton>
-        </Stack>
       </Container>
       <Copywrite />
-      <YearMonthDialog
-        modalOpen={modalOpen}
-        setModalOpen={setModalOpen}
-        getCalendarMonthItems={getCalendarMonthItems}
-        year={year}
-        setYear={setYear}
-      />
-      <DateitemDialog
-        dateitemObj={dateitemObj}
-        openDateitemDialog={openDateitemDialog}
-        setOpenDateitemDialog={setOpenDateitemDialog}
-      />
     </>
   );
 }

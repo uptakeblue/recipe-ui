@@ -15,12 +15,11 @@ npm start
 
 Flask from command line:
 ----------------------------------
-D:
-CD D:\Michael\Documents\Github\calendar-api
+CD C:\Users\Michael\Documents\Github\recipes-api
 .venv\Scripts\activate
 flask --app app.py run
 
-
-CD C:\Users\Michael\Documents\Github\calendar-api
+D:
+CD D:\Michael\Documents\Github\recipes-api
 .venv\Scripts\activate
 flask --app app.py run
