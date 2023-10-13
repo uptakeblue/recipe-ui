@@ -24,6 +24,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { CustomColorScheme } from '../components/CustomTheme';
 import Appbar from '../components/Appbar';
 import Copywrite from '../components/Copywrite';
+import RecipeCard from '../components/RecipeCard';
 
 const StyledButton = styled(Button)(({ theme }) => ({
   textTransform: 'none',
@@ -62,8 +63,9 @@ export default function Home(props) {
   // components //////////////////
   const PageTitle = () => {
     let title = localKeyword
-      ? `Search Results for "${localKeyword}"`
-      : 'All Recipes'
+      ? `Search Results for "${localKeyword}" (${recipeSearchResults.recipes.length})`
+      : (recipeSearchResults ? `All Recipes (${recipeSearchResults.recipes.length})` : 'All Recipes')
+    // : 'All Recipes'
     return (
       <Typography
         variant='h5'
@@ -75,57 +77,6 @@ export default function Home(props) {
       </Typography>);
 
   }
-
-  const RecipeCard = (recipe) => {
-    if (recipe.recipe.imageFile) {
-      let path = `../images/${recipe.recipe.imageFile}`;
-      let imageFilepath = require(path);
-      console.log("RecipeCard  imageFilepath", imageFilepath);
-    }
-
-    // let requiredImage = require(imagefilePath)
-    let imagefile = recipe.recipe.imageFile
-      // ? `url(/../images/${recipe.recipe.imageFile})`
-      // ? `url(${require(imagefilePath)})`
-      // ? `url(${require('../images/62_baked-kabocha-pumpkin.jpeg')})`
-      // ? `url(${require("../images/391_chickpea-and-celery-soup-with-chile-garlic-oil.JPEG")})`
-      ? `url(${require("../images/391_chickpea-and-celery-soup-with-chile-garlic-oil.JPEG")})`
-      : "url('https://media.geeksforgeeks.org/wp-content/uploads/rk.png')";
-    // : null;
-    if (recipe.recipe.imageFile) console.log("RecipeCard", imagefile);
-    return (
-      <Grid item >
-        <Paper
-          sx={{
-            height: 239,
-            width: 276,
-            display: 'flex',
-            justifyContent: 'end',
-            alignItems: 'end',
-            background: imagefile,
-            backgroundSize: 'cover',
-            backgroundRepeat: "no-repeat"
-          }}
-        >
-          {/* <img src={require(imagefilePath)} /> */}
-          {recipe.title}
-          <Box
-            width={276}
-            height={100}
-            bgcolor={CustomColorScheme['weekend']}
-            sx={{
-              color: "black",
-            }}
-          >
-            {recipe.recipe.title}
-          </Box>
-        </Paper>
-      </Grid>
-    )
-
-  }
-
-  // recipeSearchResults && console.log(recipeSearchResults.recipes[0])
 
   // render //////////////////////
   return (
