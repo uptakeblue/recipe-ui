@@ -36,10 +36,12 @@ const StyledLinkButton = styled(Typography)(({ theme }) => ({
 }));
 
 const RecipeNote = (props) => {
+    const { rawText } = props;
     const htmlParser = new Parser();
-    let innerHtml = htmlParser.parse(props.rawText);
+
+    let innerHtml = htmlParser.parse(rawText);
     return (
-        props.rawText
+        rawText
             ?
             <div>
                 {innerHtml}
@@ -55,13 +57,12 @@ const RecipeNote = (props) => {
 export default function RecipeCard(props) {
     const { recipe } = props;
 
-
     let imagefile = recipe.imageFile
         ? `url("${process.env.PUBLIC_URL + "/images/" + recipe.imageFile}")`
         : "url('https://media.geeksforgeeks.org/wp-content/uploads/rk.png')";
-    // : null;
+
     return (
-        <Grid item >
+        <Grid item key={recipe.recipeId} >
             <Paper
                 sx={{
                     height: 239,
@@ -72,11 +73,14 @@ export default function RecipeCard(props) {
                     background: imagefile,
                     backgroundSize: 276,
                     backgroundRepeat: "no-repeat",
-                    position: 'relative'
+                    position: 'relative',
+                    '&.MuiPaper-root': {
+                        borderRadius: 5,
+                    }
                 }}
             >
                 {recipe.isFavorite &&
-                    <div style={{ position: 'absolute', top: 5, right: 5, zIndex: 1000 }}>
+                    <div style={{ position: 'absolute', top: 10, right: 10, zIndex: 1000 }}>
                         <Tooltip title='Always a Favorite!'>
                             <FavoriteIcon
                                 fontSize='small'
@@ -92,10 +96,18 @@ export default function RecipeCard(props) {
                     bgcolor={CustomColorScheme['weekend']}
                     paddingBottom={0.5}
                     overflow='hidden'
+                    sx={{
+                        '&.MuiBox-root': {
+                            borderRadius: 5,
+                            borderTopLeftRadius: 0,
+                            borderTopRightRadius: 0,
+                        }
+
+                    }}
                 >
                     <StyledLinkButton
-                        padding={1}
-                        paddingBottom={0.5}
+                        paddingTop={0.75}
+                        paddingX={1.5}
                         fontWeight='bold'
                         sx={{
                             fontSize: 16,
@@ -107,8 +119,8 @@ export default function RecipeCard(props) {
                     <Typography
                         variant='body2'
                         component={'div'}
-                        padding={1}
-                        paddingTop={0}
+                        padding={1.5}
+                        paddingTop={0.5}
                         sx={{
                             fontSize: 12,
                             color: CustomColorScheme['text'],

@@ -10,7 +10,7 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import { styled } from '@mui/material/styles';
+import Pagination from '@mui/material/Pagination';
 import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
 import { IconButton, InputAdornment, Paper } from '@mui/material';
@@ -37,7 +37,7 @@ export default function Home(props) {
 
   // constants ///////////////////
   const [localKeyword, setLocalKeyword] = useState('');
-  // const [pageTitle, setPageTitle] = useState('Recipes');
+  const [transmittedKeyword, setTransmittedKeyword] = useState('');
 
   const navigate = useNavigate();
 
@@ -45,21 +45,24 @@ export default function Home(props) {
   // event handlers //////////////
   const handleGetSearchResults = (keyword) => {
     setLocalKeyword(keyword);
+    setTransmittedKeyword(keyword)
     getRecipeSearchResults(keyword);
   }
 
   const handleEnterKeyPress = (event) => {
     if (event.key === 'Enter') {
+      setTransmittedKeyword(localKeyword)
       getRecipeSearchResults(localKeyword);
     } else if (event.key === 'Escape') {
+      setTransmittedKeyword('')
       handleGetSearchResults('');
     }
   }
 
   // components //////////////////
   const PageTitle = () => {
-    let title = localKeyword
-      ? `Search Results for "${localKeyword}" (${recipeSearchResults.recipes.length})`
+    let title = transmittedKeyword
+      ? `Search Results for "${transmittedKeyword}" (${recipeSearchResults.recipes.length})`
       : (recipeSearchResults ? `All Recipes (${recipeSearchResults.recipes.length})` : 'All Recipes')
     // : 'All Recipes'
     return (
@@ -122,7 +125,7 @@ export default function Home(props) {
                 <>
                   <InputAdornment position='end'>
                     <IconButton
-                      onClick={() => getRecipeSearchResults(localKeyword)}
+                      onClick={() => handleGetSearchResults(localKeyword)}
                     >
                       <SearchIcon />
                     </IconButton>
@@ -148,17 +151,19 @@ export default function Home(props) {
             Object.keys(recipeSearchResults.recipes).map((idx) => {
               let rcp = recipeSearchResults.recipes[idx];
               return (
-                // <Box
-                //   key={idx}
-                //   bgcolor={CustomColorScheme['mediumBrown']}
-                //   padding={1}
-                //   marginY={0.25}
-                // >{recipe.title}</Box>
-                <RecipeCard key={idx} recipe={rcp}
-                />
+                <RecipeCard key={idx} recipe={rcp} />
               );
             })}
         </Grid>
+        <Box
+          display='flex'
+          flexGrow={1}
+          alignItems='center'
+          justifyContent='center'
+          paddingTop={2}
+        >
+          <Pagination count={10} />
+        </Box>
       </Container>
       <Copywrite />
     </>
