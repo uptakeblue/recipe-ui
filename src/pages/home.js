@@ -6,13 +6,14 @@ import { useNavigate } from 'react-router-dom';
 
 // material ui
 import Stack from '@mui/material/Stack';
+import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
-import { IconButton, InputAdornment } from '@mui/material';
+import { IconButton, InputAdornment, Paper } from '@mui/material';
 
 // icons
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -24,12 +25,10 @@ import { CustomColorScheme } from '../components/CustomTheme';
 import Appbar from '../components/Appbar';
 import Copywrite from '../components/Copywrite';
 
-
 const StyledButton = styled(Button)(({ theme }) => ({
   textTransform: 'none',
   color: CustomColorScheme['text'],
 }));
-
 
 //////////////////////////////////
 
@@ -43,21 +42,6 @@ export default function Home(props) {
   const [localKeyword, setLocalKeyword] = useState('');
   // const [pageTitle, setPageTitle] = useState('Recipes');
 
-  const PageTitle = () => {
-    let title = localKeyword
-      ? `Search Results for "${localKeyword}"`
-      : 'All Recipes'
-    return (
-      <Typography
-        variant='h5'
-        display='flex'
-        alignItems='center'
-        color={CustomColorScheme['weekend']}
-      >
-        {title}
-      </Typography>);
-
-  }
   const navigate = useNavigate();
 
 
@@ -76,7 +60,70 @@ export default function Home(props) {
   }
 
   // components //////////////////
+  const PageTitle = () => {
+    let title = localKeyword
+      ? `Search Results for "${localKeyword}"`
+      : 'All Recipes'
+    return (
+      <Typography
+        variant='h5'
+        display='flex'
+        alignItems='center'
+        color={CustomColorScheme['weekend']}
+      >
+        {title}
+      </Typography>);
 
+  }
+
+  const RecipeCard = (recipe) => {
+    if (recipe.recipe.imageFile) {
+      let path = `../images/${recipe.recipe.imageFile}`;
+      let imageFilepath = require(path);
+      console.log("RecipeCard  imageFilepath", imageFilepath);
+    }
+
+    // let requiredImage = require(imagefilePath)
+    let imagefile = recipe.recipe.imageFile
+      // ? `url(/../images/${recipe.recipe.imageFile})`
+      // ? `url(${require(imagefilePath)})`
+      // ? `url(${require('../images/62_baked-kabocha-pumpkin.jpeg')})`
+      // ? `url(${require("../images/391_chickpea-and-celery-soup-with-chile-garlic-oil.JPEG")})`
+      ? `url(${require("../images/391_chickpea-and-celery-soup-with-chile-garlic-oil.JPEG")})`
+      : "url('https://media.geeksforgeeks.org/wp-content/uploads/rk.png')";
+    // : null;
+    if (recipe.recipe.imageFile) console.log("RecipeCard", imagefile);
+    return (
+      <Grid item >
+        <Paper
+          sx={{
+            height: 239,
+            width: 276,
+            display: 'flex',
+            justifyContent: 'end',
+            alignItems: 'end',
+            background: imagefile,
+            backgroundSize: 'cover',
+            backgroundRepeat: "no-repeat"
+          }}
+        >
+          {/* <img src={require(imagefilePath)} /> */}
+          {recipe.title}
+          <Box
+            width={276}
+            height={100}
+            bgcolor={CustomColorScheme['weekend']}
+            sx={{
+              color: "black",
+            }}
+          >
+            {recipe.recipe.title}
+          </Box>
+        </Paper>
+      </Grid>
+    )
+
+  }
 
   // recipeSearchResults && console.log(recipeSearchResults.recipes[0])
 
@@ -146,18 +193,25 @@ export default function Home(props) {
           />
 
         </Stack>
-        {recipeSearchResults &&
-          Object.keys(recipeSearchResults.recipes).map((idx) => {
-            let recipe = recipeSearchResults.recipes[idx];
-            return (
-              <Box
-                key={idx}
-                bgcolor={CustomColorScheme['mediumBrown']}
-                padding={1}
-                marginY={0.25}
-              >{recipe.title}</Box>
-            );
-          })}
+        <Grid
+          container
+          spacing={1}
+        >
+          {recipeSearchResults &&
+            Object.keys(recipeSearchResults.recipes).map((idx) => {
+              let rcp = recipeSearchResults.recipes[idx];
+              return (
+                // <Box
+                //   key={idx}
+                //   bgcolor={CustomColorScheme['mediumBrown']}
+                //   padding={1}
+                //   marginY={0.25}
+                // >{recipe.title}</Box>
+                <RecipeCard key={idx} recipe={rcp}
+                />
+              );
+            })}
+        </Grid>
       </Container>
       <Copywrite />
     </>
