@@ -12,6 +12,7 @@ export const CustomColorScheme = {
   green: "#32a852",
   darkBrown: '#999966',
   brightorange: '#fcba03',
+  darkRed: '#a60208',
 };
 
 export const BodyColor = CustomColorScheme['body'];

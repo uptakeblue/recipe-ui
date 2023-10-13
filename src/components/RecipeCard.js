@@ -1,37 +1,61 @@
 // general
 import '../App.css';
 import React, { useState } from 'react';
-import dayjs from 'dayjs';
-import { useNavigate } from 'react-router-dom';
+import { Parser } from "html-to-react";
 
 // material ui
-import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
-import Container from '@mui/material/Container';
-import TextField from '@mui/material/TextField';
-import { IconButton, InputAdornment, Paper } from '@mui/material';
+import Paper from '@mui/material/Paper';
+import Tooltip from '@mui/material/Tooltip';
 
 // icons
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import SearchIcon from '@mui/icons-material/Search';
-import ClearIcon from '@mui/icons-material/Clear';
 
 // components
 import { CustomColorScheme } from '../components/CustomTheme';
-import Appbar from '../components/Appbar';
-import Copywrite from '../components/Copywrite';
 
 const StyledButton = styled(Button)(({ theme }) => ({
     textTransform: 'none',
     color: CustomColorScheme['text'],
 }));
 
+const StyledLinkButton = styled(Typography)(({ theme }) => ({
+    '&.MuiTypography-root,  &.MuiTypography-root:hover': {
+        cursor: 'pointer',
+        variant: 'body1',
+        component: 'div',
+        lineHeight: 'normal',
+    },
+    '&.MuiTypography-root:hover': {
+        textDecoration: 'underline',
+    },
+}));
+
+const RecipeNote = (props) => {
+    const htmlParser = new Parser();
+    let innerHtml = htmlParser.parse(props.rawText);
+    return (
+        props.rawText
+            ?
+            <div>
+                {innerHtml}
+            </div>
+            :
+            <></>
+    )
+}
+
+////////////////////////
+
+
 export default function RecipeCard(props) {
     const { recipe } = props;
+
+
     let imagefile = recipe.imageFile
         ? `url("${process.env.PUBLIC_URL + "/images/" + recipe.imageFile}")`
         : "url('https://media.geeksforgeeks.org/wp-content/uploads/rk.png')";
@@ -47,9 +71,21 @@ export default function RecipeCard(props) {
                     alignItems: 'end',
                     background: imagefile,
                     backgroundSize: 276,
-                    backgroundRepeat: "no-repeat"
+                    backgroundRepeat: "no-repeat",
+                    position: 'relative'
                 }}
             >
+                {recipe.isFavorite &&
+                    <div style={{ position: 'absolute', top: 5, right: 5, zIndex: 1000 }}>
+                        <Tooltip title='Always a Favorite!'>
+                            <FavoriteIcon
+                                fontSize='small'
+                                sx={{
+                                    color: CustomColorScheme['darkRed'],
+                                }}
+                            />
+                        </Tooltip>
+                    </div>}
                 <Box
                     width={276}
                     height={100}
@@ -57,29 +93,32 @@ export default function RecipeCard(props) {
                     paddingBottom={0.5}
                     overflow='hidden'
                 >
-                    <Typography
-                        variant='body2'
-                        component={'div'}
+                    <StyledLinkButton
                         padding={1}
-                        paddingBottom={0}
+                        paddingBottom={0.5}
+                        fontWeight='bold'
                         sx={{
                             fontSize: 16,
                             color: CustomColorScheme['text'],
                         }}
                     >
                         {recipe.title}
-                    </Typography>
+                    </StyledLinkButton>
                     <Typography
                         variant='body2'
                         component={'div'}
                         padding={1}
-                        paddingTop={0.5}
+                        paddingTop={0}
                         sx={{
                             fontSize: 12,
                             color: CustomColorScheme['text'],
+                            '& a': {
+                                color: CustomColorScheme['text'],
+                                fontWeight: 'bold',
+                            }
                         }}
                     >
-                        {recipe.note}
+                        <RecipeNote rawText={recipe.description} />
                     </Typography>
 
                 </Box>

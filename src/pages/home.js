@@ -26,10 +26,6 @@ import Appbar from '../components/Appbar';
 import Copywrite from '../components/Copywrite';
 import RecipeCard from '../components/RecipeCard';
 
-const StyledButton = styled(Button)(({ theme }) => ({
-  textTransform: 'none',
-  color: CustomColorScheme['text'],
-}));
 
 //////////////////////////////////
 
