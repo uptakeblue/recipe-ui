@@ -92,7 +92,8 @@ export default function RecipeCard(props) {
                                 }}
                             />
                         </Tooltip>
-                    </div>}
+                    </div>
+                }
                 <Box
                     width={276}
                     height={100}

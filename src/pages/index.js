@@ -21,6 +21,12 @@ export default function Index(props) {
     getRecipeSearchResults,
     recipeMap,
     getRecipeByRoute,
+    localKeyword,
+    setLocalKeyword,
+    page,
+    setPage,
+    transmittedKeyword,
+    setTransmittedKeyword,
   } = props;
 
   document.body.style.backgroundColor = BodyColor;
@@ -33,6 +39,12 @@ export default function Index(props) {
             <Home
               recipeSearchResults={recipeSearchResults}
               getRecipeSearchResults={getRecipeSearchResults}
+              localKeyword={localKeyword}
+              setLocalKeyword={setLocalKeyword}
+              page={page}
+              setPage={setPage}
+              transmittedKeyword={transmittedKeyword}
+              setTransmittedKeyword={setTransmittedKeyword}
             />
           }
         />

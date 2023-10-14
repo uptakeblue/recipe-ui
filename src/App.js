@@ -16,6 +16,9 @@ export default function App() {
 
   const [recipeSearchResults, setRecipeSearchResults] = useState();
   const [recipeMap, setRecipeMap] = useState();
+  const [localKeyword, setLocalKeyword] = useState('');
+  const [page, setPage] = useState(1);
+  const [transmittedKeyword, setTransmittedKeyword] = useState('');
 
   // useEffect ////////////
 
@@ -79,6 +82,12 @@ export default function App() {
       getRecipeSearchResults={getRecipeSearchResults}
       recipeMap={recipeMap}
       getRecipeByRoute={getRecipeByRoute}
+      localKeyword={localKeyword}
+      setLocalKeyword={setLocalKeyword}
+      page={page}
+      setPage={setPage}
+      transmittedKeyword={transmittedKeyword}
+      setTransmittedKeyword={setTransmittedKeyword}
     />
   );
 }

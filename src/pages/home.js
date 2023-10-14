@@ -29,13 +29,17 @@ export default function Home(props) {
   const {
     recipeSearchResults,
     getRecipeSearchResults,
+    localKeyword,
+    setLocalKeyword,
+    page,
+    setPage,
+    transmittedKeyword,
+    setTransmittedKeyword,
   } = props;
 
   // constants ///////////////////
 
-  const [localKeyword, setLocalKeyword] = useState('');
-  const [transmittedKeyword, setTransmittedKeyword] = useState('');
-  const [page, setPage] = useState(1);
+  // const [transmittedKeyword, setTransmittedKeyword] = useState('');
 
   const countPerPage = 12;
 
@@ -50,6 +54,7 @@ export default function Home(props) {
   // event handlers //////////////
 
   const handleGetSearchResults = (keyword) => {
+    setPage(1)
     setLocalKeyword(keyword);
     setTransmittedKeyword(keyword)
     getRecipeSearchResults(keyword);
@@ -57,9 +62,11 @@ export default function Home(props) {
 
   const handleEnterKeyPress = (event) => {
     if (event.key === 'Enter') {
+      setPage(1)
       setTransmittedKeyword(localKeyword)
       getRecipeSearchResults(localKeyword);
     } else if (event.key === 'Escape') {
+      setPage(1)
       setTransmittedKeyword('')
       handleGetSearchResults('');
     }

@@ -1,48 +1,46 @@
 // general
 import '../App.css';
 import React, { useState, useEffect } from 'react';
-import dayjs from 'dayjs';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Parser } from "html-to-react";
 
 // material ui
 import Stack from '@mui/material/Stack';
-import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import Pagination from '@mui/material/Pagination';
 import Container from '@mui/material/Container';
-import TextField from '@mui/material/TextField';
-import { IconButton, InputAdornment, Paper } from '@mui/material';
+import Paper from '@mui/material/Paper';
 
 // icons
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import SearchIcon from '@mui/icons-material/Search';
-import ClearIcon from '@mui/icons-material/Clear';
 
 // components
 import { CustomColorScheme } from '../components/CustomTheme';
 import Appbar from '../components/Appbar';
 import Copywrite from '../components/Copywrite';
-import RecipeCard from '../components/RecipeCard';
+import RecipeContent from '../components/RecipeContent';
 
 const ParsedText = (props) => {
     const { rawText } = props;
     const htmlParser = new Parser();
 
-    let innerHtml = htmlParser.parse(rawText);
-    return (
-        rawText
-            ?
-            <div>
-                {innerHtml}
-            </div>
-            :
-            <></>
+    let innerHtml;
+    return rawText && (
+        <span>
+            {
+                rawText.split('\n').map((sentence, idx) => {
+                    innerHtml = htmlParser.parse(sentence);
+                    return (
+                        <div key={idx}>{innerHtml}</div>
+                    )
+                })
+            }
+        </span>
     )
 }
 
+////////////////////////
 
 export default function Recipe(props) {
     const {
@@ -50,30 +48,41 @@ export default function Recipe(props) {
         getRecipeByRoute
     } = props;
 
-    const { urltitle } = useParams();
-    const navigate = useNavigate();
+    const [tabValue, setTabValue] = useState(0);
+    // useEffect ///////////////
 
     useEffect(() => {
         getRecipeByRoute(urltitle);
     }, []);
 
-    const imagefile = recipeMap.imageFile
-        ? `url("${process.env.PUBLIC_URL + "/images/" + recipeMap.imageFile}")`
-        : `url("${process.env.PUBLIC_URL + "/orange-panel.png"}")`
+    // constants ///////////////
+
+    const { urltitle } = useParams();
+    const navigate = useNavigate();
+
+    const imagefile = recipeMap && (
+        recipeMap.imageFile
+        && (
+            `${process.env.PUBLIC_URL + "/images/" + recipeMap.imageFile}`
+        )
+    )
 
 
-    return (
+    // render //////////////////
+
+    return recipeMap && (
         <>
             <Appbar />
             <Container
                 maxWidth='false'
                 sx={{
-                    maxWidth: 950,
+                    maxWidth: 1050,
                 }}
             >
                 <Stack
                     direction="row"
                     paddingY={1}
+                    marginRight={2}
                 >
                     <Box
                         display='flex'
@@ -91,7 +100,9 @@ export default function Recipe(props) {
                                 borderColor: CustomColorScheme['weekend'],
                             },
                         }}
-                        onClick={() => navigate('/')}
+                        onClick={() => {
+                            navigate('/')
+                        }}
                     >Return</Button>
                 </Stack>
                 <Paper
@@ -99,11 +110,6 @@ export default function Recipe(props) {
                     sx={{
                         padding: 4,
                         margin: 1,
-                        minHeight: 800,
-                        width: 900,
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'start',
                         '&.MuiPaper-root': {
                             borderRadius: 5,
                             backgroundColor: CustomColorScheme['weekend']
@@ -115,44 +121,117 @@ export default function Recipe(props) {
                         width="100%"
                         spacing={2}
                     >
-                        <Typography
-                            variant='h5'
-                            component='div'
-                            textAlign='center'
+                        <Stack
+                            direction='row'
+                            width='100%'
                         >
-                            {recipeMap && <div>{recipeMap.title}</div>}
-                        </Typography>
+                            <Box width={50} />
+                            <Box
+                                display='flex'
+                                flexGrow={1}
+                                justifyContent='center'
+                                alignItems='center'
+                            >
+                                <Typography
+                                    display='flex'
+                                    variant='h5'
+                                    component='div'
+                                    textAlign='center'
+                                >
+                                    {recipeMap.title}
+                                </Typography>
+                            </Box>
+                            <Box width={50}>
+                                {
+                                    recipeMap.isFavorite &&
+                                    <FavoriteIcon
+                                        fontSize='large'
+                                        sx={{
+                                            color: CustomColorScheme['darkRed'],
+                                        }}
+                                    />
+                                }
+
+                            </Box>
+                        </Stack>
                         <Stack
                             direction='row'
                             spacing={4}
                         >
+                            {recipeMap.imageFile &&
+                                (<Box
+                                    width='50%'
+                                >
+                                    <img
+                                        src={imagefile}
+                                        width='100%'
+                                        height='auto'
+                                        style={{
+                                            borderRadius: 20,
+                                        }}
+                                    />
+                                </Box>)
+                            }
                             <Box
-                                width={425}
-                                height={570}
-                                // border={1}
+                                width={recipeMap.imageFile ? '50%' : "100%"}
+                                padding={2}
+                                paddingY={2}
+                                bgcolor='white'
+                                borderRadius={5}
                                 sx={{
-                                    background: imagefile,
-                                    backgroundSize: 425,
-                                    backgroundRepeat: "no-repeat",
+                                    '&.MuiBox-root a': {
+                                        color: CustomColorScheme['text'],
+                                    },
                                 }}
-                            ></Box>
-                            <Box width={425}>
+
+                            >
                                 <Stack
                                     direction='column'
-                                    spacing={1}
+                                    spacing={0}
                                 >
-                                    <ParsedText rawText={recipeMap.description} />
-                                    <ParsedText rawText={recipeMap.note} />
+                                    <ParsedText
+                                        rawText={recipeMap.description}
+                                    />
+                                    {recipeMap.note && (
+                                        <>
+                                            <Typography
+                                                variant='body1'
+                                                component='div'
+                                                marginTop={1}
+                                                fontSize={14}
+                                                fontWeight='bold'
+                                                color={CustomColorScheme['text']}
+                                            >
+                                                Note:
+                                            </Typography>
+                                            <ParsedText
+                                                rawText={recipeMap.note}
+                                                sx={{
+                                                    color: CustomColorScheme['text']
+                                                }}
+                                            />
+                                        </>
+                                    )}
                                 </Stack>
                             </Box>
                         </Stack>
-
-                        <Box
-                            display='flex'
-                            flexGrow={1}
-                            height={200}
-                            border={1}
-                        />
+                        <Stack
+                            spacing={3}
+                        >
+                            {
+                                recipeMap.contents.map((content, idx) => {
+                                    return (
+                                        <RecipeContent
+                                            key={idx}
+                                            contentIdx={idx}
+                                            content={content}
+                                            tabValue={tabValue}
+                                            setTabValue={setTabValue}
+                                        />
+                                    )
+                                })
+                            }
+                        </Stack>
 
                     </Stack>
 
