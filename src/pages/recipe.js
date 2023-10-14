@@ -158,24 +158,8 @@ export default function Recipe(props) {
                             direction='row'
                             spacing={4}
                         >
-                            {recipeMap.imageFile &&
-                                (<Box
-                                    width='50%'
-                                >
-                                    <img
-                                        src={imagefile}
-                                        width='100%'
-                                        height='auto'
-                                        style={{
-                                            borderRadius: 20,
-                                        }}
-                                    />
-                                </Box>)
-                            }
                             <Box
-                                width={recipeMap.imageFile ? '50%' : "100%"}
-                                padding={2}
-                                paddingY={2}
+                                width='100%'
                                 bgcolor='white'
                                 borderRadius={5}
                                 sx={{
@@ -185,33 +169,49 @@ export default function Recipe(props) {
                                 }}
 
                             >
-                                <Stack
-                                    direction='column'
-                                    spacing={0}
-                                >
-                                    <ParsedText
-                                        rawText={recipeMap.description}
-                                    />
-                                    {recipeMap.note && (
-                                        <>
-                                            <Typography
-                                                variant='body1'
-                                                component='div'
-                                                marginTop={1}
-                                                fontSize={14}
-                                                fontWeight='bold'
-                                                color={CustomColorScheme['text']}
-                                            >
-                                                Note:
-                                            </Typography>
-                                            <ParsedText
-                                                rawText={recipeMap.note}
-                                                sx={{
-                                                    color: CustomColorScheme['text']
+                                <Stack direction='row'>
+                                    {recipeMap.imageFile &&
+                                        (
+                                            <img
+                                                src={imagefile}
+                                                width={450}
+                                                height='auto'
+                                                style={{
+                                                    borderTopLeftRadius: 20,
+                                                    borderBottomLeftRadius: 20,
+                                                    marginRight: 10,
                                                 }}
                                             />
-                                        </>
-                                    )}
+                                        )
+                                    }
+                                    <Stack
+                                        direction='column'
+                                        spacing={0}
+                                    >
+                                        <Box padding={1}>
+                                            <ParsedText rawText={recipeMap.description} />
+                                        </Box>
+                                        {recipeMap.note && (
+                                            <Box padding={1}>
+                                                <Typography
+                                                    variant='body1'
+                                                    component='div'
+                                                    marginTop={1}
+                                                    fontSize={14}
+                                                    fontWeight='bold'
+                                                    color={CustomColorScheme['text']}
+                                                >
+                                                    Note:
+                                                </Typography>
+                                                <ParsedText
+                                                    rawText={recipeMap.note}
+                                                    sx={{
+                                                        color: CustomColorScheme['text']
+                                                    }}
+                                                />
+                                            </Box>
+                                        )}
+                                    </Stack>
                                 </Stack>
                             </Box>
                         </Stack>

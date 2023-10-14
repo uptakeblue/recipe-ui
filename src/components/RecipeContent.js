@@ -1,20 +1,16 @@
 // general
 import '../App.css';
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { Parser } from "html-to-react";
 
 // material ui
-import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Paper from '@mui/material/Paper';
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 
 // components
 import { CustomColorScheme } from '../components/CustomTheme';
-
 
 
 function TabPanel(props) {
@@ -75,8 +71,20 @@ export default function RecipeContent(props) {
             >
                 {
                     contentIdx === 0 && (
-                        <Tabs value={tabValue} onChange={(e, newValue) => setTabValue(newValue)} aria-label="basic tabs example">
-                            <Tab label="Ingredients" index={0} />
+                        <Tabs
+                            value={tabValue}
+                            onChange={(e, newValue) => setTabValue(newValue)}
+                            textColor='inherit'
+                            sx={{
+                                "& .MuiTabs-indicator": {
+                                    bgcolor: CustomColorScheme['text']
+                                },
+                            }}
+                        >
+                            <Tab
+                                label="Ingredients"
+                                index={0}
+                            />
                             <Tab label="Instructions" index={1} />
                         </Tabs>
                     )
