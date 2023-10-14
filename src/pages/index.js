@@ -8,6 +8,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 // pages
 import Home from './home';
+import Recipe from './recipe';
 
 // custom components
 import { BodyColor } from '../components/CustomTheme';
@@ -16,11 +17,10 @@ import { BodyColor } from '../components/CustomTheme';
 
 export default function Index(props) {
   const {
-    getRecipeMap,
     recipeSearchResults,
     getRecipeSearchResults,
-    keyword,
-    setKeyword,
+    recipeMap,
+    getRecipeByRoute,
   } = props;
 
   document.body.style.backgroundColor = BodyColor;
@@ -36,6 +36,18 @@ export default function Index(props) {
             />
           }
         />
+        <Route
+          path='/recipe/:urltitle'
+          element={
+            <Recipe
+              recipeMap={recipeMap}
+              getRecipeByRoute={getRecipeByRoute}
+            />
+          }
+
+        >
+
+        </Route>
       </Routes>
     </LocalizationProvider>
   );

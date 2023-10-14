@@ -1,7 +1,8 @@
 // general
 import '../App.css';
-import React, { useState } from 'react';
+import React from 'react';
 import { Parser } from "html-to-react";
+import { useNavigate } from 'react-router-dom';
 
 // material ui
 import Grid from '@mui/material/Grid';
@@ -57,10 +58,11 @@ const RecipeNote = (props) => {
 export default function RecipeCard(props) {
     const { recipe } = props;
 
+    const navigate = useNavigate();
+
     let imagefile = recipe.imageFile
         ? `url("${process.env.PUBLIC_URL + "/images/" + recipe.imageFile}")`
-        : "url('https://media.geeksforgeeks.org/wp-content/uploads/rk.png')";
-
+        : `url("${process.env.PUBLIC_URL + "/orange-panel.png"}")`
     return (
         <Grid item key={recipe.recipeId} >
             <Paper
@@ -78,6 +80,7 @@ export default function RecipeCard(props) {
                         borderRadius: 5,
                     }
                 }}
+                onClick={() => navigate(`/recipe/${recipe.urlRoute}`)}
             >
                 {recipe.isFavorite &&
                     <div style={{ position: 'absolute', top: 10, right: 10, zIndex: 1000 }}>
@@ -102,8 +105,8 @@ export default function RecipeCard(props) {
                             borderTopLeftRadius: 0,
                             borderTopRightRadius: 0,
                         }
-
                     }}
+                    onClick={(e) => e.stopPropagation()}
                 >
                     <StyledLinkButton
                         paddingTop={0.75}
@@ -113,6 +116,7 @@ export default function RecipeCard(props) {
                             fontSize: 16,
                             color: CustomColorScheme['text'],
                         }}
+                        onClick={() => navigate(`/recipe/${recipe.urlRoute}`)}
                     >
                         {recipe.title}
                     </StyledLinkButton>

@@ -15,6 +15,7 @@ export default function App() {
   // constants ////////////
 
   const [recipeSearchResults, setRecipeSearchResults] = useState();
+  const [recipeMap, setRecipeMap] = useState();
 
   // useEffect ////////////
 
@@ -42,6 +43,20 @@ export default function App() {
       });
   }
 
+  async function getRecipeByRoute(routeUrl) {
+    let url = `${process.env.REACT_APP_API_BASE_URL}/recipe/route/${routeUrl}/`
+    await axios
+      .get(url)
+      .then((response) => {
+        setRecipeMap(response.data);
+      })
+      .catch((error) => {
+        console.log('API getRecipeByRoute error: ', routeUrl);
+        console.log('API error url: ', url);
+        processError(error);
+      });
+  }
+
   function processError(error) {
     if (error.response) {
       // The request was made and the server responded with a status code > 200
@@ -62,6 +77,8 @@ export default function App() {
     <Index
       recipeSearchResults={recipeSearchResults}
       getRecipeSearchResults={getRecipeSearchResults}
+      recipeMap={recipeMap}
+      getRecipeByRoute={getRecipeByRoute}
     />
   );
 }

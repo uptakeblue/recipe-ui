@@ -1,22 +1,18 @@
 // general
 import '../App.css';
 import React, { useState } from 'react';
-import dayjs from 'dayjs';
-import { useNavigate } from 'react-router-dom';
 
 // material ui
 import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 import Pagination from '@mui/material/Pagination';
 import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
 import { IconButton, InputAdornment, Paper } from '@mui/material';
 
 // icons
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
 
@@ -41,7 +37,6 @@ export default function Home(props) {
   const [transmittedKeyword, setTransmittedKeyword] = useState('');
   const [page, setPage] = useState(1);
 
-  const navigate = useNavigate();
   const countPerPage = 12;
 
   const pageCount = recipeSearchResults
