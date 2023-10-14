@@ -36,13 +36,24 @@ export default function Home(props) {
   } = props;
 
   // constants ///////////////////
+
   const [localKeyword, setLocalKeyword] = useState('');
   const [transmittedKeyword, setTransmittedKeyword] = useState('');
+  const [page, setPage] = useState(1);
 
   const navigate = useNavigate();
+  const countPerPage = 12;
 
+  const pageCount = recipeSearchResults
+    ? Math.ceil(recipeSearchResults.recipes.length / countPerPage)
+    : 0;
+
+  const recipesThisPage = recipeSearchResults
+    ? recipeSearchResults.recipes.slice((page - 1) * countPerPage, page * countPerPage)
+    : null
 
   // event handlers //////////////
+
   const handleGetSearchResults = (keyword) => {
     setLocalKeyword(keyword);
     setTransmittedKeyword(keyword)
@@ -59,12 +70,18 @@ export default function Home(props) {
     }
   }
 
+  const handlePaginationChange = (event, pge) => {
+    if (recipeSearchResults) {
+      setPage(pge);
+    }
+  };
+
   // components //////////////////
   const PageTitle = () => {
     let title = transmittedKeyword
       ? `Search Results for "${transmittedKeyword}" (${recipeSearchResults.recipes.length})`
       : (recipeSearchResults ? `All Recipes (${recipeSearchResults.recipes.length})` : 'All Recipes')
-    // : 'All Recipes'
+
     return (
       <Typography
         variant='h5'
@@ -78,6 +95,7 @@ export default function Home(props) {
   }
 
   // render //////////////////////
+
   return (
     <>
       <Appbar />
@@ -147,9 +165,9 @@ export default function Home(props) {
           container
           spacing={1}
         >
-          {recipeSearchResults &&
-            Object.keys(recipeSearchResults.recipes).map((idx) => {
-              let rcp = recipeSearchResults.recipes[idx];
+          {recipesThisPage &&
+            Object.keys(recipesThisPage).map((idx) => {
+              let rcp = recipesThisPage[idx];
               return (
                 <RecipeCard key={idx} recipe={rcp} />
               );
@@ -162,7 +180,11 @@ export default function Home(props) {
           justifyContent='center'
           paddingTop={2}
         >
-          <Pagination count={10} />
+          <Pagination
+            count={pageCount}
+            page={page}
+            onChange={handlePaginationChange}
+          />
         </Box>
       </Container>
       <Copywrite />
