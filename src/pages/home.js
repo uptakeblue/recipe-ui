@@ -89,7 +89,7 @@ export default function Home(props) {
         variant='h5'
         display='flex'
         alignItems='center'
-        color={CustomColorScheme['weekend']}
+        color={CustomColorScheme['tan']}
       >
         {title}
       </Typography>);

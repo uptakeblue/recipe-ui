@@ -97,7 +97,7 @@ export default function RecipeCard(props) {
                 <Box
                     width={276}
                     height={100}
-                    bgcolor={CustomColorScheme['weekend']}
+                    bgcolor={CustomColorScheme['lightTan']}
                     paddingBottom={0.5}
                     overflow='hidden'
                     sx={{

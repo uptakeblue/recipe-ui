@@ -96,8 +96,8 @@ export default function Recipe(props) {
                                 borderColor: CustomColorScheme['mediumBrown'],
                             },
                             '&.MuiButton-outlined:hover': {
-                                color: CustomColorScheme['weekend'],
-                                borderColor: CustomColorScheme['weekend'],
+                                color: CustomColorScheme['tan'],
+                                borderColor: CustomColorScheme['tan'],
                             },
                         }}
                         onClick={() => {
@@ -112,7 +112,7 @@ export default function Recipe(props) {
                         margin: 1,
                         '&.MuiPaper-root': {
                             borderRadius: 5,
-                            backgroundColor: CustomColorScheme['weekend']
+                            backgroundColor: CustomColorScheme['tan']
                         }
                     }}
                 >

@@ -65,7 +65,7 @@ export default function RecipeContent(props) {
                 square
                 sx={{
                     '&.MuiPaper-root': {
-                        bgcolor: CustomColorScheme['weekend'],
+                        bgcolor: CustomColorScheme['tan'],
                     }
                 }}
             >
@@ -104,7 +104,7 @@ export default function RecipeContent(props) {
                                         fontSize: 16,
                                         margin: 0,
                                         borderTop: 2,
-                                        borderColor: CustomColorScheme['weekend']
+                                        borderColor: CustomColorScheme['tan']
                                     }}
                                 >
                                     {ingredient}
@@ -121,13 +121,13 @@ export default function RecipeContent(props) {
                             <Box
                                 key={idx}
                                 sx={{
-                                    bgcolor: 'white',
-                                    color: 'black',
+                                    bgcolor: CustomColorScheme['white'],
+                                    color: CustomColorScheme['text'],
                                     padding: 0.5,
                                     fontSize: 16,
                                     margin: 0,
                                     borderTop: 2,
-                                    borderColor: CustomColorScheme['weekend']
+                                    borderColor: CustomColorScheme['tan']
                                 }}
                             >
                                 {instruction}
