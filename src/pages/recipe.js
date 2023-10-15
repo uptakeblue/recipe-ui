@@ -72,23 +72,27 @@ export default function Recipe(props) {
 
     return recipeMap && (
         <>
-            <Appbar />
+            <Appbar id='id-1' />
             <Container
+                id='1d-2'
                 maxWidth='false'
                 sx={{
                     maxWidth: 1050,
                 }}
             >
                 <Stack
+                    id='1d-3'
                     direction="row"
                     paddingY={1}
                     marginRight={2}
                 >
                     <Box
+                        id='id-4'
                         display='flex'
                         flexGrow={1}
                     />
                     <Button
+                        id='id-5'
                         variant='outlined'
                         sx={{
                             '&.MuiButton-outlined': {
@@ -106,6 +110,7 @@ export default function Recipe(props) {
                     >Return</Button>
                 </Stack>
                 <Paper
+                    id='id-6'
                     elevation={0}
                     sx={{
                         padding: 4,
@@ -117,22 +122,26 @@ export default function Recipe(props) {
                     }}
                 >
                     <Stack
+                        id='id-7'
                         direction='column'
                         width="100%"
                         spacing={2}
                     >
                         <Stack
+                            id='id-8'
                             direction='row'
                             width='100%'
                         >
-                            <Box width={50} />
+                            <Box id='id-9' width={50} />
                             <Box
+                                id='id-10'
                                 display='flex'
                                 flexGrow={1}
                                 justifyContent='center'
                                 alignItems='center'
                             >
                                 <Typography
+                                    id='id-11'
                                     display='flex'
                                     variant='h5'
                                     component='div'
@@ -141,10 +150,11 @@ export default function Recipe(props) {
                                     {recipeMap.title}
                                 </Typography>
                             </Box>
-                            <Box width={50}>
+                            <Box id='id-12' width={50}>
                                 {
                                     recipeMap.isFavorite &&
                                     <FavoriteIcon
+                                        id='id-13'
                                         fontSize='large'
                                         sx={{
                                             color: CustomColorScheme['darkRed'],
@@ -155,10 +165,12 @@ export default function Recipe(props) {
                             </Box>
                         </Stack>
                         <Stack
+                            id='id-14'
                             direction='row'
                             spacing={4}
                         >
                             <Box
+                                id='id-15'
                                 width='100%'
                                 bgcolor='white'
                                 borderRadius={5}
@@ -169,10 +181,14 @@ export default function Recipe(props) {
                                 }}
 
                             >
-                                <Stack direction='row'>
+                                <Stack
+                                    id='id-16'
+                                    direction='row'
+                                >
                                     {recipeMap.imageFile &&
                                         (
                                             <img
+                                                id='id-17'
                                                 src={imagefile}
                                                 width={450}
                                                 height='auto'
@@ -185,15 +201,20 @@ export default function Recipe(props) {
                                         )
                                     }
                                     <Stack
+                                        id='id-18'
                                         direction='column'
                                         spacing={0}
                                     >
-                                        <Box padding={1}>
-                                            <ParsedText rawText={recipeMap.description} />
+                                        <Box
+                                            id='id-19'
+                                            padding={1}
+                                        >
+                                            <ParsedText id='id-20' rawText={recipeMap.description} />
                                         </Box>
                                         {recipeMap.note && (
-                                            <Box padding={1}>
+                                            <Box id='id-21' padding={1}>
                                                 <Typography
+                                                    id='id-22'
                                                     variant='body1'
                                                     component='div'
                                                     marginTop={1}
@@ -204,6 +225,7 @@ export default function Recipe(props) {
                                                     Note:
                                                 </Typography>
                                                 <ParsedText
+                                                    id='id-23'
                                                     rawText={recipeMap.note}
                                                     sx={{
                                                         color: CustomColorScheme['text']
@@ -222,6 +244,7 @@ export default function Recipe(props) {
                                 recipeMap.contents.map((content, idx) => {
                                     return (
                                         <RecipeContent
+                                            id={'id-2_' + idx}
                                             key={idx}
                                             contentIdx={idx}
                                             content={content}

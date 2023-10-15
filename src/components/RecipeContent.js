@@ -13,7 +13,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { CustomColorScheme } from '../components/CustomTheme';
 
 
-function TabPanel(props) {
+const TabPanel = (props) => {
     const { children, value, index, ...other } = props;
 
     return (
@@ -25,7 +25,7 @@ function TabPanel(props) {
         >
             {value === index && (
                 <Box>
-                    <Typography>{children}</Typography>
+                    {children}
                 </Box>
             )}
         </div>
@@ -37,13 +37,13 @@ function TabPanel(props) {
 export default function RecipeContent(props) {
     const { content, tabValue, setTabValue, contentIdx } = props;
 
-    const Title = (props, ...other) => {
+    const Title = (props) => {
         const { title } = props;
         return (
             <Typography
+                id='id-x-100'
                 variant='h6'
                 component='div'
-                {...other}
                 sx={{
                     padding: .5,
                     marginTop: 1,
@@ -61,6 +61,7 @@ export default function RecipeContent(props) {
     return (
         <>
             <Paper
+                id='id-x-1'
                 elevation={0}
                 square
                 sx={{
@@ -72,6 +73,7 @@ export default function RecipeContent(props) {
                 {
                     contentIdx === 0 && (
                         <Tabs
+                            id='id-x-2'
                             value={tabValue}
                             onChange={(e, newValue) => setTabValue(newValue)}
                             textColor='inherit'
@@ -82,20 +84,26 @@ export default function RecipeContent(props) {
                             }}
                         >
                             <Tab
+                                id='id-x-3'
                                 label="Ingredients"
                                 index={0}
                             />
-                            <Tab label="Instructions" index={1} />
+                            <Tab
+                                id='id-x-4'
+                                label="Instructions"
+                                index={1}
+                            />
                         </Tabs>
                     )
                 }
-                <TabPanel value={tabValue} index={0} >
+                <TabPanel id='id-x-5' value={tabValue} index={0} >
                     {/* INGREDIENTS */}
-                    <Title title={content.title} />
+                    <Title id='id-x-6' title={content.title} />
                     {
                         content.ingredients.split('\n').map((ingredient, idx) => {
                             return (
                                 <Box
+                                    id={'id-x-7-' + idx}
                                     key={idx}
                                     sx={{
                                         bgcolor: CustomColorScheme['brightorange'],
@@ -113,29 +121,31 @@ export default function RecipeContent(props) {
                         })
                     }
                 </TabPanel>
-                <TabPanel value={tabValue} index={1}>
+                <TabPanel id='id-x-8' value={tabValue} index={1}>
                     {/* INSTRUCTIONS */}
-                    <Title title={content.title} />
-                    {content.instructions.split('\n').map((instruction, idx) => {
-                        return (
-                            <Box
-                                key={idx}
-                                sx={{
-                                    bgcolor: CustomColorScheme['white'],
-                                    color: CustomColorScheme['text'],
-                                    padding: 0.5,
-                                    fontSize: 16,
-                                    margin: 0,
-                                    borderTop: 2,
-                                    borderColor: CustomColorScheme['tan']
-                                }}
-                            >
-                                {instruction}
-                            </Box>
-                        )
-                    })}
+                    <Title id='id-x-9' title={content.title} />
+                    {
+                        content.instructions.split('\n').map((instruction, idx) => {
+                            return (
+                                <Box
+                                    id={'id-x-10-' + idx}
+                                    key={idx}
+                                    sx={{
+                                        bgcolor: CustomColorScheme['test'],
+                                        color: CustomColorScheme['white'],
+                                        padding: 0.5,
+                                        fontSize: 16,
+                                        margin: 0,
+                                        borderTop: 2,
+                                        borderColor: CustomColorScheme['tan']
+                                    }}
+                                >
+                                    {instruction}
+                                </Box>
+                            )
+                        })}
                 </TabPanel>
-            </Paper >
+            </Paper>
         </>
     )
 
