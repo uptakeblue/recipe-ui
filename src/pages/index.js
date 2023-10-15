@@ -7,8 +7,9 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 // pages
-import Home from './home';
-import Recipe from './recipe';
+import Home from './Home';
+import Recipe from './Recipe';
+import RecipePrint from './RecipePrint';
 
 // custom components
 import { BodyColor } from '../components/CustomTheme';
@@ -56,10 +57,15 @@ export default function Index(props) {
               getRecipeByRoute={getRecipeByRoute}
             />
           }
-
-        >
-
-        </Route>
+        />
+        <Route
+          exact path='/recipeprint'
+          element={
+            <RecipePrint
+              recipeMap={recipeMap}
+            />
+          }
+        />
       </Routes>
     </LocalizationProvider>
   );

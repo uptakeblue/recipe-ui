@@ -3,17 +3,21 @@ import '../App.css';
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Parser } from "html-to-react";
+import { Helmet, HelmetProvider } from "react-helmet-async";
 
 // material ui
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
+import Tooltip from '@mui/material/Tooltip';
 import Container from '@mui/material/Container';
 import Paper from '@mui/material/Paper';
 
 // icons
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import PrintIcon from '@mui/icons-material/Print';
 
 // components
 import { CustomColorScheme } from '../components/CustomTheme';
@@ -49,6 +53,7 @@ export default function Recipe(props) {
     } = props;
 
     const [tabValue, setTabValue] = useState(0);
+
     // useEffect ///////////////
 
     useEffect(() => {
@@ -71,7 +76,10 @@ export default function Recipe(props) {
     // render //////////////////
 
     return recipeMap && (
-        <>
+        <HelmetProvider>
+            <Helmet>
+                <title>{recipeMap && recipeMap.title}</title>
+            </Helmet>
             <Appbar id='id-1' />
             <Container
                 id='1d-2'
@@ -91,23 +99,34 @@ export default function Recipe(props) {
                         display='flex'
                         flexGrow={1}
                     />
-                    <Button
-                        id='id-5'
-                        variant='outlined'
-                        sx={{
-                            '&.MuiButton-outlined': {
-                                color: CustomColorScheme['mediumBrown'],
-                                borderColor: CustomColorScheme['mediumBrown'],
-                            },
-                            '&.MuiButton-outlined:hover': {
-                                color: CustomColorScheme['tan'],
-                                borderColor: CustomColorScheme['tan'],
-                            },
-                        }}
-                        onClick={() => {
-                            navigate('/')
-                        }}
-                    >Return</Button>
+                    <Tooltip title='Navigate to Printer Page'>
+                        <IconButton
+                            onClick={() => {
+                                navigate('/recipeprint')
+                            }}
+                            sx={{
+                                ':hover': {
+                                    color: 'white',
+                                },
+                            }}
+                        >
+                            <PrintIcon />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title='Return'>
+                        <IconButton
+                            onClick={() => {
+                                navigate('/')
+                            }}
+                            sx={{
+                                ':hover': {
+                                    color: 'white',
+                                },
+                            }}
+                        >
+                            <ArrowBackIosNewIcon />
+                        </IconButton>
+                    </Tooltip>
                 </Stack>
                 <Paper
                     id='id-6'
@@ -261,6 +280,6 @@ export default function Recipe(props) {
                 </Paper>
             </Container >
             <Copywrite />
-        </>
+        </HelmetProvider>
     )
 }

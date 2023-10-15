@@ -1,6 +1,7 @@
 // general
 import '../App.css';
-import React, { useState } from 'react';
+import React from 'react';
+import { Helmet, HelmetProvider } from "react-helmet-async";
 
 // material ui
 import Stack from '@mui/material/Stack';
@@ -38,8 +39,6 @@ export default function Home(props) {
   } = props;
 
   // constants ///////////////////
-
-  // const [transmittedKeyword, setTransmittedKeyword] = useState('');
 
   const countPerPage = 12;
 
@@ -81,7 +80,7 @@ export default function Home(props) {
   // components //////////////////
   const PageTitle = () => {
     let title = transmittedKeyword
-      ? `Search Results for "${transmittedKeyword}" (${recipeSearchResults.recipes.length})`
+      ? `Search Results for "${transmittedKeyword}"` + (recipeSearchResults ? ` (${recipeSearchResults.recipes.length})` : "")
       : (recipeSearchResults ? `All Recipes (${recipeSearchResults.recipes.length})` : 'All Recipes')
 
     return (
@@ -99,7 +98,10 @@ export default function Home(props) {
   // render //////////////////////
 
   return (
-    <>
+    <HelmetProvider>
+      <Helmet>
+        <title>Michael's Recipes</title>
+      </Helmet>
       <Appbar />
       <Container
         maxWidth='false'
@@ -190,6 +192,6 @@ export default function Home(props) {
         </Box>
       </Container>
       <Copywrite />
-    </>
+    </HelmetProvider>
   );
 }
