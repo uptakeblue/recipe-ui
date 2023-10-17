@@ -60,6 +60,7 @@ export default function Recipe(props) {
 
     useEffect(() => {
         getRecipeByRoute(urltitle);
+        navigate('/recipe/' + urltitle)
     }, []);
 
     // constants ///////////////

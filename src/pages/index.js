@@ -1,6 +1,6 @@
 // general
 import '../App.css';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 // material ui
@@ -57,6 +57,16 @@ export default function Index(props) {
               getRecipeByRoute={getRecipeByRoute}
             />
           }
+        />
+        <Route
+          path='/detail/:urltitle'
+          element={
+            <Recipe
+              recipeMap={recipeMap}
+              getRecipeByRoute={getRecipeByRoute}
+            />
+          }
+        // element={<Navigate to='/recipe/:urltitle' />}
         />
         <Route
           exact path='/recipeprint'
