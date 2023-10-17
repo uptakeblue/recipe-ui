@@ -1,24 +1,25 @@
 export const CustomColorScheme = {
-  body: '#32a852', // green
   appbar: '#3b3b06', // darkBrown
+  body: '#32a852', // green
 
-  mediumBrown: '#c7c396', // mediumBrown
-  tan: '#d9d9b0',
-  lightTan: '#ebead8', // offwhite
-  offwhite: '#f5f4e4', // offwhiteLight
-  text: '#565603',
-  darkestBrown: '#565603',
-  darkGreenBrown: '#3b3b06',
-  white: 'white',
-  green: "#32a852",
-  darkBrown: '#999966',
   brightorange: '#fcba03',
-  darkRed: '#a60208',
-  yellow: '#f0f562',
-  lightYellow: '#f9ff8c',
-  rose: '#ff75b1',
   cyan: '#3df0f2',
-  test: '#777',
+  darkBrown: '#999966',
+  darkGreen: '#538a63',
+  darkGreenBrown: '#3b3b06',
+  darkRed: '#a60208',
+  darkestBrown: '#565603',
+  gray: '#777',
+  green: "#32a852",
+  lightTan: '#ebead8',
+  lightYellow: '#f9ff8c',
+  mediumBrown: '#c7c396',
+  offwhite: '#f5f4e4',
+  rose: '#ff75b1',
+  tan: '#d9d9b0',
+  text: '#565603',
+  white: 'white',
+  yellow: '#f0f562',
 };
 
 export const BodyColor = CustomColorScheme['body'];

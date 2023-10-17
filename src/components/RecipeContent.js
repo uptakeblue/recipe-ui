@@ -1,5 +1,6 @@
 // general
 import '../App.css';
+import { useMediaQuery } from 'react-responsive'
 
 // material ui
 import Box from '@mui/material/Box';
@@ -7,7 +8,6 @@ import Typography from '@mui/material/Typography';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Paper from '@mui/material/Paper';
-import { ThemeProvider, createTheme } from "@mui/material/styles";
 
 // components
 import { CustomColorScheme } from '../components/CustomTheme';
@@ -35,7 +35,13 @@ const TabPanel = (props) => {
 ///////////////
 
 export default function RecipeContent(props) {
-    const { content, tabValue, setTabValue, contentIdx } = props;
+    const {
+        content,
+        tabValue,
+        setTabValue,
+        contentIdx
+    } = props;
+    const isMobile = useMediaQuery({ query: '(max-width: 1224px)' })
 
     const Title = (props) => {
         const { title } = props;
@@ -131,7 +137,7 @@ export default function RecipeContent(props) {
                                     id={'id-x-10-' + idx}
                                     key={idx}
                                     sx={{
-                                        bgcolor: CustomColorScheme['test'],
+                                        bgcolor: CustomColorScheme['darkGreen'],
                                         color: CustomColorScheme['white'],
                                         padding: 0.5,
                                         fontSize: 16,

@@ -3,6 +3,7 @@ import '../App.css';
 import React from 'react';
 import { Parser } from "html-to-react";
 import { useNavigate } from 'react-router-dom';
+import { useMediaQuery } from 'react-responsive'
 
 // material ui
 import Grid from '@mui/material/Grid';
@@ -59,25 +60,27 @@ export default function RecipeCard(props) {
     const { recipe } = props;
 
     const navigate = useNavigate();
+    const isMobile = useMediaQuery({ query: '(max-width: 1224px)' })
+    const isLandscape = useMediaQuery({ query: '(orientation: landscape)' })
 
     let imagefile = recipe.imageFile
-        ? `url("${process.env.PUBLIC_URL + "/images/" + recipe.imageFile}")`
+        ? `url("${process.env.PUBLIC_URL + (isMobile ? "/imagesthumb/" : "/images/") + recipe.imageFile}")`
         : `url("${process.env.PUBLIC_URL + "/orange-panel.png"}")`
     return (
         <Grid item key={recipe.recipeId} >
             <Paper
                 sx={{
-                    height: 239,
-                    width: 276,
+                    height: isMobile ? 104 : 239,
+                    width: isMobile ? (isLandscape ? 350 : 360) : 276,
                     display: 'flex',
                     justifyContent: 'end',
                     alignItems: 'end',
                     background: imagefile,
-                    backgroundSize: 276,
+                    backgroundSize: isMobile ? 'auto 105' : 276,
                     backgroundRepeat: "no-repeat",
                     position: 'relative',
                     '&.MuiPaper-root': {
-                        borderRadius: 5,
+                        borderRadius: isMobile ? 3 : 5,
                     }
                 }}
                 onClick={() => navigate(`/recipe/${recipe.urlRoute}`)}
@@ -102,9 +105,10 @@ export default function RecipeCard(props) {
                     overflow='hidden'
                     sx={{
                         '&.MuiBox-root': {
-                            borderRadius: 5,
+                            borderRadius: isMobile ? 3 : 5,
                             borderTopLeftRadius: 0,
-                            borderTopRightRadius: 0,
+                            borderTopRightRadius: isMobile ? 12 : 0,
+                            borderBottomLeftRadius: isMobile ? 0 : 20,
                         }
                     }}
                     onClick={(e) => e.stopPropagation()}

@@ -2,6 +2,7 @@
 import '../App.css';
 import React from 'react';
 import { Helmet, HelmetProvider } from "react-helmet-async";
+import { useMediaQuery } from 'react-responsive'
 
 // material ui
 import Stack from '@mui/material/Stack';
@@ -41,6 +42,7 @@ export default function Home(props) {
   // constants ///////////////////
 
   const countPerPage = 12;
+  const isMobile = useMediaQuery({ query: '(max-width: 1224px)' })
 
   const pageCount = recipeSearchResults
     ? Math.ceil(recipeSearchResults.recipes.length / countPerPage)
@@ -86,9 +88,8 @@ export default function Home(props) {
     return (
       <Typography
         variant='h5'
-        display='flex'
-        alignItems='center'
         color={CustomColorScheme['tan']}
+        textAlign='center'
       >
         {title}
       </Typography>);
@@ -110,14 +111,23 @@ export default function Home(props) {
         }}
       >
         <Stack
-          direction="row"
+          direction={isMobile ? 'column' : 'row'}
           paddingY={1}
         >
-          <PageTitle />
           <Box
             display='flex'
-            flexGrow={1}
-          />
+            alignItems='center'
+            justifyContent='center'
+            marginLeft={isMobile ? 0 : 2}
+          >
+            <PageTitle />
+          </Box>
+          {!isMobile && (
+            <Box
+              display='flex'
+              flexGrow={1}
+            />)
+          }
           <TextField
             size='small'
             variant="filled"

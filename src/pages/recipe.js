@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Parser } from "html-to-react";
 import { Helmet, HelmetProvider } from "react-helmet-async";
+import { useMediaQuery } from 'react-responsive'
 
 // material ui
 import Stack from '@mui/material/Stack';
@@ -53,6 +54,7 @@ export default function Recipe(props) {
     } = props;
 
     const [tabValue, setTabValue] = useState(0);
+    const isMobile = useMediaQuery({ query: '(max-width: 1224px)' })
 
     // useEffect ///////////////
 
@@ -84,10 +86,12 @@ export default function Recipe(props) {
             <Container
                 id='1d-2'
                 maxWidth='false'
+                disableGutters={isMobile}
                 sx={{
                     maxWidth: 1050,
                 }}
             >
+                {/* tool bar */}
                 <Stack
                     id='1d-3'
                     direction="row"
@@ -128,11 +132,13 @@ export default function Recipe(props) {
                         </IconButton>
                     </Tooltip>
                 </Stack>
+
+                {/* recipe surface */}
                 <Paper
                     id='id-6'
                     elevation={0}
                     sx={{
-                        padding: 4,
+                        padding: isMobile ? 1 : 4,
                         margin: 1,
                         '&.MuiPaper-root': {
                             borderRadius: 5,
@@ -146,6 +152,7 @@ export default function Recipe(props) {
                         width="100%"
                         spacing={2}
                     >
+                        {/* title and favorite icon */}
                         <Stack
                             id='id-8'
                             direction='row'
@@ -183,79 +190,128 @@ export default function Recipe(props) {
 
                             </Box>
                         </Stack>
-                        <Stack
-                            id='id-14'
-                            direction='row'
-                            spacing={4}
-                        >
-                            <Box
-                                id='id-15'
-                                width='100%'
-                                bgcolor='white'
-                                borderRadius={5}
-                                sx={{
-                                    '&.MuiBox-root a': {
-                                        color: CustomColorScheme['text'],
-                                    },
-                                }}
 
-                            >
-                                <Stack
-                                    id='id-16'
-                                    direction='row'
+                        {/* recipe image, description & notes */}
+                        {isMobile
+                            ?
+                            <>
+                                {/* mobile  */}
+                                {recipeMap.imageFile &&
+                                    (
+                                        <img
+                                            id='id-17'
+                                            src={imagefile}
+                                            width='100%'
+                                            height='auto'
+                                            style={{
+                                                borderRadius: 10,
+                                            }}
+                                        />
+                                    )
+                                }
+                                <Box
+                                    sx={{
+                                        '&.MuiBox-root a': {
+                                            color: CustomColorScheme['text'],
+                                        },
+                                    }}
                                 >
-                                    {recipeMap.imageFile &&
-                                        (
-                                            <img
-                                                id='id-17'
-                                                src={imagefile}
-                                                width={450}
-                                                height='auto'
-                                                style={{
-                                                    borderTopLeftRadius: 20,
-                                                    borderBottomLeftRadius: 20,
-                                                    marginRight: 10,
+                                    <ParsedText id='id-20' rawText={recipeMap.description} />
+                                    {recipeMap.note && (
+                                        <>
+                                            <br /><b>Note:</b>
+                                            <ParsedText
+                                                id='id-23'
+                                                rawText={recipeMap.note}
+                                                sx={{
+                                                    marginTop: 0,
+                                                    color: CustomColorScheme['text']
                                                 }}
                                             />
-                                        )
-                                    }
+                                        </>
+                                    )}
+
+                                </Box>
+
+                            </>
+                            :
+                            // desktop
+                            <Stack
+                                id='id-14'
+                                direction='row'
+                                spacing={4}
+                            >
+                                <Box
+                                    id='id-15'
+                                    width='100%'
+                                    bgcolor='white'
+                                    borderRadius={5}
+                                    sx={{
+                                        '&.MuiBox-root a': {
+                                            color: CustomColorScheme['text'],
+                                        },
+                                    }}
+
+                                >
                                     <Stack
-                                        id='id-18'
-                                        direction='column'
-                                        spacing={0}
+                                        id='id-16'
+                                        direction='row'
                                     >
-                                        <Box
-                                            id='id-19'
-                                            padding={1}
-                                        >
-                                            <ParsedText id='id-20' rawText={recipeMap.description} />
-                                        </Box>
-                                        {recipeMap.note && (
-                                            <Box id='id-21' padding={1}>
-                                                <Typography
-                                                    id='id-22'
-                                                    variant='body1'
-                                                    component='div'
-                                                    marginTop={1}
-                                                    fontSize={14}
-                                                    fontWeight='bold'
-                                                    color={CustomColorScheme['text']}
-                                                >
-                                                    Note:
-                                                </Typography>
-                                                <ParsedText
-                                                    id='id-23'
-                                                    rawText={recipeMap.note}
-                                                    sx={{
-                                                        color: CustomColorScheme['text']
+                                        {recipeMap.imageFile &&
+                                            (
+                                                <img
+                                                    id='id-17'
+                                                    src={imagefile}
+                                                    width={450}
+                                                    height='auto'
+                                                    style={{
+                                                        borderTopLeftRadius: 20,
+                                                        borderBottomLeftRadius: 20,
+                                                        marginRight: 10,
                                                     }}
                                                 />
+                                            )
+                                        }
+                                        <Stack
+                                            id='id-18'
+                                            direction='column'
+                                            spacing={0}
+                                        >
+                                            <Box
+                                                id='id-19'
+                                                padding={1}
+                                            >
+                                                <ParsedText id='id-20' rawText={recipeMap.description} />
                                             </Box>
-                                        )}
+                                            {recipeMap.note && (
+                                                <Box id='id-21' padding={1}>
+                                                    <Typography
+                                                        id='id-22'
+                                                        variant='body1'
+                                                        component='div'
+                                                        marginTop={1}
+                                                        fontSize={14}
+                                                        fontWeight='bold'
+                                                        color={CustomColorScheme['text']}
+                                                    >
+                                                        Note:
+                                                    </Typography>
+                                                    <ParsedText
+                                                        id='id-23'
+                                                        rawText={recipeMap.note}
+                                                        sx={{
+                                                            color: CustomColorScheme['text']
+                                                        }}
+                                                    />
+                                                </Box>
+                                            )}
+                                        </Stack>
                                     </Stack>
-                                </Stack>
-                            </Box>
-                        </Stack>
+                                </Box>
+                            </Stack>
+                        }
+
+                        {/* recipe content */}
                         <Stack
                             spacing={3}
                         >

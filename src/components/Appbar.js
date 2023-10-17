@@ -1,25 +1,21 @@
 // general
 import * as React from 'react';
+import { useMediaQuery } from 'react-responsive'
 
 // material ui
 import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-
-// icons
-import MenuIcon from '@mui/icons-material/Menu';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 
 // components
 import { CustomColorScheme } from './CustomTheme';
 
 //////////////////////////////
 
-export default function CalendarAppBar() {
+export default function RecipeAppBar() {
+  const isMobile = useMediaQuery({ query: '(max-width: 1224px)' })
+
   return (
     <AppBar
       position='static'
@@ -41,7 +37,8 @@ export default function CalendarAppBar() {
       >
         <Stack
           direction="row"
-          spacing={1}>
+          spacing={1}
+          marginLeft={isMobile ? 2 : 0}>
           <img src='../../../bell-pepper-red.png'
             height={24}
             width={24}
