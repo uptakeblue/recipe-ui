@@ -1,6 +1,6 @@
 // general
 import '../App.css';
-import React, { useRef } from 'react';
+import React, { useRef, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Parser } from "html-to-react";
 import { Helmet, HelmetProvider } from "react-helmet-async";
@@ -22,6 +22,7 @@ import PrintIcon from '@mui/icons-material/Print';
 // components
 import Appbar from '../components/Appbar';
 import Copywrite from '../components/Copywrite';
+import { RecipePrintContext } from '../components/AllContext';
 
 const ParsedText = (props) => {
     const { rawText } = props;
@@ -46,9 +47,10 @@ const ParsedText = (props) => {
 
 
 export default function RecipePrint(props) {
+
     const {
         recipeMap,
-    } = props;
+    } = useContext(RecipePrintContext)
 
     // constants //////////////
 

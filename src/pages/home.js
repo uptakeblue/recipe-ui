@@ -1,6 +1,6 @@
 // general
 import '../App.css';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import { useMediaQuery } from 'react-responsive'
 
@@ -23,6 +23,7 @@ import { CustomColorScheme } from '../components/CustomTheme';
 import Appbar from '../components/Appbar';
 import Copywrite from '../components/Copywrite';
 import RecipeCard from '../components/RecipeCard';
+import { HomeContext } from '../components/AllContext';
 
 
 //////////////////////////////////
@@ -37,12 +38,12 @@ export default function Home(props) {
     setPage,
     transmittedKeyword,
     setTransmittedKeyword,
-  } = props;
+  } = useContext(HomeContext);
 
   // constants ///////////////////
 
   const countPerPage = 12;
-  const isMobile = useMediaQuery({ query: '(max-width: 1224px)' })
+  const isMobile = useMediaQuery({ query: '(max-width: 750px)' })
 
   const pageCount = recipeSearchResults
     ? Math.ceil(recipeSearchResults.recipes.length / countPerPage)
@@ -107,7 +108,7 @@ export default function Home(props) {
       <Container
         maxWidth='false'
         sx={{
-          maxWidth: 900,
+          maxWidth: isMobile ? 780 : 900,
         }}
       >
         <Stack
@@ -118,7 +119,6 @@ export default function Home(props) {
             display='flex'
             alignItems='center'
             justifyContent='center'
-            marginLeft={isMobile ? 0 : 2}
           >
             <PageTitle />
           </Box>

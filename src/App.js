@@ -3,6 +3,12 @@ import './App.css';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { CookiesProvider, useCookies } from "react-cookie";
+import {
+  RecipeContext,
+  HomeContext,
+  AppbarContext,
+  RecipePrintContext,
+} from './components/AllContext'
 
 // material
 import dayjs from 'dayjs';
@@ -13,6 +19,7 @@ import Index from './pages/Index';
 ///////////////////////
 
 export default function App() {
+
   // constants ////////////
 
   const [recipeSearchResults, setRecipeSearchResults] = useState();
@@ -20,7 +27,36 @@ export default function App() {
   const [localKeyword, setLocalKeyword] = useState('');
   const [page, setPage] = useState(1);
   const [transmittedKeyword, setTransmittedKeyword] = useState('');
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
   const [cookie, setCookie] = useCookies(["keyword"]);
+
+  // context //////////////
+
+  const appbarContext = {
+    isAuthenticated: isAuthenticated,
+    setIsAuthenticated: setIsAuthenticated,
+  };
+
+  const homeContext = {
+    recipeSearchResults: recipeSearchResults,
+    getRecipeSearchResults: getRecipeSearchResults,
+    localKeyword: localKeyword,
+    setLocalKeyword: setLocalKeyword,
+    page: page,
+    setPage: setPage,
+    transmittedKeyword: transmittedKeyword,
+    setTransmittedKeyword: setTransmittedKeyword,
+  };
+
+  const recipeContext = {
+    recipeMap: recipeMap,
+    getRecipeByRoute: getRecipeByRoute,
+  };
+
+  const recipePrintContext = {
+    recipeMap: recipeMap,
+  }
 
   // useEffect ////////////
 
@@ -81,17 +117,14 @@ export default function App() {
   }
 
   return (
-    <Index
-      recipeSearchResults={recipeSearchResults}
-      getRecipeSearchResults={getRecipeSearchResults}
-      recipeMap={recipeMap}
-      getRecipeByRoute={getRecipeByRoute}
-      localKeyword={localKeyword}
-      setLocalKeyword={setLocalKeyword}
-      page={page}
-      setPage={setPage}
-      transmittedKeyword={transmittedKeyword}
-      setTransmittedKeyword={setTransmittedKeyword}
-    />
+    <AppbarContext.Provider value={appbarContext} >
+      <HomeContext.Provider value={homeContext} >
+        <RecipeContext.Provider value={recipeContext}>
+          <RecipePrintContext.Provider value={recipePrintContext}>
+            <Index />
+          </RecipePrintContext.Provider>
+        </RecipeContext.Provider>
+      </HomeContext.Provider>
+    </AppbarContext.Provider>
   );
 }

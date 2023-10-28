@@ -1,6 +1,6 @@
 // general
 import '../App.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Parser } from "html-to-react";
 import { Helmet, HelmetProvider } from "react-helmet-async";
@@ -25,6 +25,7 @@ import { CustomColorScheme } from '../components/CustomTheme';
 import Appbar from '../components/Appbar';
 import Copywrite from '../components/Copywrite';
 import RecipeContent from '../components/RecipeContent';
+import { RecipeContext } from '../components/AllContext';
 
 const ParsedText = (props) => {
     const { rawText } = props;
@@ -48,13 +49,14 @@ const ParsedText = (props) => {
 ////////////////////////
 
 export default function Recipe(props) {
+
     const {
         recipeMap,
-        getRecipeByRoute
-    } = props;
+        getRecipeByRoute,
+    } = useContext(RecipeContext);
 
     const [tabValue, setTabValue] = useState(0);
-    const isMobile = useMediaQuery({ query: '(max-width: 1224px)' })
+    const isMobile = useMediaQuery({ query: '(max-width: 750px)' })
 
     // useEffect ///////////////
 
@@ -83,13 +85,13 @@ export default function Recipe(props) {
             <Helmet>
                 <title>{recipeMap && recipeMap.title}</title>
             </Helmet>
-            <Appbar id='id-1' />
+            <Appbar />
             <Container
                 id='1d-2'
                 maxWidth='false'
                 disableGutters={isMobile}
                 sx={{
-                    maxWidth: 1050,
+                    maxWidth: 900,
                 }}
             >
                 {/* tool bar */}
@@ -263,7 +265,7 @@ export default function Recipe(props) {
                                                 <img
                                                     id='id-17'
                                                     src={imagefile}
-                                                    width={450}
+                                                    width='50%'
                                                     height='auto'
                                                     style={{
                                                         borderTopLeftRadius: 20,

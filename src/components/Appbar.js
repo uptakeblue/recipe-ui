@@ -1,19 +1,31 @@
 // general
-import * as React from 'react';
+import { useContext } from 'react';
 import { useMediaQuery } from 'react-responsive'
 
 // material ui
 import AppBar from '@mui/material/AppBar';
 import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
+import IconButton from '@mui/material/IconButton';
 
-// components
+// icons
+import LoginIcon from '@mui/icons-material/Login';
+import LogoutIcon from '@mui/icons-material/Logout';
+
 import { CustomColorScheme } from './CustomTheme';
+import { AppbarContext } from './AllContext';
 
 //////////////////////////////
 
-export default function RecipeAppBar() {
+export default function RecipeAppBar(props) {
+
+  const {
+    isAuthenticated,
+    setIsAuthenticated,
+  } = useContext(AppbarContext);
+
   const isMobile = useMediaQuery({ query: '(max-width: 1224px)' })
 
   return (
@@ -38,7 +50,10 @@ export default function RecipeAppBar() {
         <Stack
           direction="row"
           spacing={1}
-          marginLeft={isMobile ? 2 : 0}>
+          width='100%'
+          alignItems='center'
+          marginLeft={isMobile ? 2 : 0}
+        >
           <img src='../../../bell-pepper-red.png'
             height={24}
             width={24}
@@ -56,7 +71,31 @@ export default function RecipeAppBar() {
             variant='body1'
             component='div'
             fontSize={18}
-          >Michael's Recipe Collection</Typography>
+          >
+            Michael's Recipe Collection
+          </Typography>
+          <Box
+            display='flex'
+            flexGrow={1}
+            height={30}
+          />
+          <IconButton
+            onClick={() => setIsAuthenticated(!isAuthenticated)}
+          >
+            {
+              isAuthenticated
+                ? <LogoutIcon
+                  sx={{
+                    color: 'white'
+                  }}
+                />
+                : <LoginIcon
+                  sx={{
+                    color: 'white'
+                  }}
+                />
+            }
+          </IconButton>
         </Stack>
       </Container>
     </AppBar>

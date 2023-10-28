@@ -17,63 +17,34 @@ import { BodyColor } from '../components/CustomTheme';
 /////////////////////
 
 export default function Index(props) {
-  const {
-    recipeSearchResults,
-    getRecipeSearchResults,
-    recipeMap,
-    getRecipeByRoute,
-    localKeyword,
-    setLocalKeyword,
-    page,
-    setPage,
-    transmittedKeyword,
-    setTransmittedKeyword,
-  } = props;
 
   document.body.style.backgroundColor = BodyColor;
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Routes>
         <Route
           path='/'
           element={
-            <Home
-              recipeSearchResults={recipeSearchResults}
-              getRecipeSearchResults={getRecipeSearchResults}
-              localKeyword={localKeyword}
-              setLocalKeyword={setLocalKeyword}
-              page={page}
-              setPage={setPage}
-              transmittedKeyword={transmittedKeyword}
-              setTransmittedKeyword={setTransmittedKeyword}
-            />
+            <Home />
           }
         />
         <Route
           path='/recipe/:urltitle'
           element={
-            <Recipe
-              recipeMap={recipeMap}
-              getRecipeByRoute={getRecipeByRoute}
-            />
+            <Recipe />
           }
         />
         <Route
           path='/detail/:urltitle'
           element={
-            <Recipe
-              recipeMap={recipeMap}
-              getRecipeByRoute={getRecipeByRoute}
-            />
+            <Recipe />
           }
-        // element={<Navigate to='/recipe/:urltitle' />}
         />
         <Route
           exact path='/recipeprint'
           element={
-            <RecipePrint
-              recipeMap={recipeMap}
-            />
+            <RecipePrint />
           }
         />
       </Routes>
