@@ -7,14 +7,13 @@ import {
   RecipeContext,
   HomeContext,
   AppbarContext,
-  RecipePrintContext,
 } from './components/AllContext'
 
 // material
 import dayjs from 'dayjs';
 
 // components
-import Index from './pages/Index';
+import Index from './pages/index';
 
 ///////////////////////
 
@@ -53,10 +52,6 @@ export default function App() {
     recipeMap: recipeMap,
     getRecipeByRoute: getRecipeByRoute,
   };
-
-  const recipePrintContext = {
-    recipeMap: recipeMap,
-  }
 
   // useEffect ////////////
 
@@ -120,9 +115,7 @@ export default function App() {
     <AppbarContext.Provider value={appbarContext} >
       <HomeContext.Provider value={homeContext} >
         <RecipeContext.Provider value={recipeContext}>
-          <RecipePrintContext.Provider value={recipePrintContext}>
-            <Index />
-          </RecipePrintContext.Provider>
+          <Index />
         </RecipeContext.Provider>
       </HomeContext.Provider>
     </AppbarContext.Provider>

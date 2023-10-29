@@ -1,10 +1,11 @@
 // general
 import '../App.css';
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Parser } from "html-to-react";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import { useMediaQuery } from 'react-responsive'
+import { useReactToPrint } from 'react-to-print';
 
 // material ui
 import Stack from '@mui/material/Stack';
@@ -26,6 +27,7 @@ import Appbar from '../components/Appbar';
 import Copywrite from '../components/Copywrite';
 import RecipeContent from '../components/RecipeContent';
 import { RecipeContext } from '../components/AllContext';
+import RecipePrintContent from './recipePrintContent';
 
 const ParsedText = (props) => {
     const { rawText } = props;
@@ -69,6 +71,7 @@ export default function Recipe(props) {
 
     const { urltitle } = useParams();
     const navigate = useNavigate();
+    const componentRef = useRef();
 
     const imagefile = recipeMap && (
         recipeMap.imageFile
@@ -76,6 +79,14 @@ export default function Recipe(props) {
             `${process.env.PUBLIC_URL + "/images/" + recipeMap.imageFile}`
         )
     )
+
+    // event handlers //////////
+
+    const handlePrint = useReactToPrint({
+        content: () => componentRef.current,
+        documentTitle: 'Recipe',
+        onAfterPrint: () => console.log('Printed PDF successfully!'),
+    });
 
 
     // render //////////////////
@@ -108,9 +119,10 @@ export default function Recipe(props) {
                     />
                     <Tooltip title='Navigate to Printer Page'>
                         <IconButton
-                            onClick={() => {
-                                navigate('/recipeprint')
-                            }}
+                            onClick={handlePrint}
+                            // onClick={() => {
+                            //     navigate('/recipeprint')
+                            // }}
                             sx={{
                                 ':hover': {
                                     color: 'white',
@@ -265,7 +277,7 @@ export default function Recipe(props) {
                                                 <img
                                                     id='id-17'
                                                     src={imagefile}
-                                                    width='50%'
+                                                    width={400}
                                                     height='auto'
                                                     style={{
                                                         borderTopLeftRadius: 20,
@@ -339,6 +351,12 @@ export default function Recipe(props) {
                 </Paper>
             </Container >
             <Copywrite />
+            <Box display='none'>
+                <RecipePrintContent
+                    recipeMap={recipeMap}
+                    componentRef={componentRef}
+                />
+            </Box>
         </HelmetProvider>
     )
 }
