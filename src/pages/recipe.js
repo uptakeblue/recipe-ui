@@ -20,6 +20,7 @@ import Paper from '@mui/material/Paper';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import PrintIcon from '@mui/icons-material/Print';
+import EditIcon from '@mui/icons-material/Edit';
 
 // components
 import { CustomColorScheme } from '../components/CustomTheme';
@@ -55,6 +56,8 @@ export default function Recipe(props) {
     const {
         recipeMap,
         getRecipeByRoute,
+        isAuthenticated,
+        setIsAuthenticated,
     } = useContext(RecipeContext);
 
     const [tabValue, setTabValue] = useState(0);
@@ -79,6 +82,8 @@ export default function Recipe(props) {
             `${process.env.PUBLIC_URL + "/images/" + recipeMap.imageFile}`
         )
     )
+
+    const contentLastIdx = recipeMap ? recipeMap.contents.length - 1 : 0;
 
     // event handlers //////////
 
@@ -117,12 +122,9 @@ export default function Recipe(props) {
                         display='flex'
                         flexGrow={1}
                     />
-                    <Tooltip title='Navigate to Printer Page'>
+                    <Tooltip title='Print this recipe!'>
                         <IconButton
                             onClick={handlePrint}
-                            // onClick={() => {
-                            //     navigate('/recipeprint')
-                            // }}
                             sx={{
                                 ':hover': {
                                     color: 'white',
@@ -173,10 +175,11 @@ export default function Recipe(props) {
                             direction='row'
                             width='100%'
                         >
-                            <Box id='id-9' width={50} />
+                            <Box id='id-9' width={100} />
                             <Box
                                 id='id-10'
                                 display='flex'
+                                height={37}
                                 flexGrow={1}
                                 justifyContent='center'
                                 alignItems='center'
@@ -191,16 +194,31 @@ export default function Recipe(props) {
                                     {recipeMap.title}
                                 </Typography>
                             </Box>
-                            <Box id='id-12' width={50}>
+                            <Box
+                                id='id-12'
+                                width={100}
+                                display='flex'
+                                justifyContent='end'
+                                alignItems='center'
+                            >
+                                {
+                                    isAuthenticated &&
+                                    <Tooltip title='Exit yhis recipe'>
+                                        <IconButton>
+                                            <EditIcon fontSize='small' />
+                                        </IconButton>
+                                    </Tooltip>
+                                }
                                 {
                                     recipeMap.isFavorite &&
-                                    <FavoriteIcon
-                                        id='id-13'
-                                        fontSize='large'
-                                        sx={{
-                                            color: CustomColorScheme['darkRed'],
-                                        }}
-                                    />
+                                    <Tooltip title='A favorite!'>
+                                        <FavoriteIcon
+                                            id='id-13'
+                                            sx={{
+                                                color: CustomColorScheme['darkRed'],
+                                            }}
+                                        />
+                                    </Tooltip>
                                 }
 
                             </Box>
@@ -337,9 +355,11 @@ export default function Recipe(props) {
                                             id={'id-2_' + idx}
                                             key={idx}
                                             contentIdx={idx}
+                                            contentLastIdx={recipeMap.contents.length - 1}
                                             content={content}
                                             tabValue={tabValue}
                                             setTabValue={setTabValue}
+                                            isAuthenticated={isAuthenticated}
                                         />
                                     )
                                 })
@@ -357,6 +377,6 @@ export default function Recipe(props) {
                     componentRef={componentRef}
                 />
             </Box>
-        </HelmetProvider>
+        </HelmetProvider >
     )
 }

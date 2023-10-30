@@ -29,6 +29,7 @@ import { HomeContext } from '../components/AllContext';
 //////////////////////////////////
 
 export default function Home(props) {
+
   const {
     recipeSearchResults,
     getRecipeSearchResults,
@@ -38,6 +39,8 @@ export default function Home(props) {
     setPage,
     transmittedKeyword,
     setTransmittedKeyword,
+    isAuthenticated,
+    setIsAuthenticated,
   } = useContext(HomeContext);
 
   // constants ///////////////////
@@ -104,7 +107,7 @@ export default function Home(props) {
       <Helmet>
         <title>Michael's Recipes</title>
       </Helmet>
-      <Appbar />
+      <Appbar showAddIcon />
       <Container
         maxWidth='false'
         sx={{

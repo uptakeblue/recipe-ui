@@ -4,17 +4,27 @@ import { useMediaQuery } from 'react-responsive'
 
 // material ui
 import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
+import Tooltip from '@mui/material/Tooltip';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Paper from '@mui/material/Paper';
 
+// icons
+import EditIcon from '@mui/icons-material/Edit';
+import AddIcon from '@mui/icons-material/Add';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+
 // components
 import { CustomColorScheme } from '../components/CustomTheme';
+import { Add } from '@mui/icons-material';
+import { Stack } from '@mui/material';
 
 
 const TabPanel = (props) => {
-    const { children, value, index, ...other } = props;
+    const { children, value, index, lastIndex, ...other } = props;
 
     return (
         <div
@@ -39,28 +49,73 @@ export default function RecipeContent(props) {
         content,
         tabValue,
         setTabValue,
-        contentIdx
+        contentIdx,
+        contentLastIdx,
+        isAuthenticated
     } = props;
     const isMobile = useMediaQuery({ query: '(max-width: 1224px)' })
 
     const Title = (props) => {
         const { title } = props;
         return (
-            <Typography
-                id='id-x-100'
-                variant='h6'
-                component='div'
-                sx={{
-                    padding: .5,
-                    marginTop: 1,
-                    backgroundColor: CustomColorScheme['mediumBrown'],
-                    fontSize: 16,
-                    color: CustomColorScheme['white'],
-                    fontWeight: 'bold',
-                }}
+            <Stack
+                direction='row'
+                backgroundColor={CustomColorScheme['mediumBrown']}
             >
-                {title}
-            </Typography>
+                <Typography
+                    id='id-x-100'
+                    variant='h6'
+                    component='div'
+                    justifyContent='start'
+                    display='flex'
+                    flexGrow={1}
+                    sx={{
+                        padding: .5,
+                        marginTop: 1,
+                        backgroundColor: CustomColorScheme['mediumBrown'],
+                        fontSize: 16,
+                        color: CustomColorScheme['white'],
+                        fontWeight: 'bold',
+                    }}
+                >
+                    {title}
+                </Typography>
+                {
+                    isAuthenticated &&
+                    <>
+                        <Tooltip title='Move content up'>
+                            <IconButton disabled={contentIdx === 0}>
+                                <KeyboardArrowUpIcon
+                                    sx={{
+                                        color: contentIdx === 0 ? '#a0a0a0' : CustomColorScheme['darkestBrown'],
+                                    }}
+                                />
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title='Move content down'>
+                            <IconButton
+                                disabled={contentIdx === contentLastIdx}
+                            >
+                                <KeyboardArrowDownIcon
+                                    sx={{
+                                        color: contentIdx === contentLastIdx ? '#a0a0a0' : CustomColorScheme['darkestBrown'],
+                                    }}
+                                />
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title='Edit recipe content'>
+                            <IconButton>
+                                <EditIcon
+                                    fontSize='small'
+                                    sx={{
+                                        color: CustomColorScheme['darkestBrown'],
+                                    }}
+                                />
+                            </IconButton>
+                        </Tooltip>
+                    </>
+                }
+            </Stack>
         )
     }
 
@@ -99,6 +154,20 @@ export default function RecipeContent(props) {
                                 label="Instructions"
                                 index={1}
                             />
+                            <Box
+                                display='flex'
+                                flexGrow={1}
+                                justifyContent='end'
+                            >
+                                {
+                                    isAuthenticated &&
+                                    <Tooltip title='Add recipe content'>
+                                        <IconButton>
+                                            <AddIcon />
+                                        </IconButton>
+                                    </Tooltip>
+                                }
+                            </Box>
                         </Tabs>
                     )
                 }

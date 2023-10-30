@@ -46,11 +46,15 @@ export default function App() {
     setPage: setPage,
     transmittedKeyword: transmittedKeyword,
     setTransmittedKeyword: setTransmittedKeyword,
+    isAuthenticated: isAuthenticated,
+    setIsAuthenticated: setIsAuthenticated,
   };
 
   const recipeContext = {
     recipeMap: recipeMap,
     getRecipeByRoute: getRecipeByRoute,
+    isAuthenticated: isAuthenticated,
+    setIsAuthenticated: setIsAuthenticated,
   };
 
   // useEffect ////////////

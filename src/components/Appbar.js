@@ -9,10 +9,12 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
 
 // icons
 import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
+import AddIcon from '@mui/icons-material/Add';
 
 import { CustomColorScheme } from './CustomTheme';
 import { AppbarContext } from './AllContext';
@@ -20,6 +22,9 @@ import { AppbarContext } from './AllContext';
 //////////////////////////////
 
 export default function RecipeAppBar(props) {
+  const {
+    showAddIcon
+  } = props;
 
   const {
     isAuthenticated,
@@ -79,23 +84,37 @@ export default function RecipeAppBar(props) {
             flexGrow={1}
             height={30}
           />
-          <IconButton
-            onClick={() => setIsAuthenticated(!isAuthenticated)}
-          >
-            {
-              isAuthenticated
-                ? <LogoutIcon
-                  sx={{
-                    color: 'white'
-                  }}
+          {
+            showAddIcon &&
+            isAuthenticated &&
+            <Tooltip title='Add a recipe' >
+              <IconButton >
+                <AddIcon sx={{
+                  color: 'white'
+                }}
                 />
-                : <LoginIcon
-                  sx={{
-                    color: 'white'
-                  }}
-                />
-            }
-          </IconButton>
+              </IconButton>
+            </Tooltip>
+          }
+          <Tooltip title={isAuthenticated ? 'Log out' : 'Log in'} >
+            <IconButton
+              onClick={() => setIsAuthenticated(!isAuthenticated)}
+            >
+              {
+                isAuthenticated
+                  ? <LogoutIcon
+                    sx={{
+                      color: 'white'
+                    }}
+                  />
+                  : <LoginIcon
+                    sx={{
+                      color: 'white'
+                    }}
+                  />
+              }
+            </IconButton>
+          </Tooltip>
         </Stack>
       </Container>
     </AppBar>
