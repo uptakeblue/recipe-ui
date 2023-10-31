@@ -29,6 +29,7 @@ import Copywrite from '../components/Copywrite';
 import RecipeContent from '../components/RecipeContent';
 import { RecipeContext } from '../components/AllContext';
 import RecipePrintContent from './recipePrintContent';
+import ContentDialog from '../components/dialogs/ContentDialog';
 
 const ParsedText = (props) => {
     const { rawText } = props;
@@ -58,10 +59,14 @@ export default function Recipe(props) {
         getRecipeByRoute,
         isAuthenticated,
         setIsAuthenticated,
-        updateRecipeContents,
+        updateRecipeContent,
+        updateContent,
     } = useContext(RecipeContext);
 
     const [tabValue, setTabValue] = useState(0);
+    const [contentsDialogOpen, setContentsDialogOpen] = useState(false);
+    const [dialogContent, setDialogContent] = useState();
+
     const isMobile = useMediaQuery({ query: '(max-width: 750px)' })
 
     // useEffect ///////////////
@@ -94,15 +99,24 @@ export default function Recipe(props) {
         onAfterPrint: () => console.log('Printed PDF successfully!'),
     });
 
-    const handleUpdateRecipeContents = (recipeContentObject) => {
-        updateRecipeContents({
+    const handleUpdateRecipeContent = (recipeContentObj) => {
+        updateRecipeContent({
             recipeId: recipeMap.recipeId,
-            contentId: recipeContentObject.contentId,
-            orderId: recipeContentObject.orderId,
-            routeUrl: urltitle
+            contentId: recipeContentObj.contentId,
+            orderId: recipeContentObj.orderId,
+            routeUrl: urltitle,
         })
     }
 
+    const handleUpdateContent = (contentObj) => {
+        updateContent({
+            contentId: contentObj.contentId,
+            ingredients: contentObj.ingredients,
+            instructions: contentObj.instructions,
+            title: contentObj.title,
+            routeUrl: urltitle,
+        })
+    }
 
     // render //////////////////
 
@@ -370,7 +384,11 @@ export default function Recipe(props) {
                                             tabValue={tabValue}
                                             setTabValue={setTabValue}
                                             isAuthenticated={isAuthenticated}
-                                            handleUpdateRecipeContents={handleUpdateRecipeContents}
+                                            handleUpdateRecipeContent={handleUpdateRecipeContent}
+                                            contentsDialogOpen={contentsDialogOpen}
+                                            setContentsDialogOpen={setContentsDialogOpen}
+                                            dialogContent={dialogContent}
+                                            setDialogContent={setDialogContent}
                                         />
                                     )
                                 })
@@ -388,6 +406,11 @@ export default function Recipe(props) {
                     componentRef={componentRef}
                 />
             </Box>
+            <ContentDialog
+                dialogOpen={contentsDialogOpen}
+                setDialogOpen={setContentsDialogOpen}
+                content={dialogContent}
+            />
         </HelmetProvider >
     )
 }

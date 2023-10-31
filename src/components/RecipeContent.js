@@ -52,7 +52,11 @@ export default function RecipeContent(props) {
         contentIdx,
         contentLastIdx,
         isAuthenticated,
-        handleUpdateRecipeContents,
+        handleUpdateRecipeContent,
+        contentsDialogOpen,
+        setContentsDialogOpen,
+        dialogContent,
+        setDialogContent,
     } = props;
 
     // constants /////////////////
@@ -63,12 +67,20 @@ export default function RecipeContent(props) {
     // event handlers ////////////
 
     const handleRecipeContentReorder = (newOrderId) => {
-        handleUpdateRecipeContents({
+        handleUpdateRecipeContent({
             contentId: content.contentId,
             orderId: newOrderId,
         });
     }
 
+    const handleContentUpdate = (contentObj) => {
+
+    }
+
+    const handleDialogOpen = () => {
+        setDialogContent(content)
+        setContentsDialogOpen(true)
+    }
 
     // components ////////////////
 
@@ -125,7 +137,9 @@ export default function RecipeContent(props) {
                             </IconButton>
                         </Tooltip>
                         <Tooltip title='Edit recipe content'>
-                            <IconButton>
+                            <IconButton
+                                onClick={handleDialogOpen}
+                            >
                                 <EditIcon
                                     fontSize='small'
                                     sx={{

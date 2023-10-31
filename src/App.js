@@ -55,7 +55,8 @@ export default function App() {
     getRecipeByRoute: getRecipeByRoute,
     isAuthenticated: isAuthenticated,
     setIsAuthenticated: setIsAuthenticated,
-    updateRecipeContents: updateRecipeContents,
+    updateRecipeContent: updateRecipeContent,
+    updateContent: updateContent
   };
 
   // useEffect ////////////
@@ -70,18 +71,37 @@ export default function App() {
   axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 
   // changes the orderId value of a reciepContent reltionship
-  async function updateRecipeContents(recipecontentObj) {
+  async function updateContent(contentsObj) {
+    let url = `${process.env.REACT_APP_API_BASE_URL}/content/`
+    await axios
+      .put(
+        url,
+        contentsObj,
+      )
+      .then((response) => {
+        getRecipeByRoute(contentsObj.routeUrl)
+      })
+      .catch((error) => {
+        console.log('API updateContent error: ', contentsObj);
+        console.log('API error url: ', url);
+        processError(error);
+      });
+  }
+
+
+  // changes the orderId value of a reciepContent reltionship
+  async function updateRecipeContent(recipecontentsObj) {
     let url = `${process.env.REACT_APP_API_BASE_URL}/recipecontent/`
     await axios
       .put(
         url,
-        recipecontentObj,
+        recipecontentsObj,
       )
       .then((response) => {
-        getRecipeByRoute(recipecontentObj.routeUrl)
+        getRecipeByRoute(recipecontentsObj.routeUrl)
       })
       .catch((error) => {
-        console.log('API updateRecipeContents error: ', recipecontentObj);
+        console.log('API updateRecipeContent error: ', recipecontentsObj);
         console.log('API error url: ', url);
         processError(error);
       });
