@@ -51,9 +51,26 @@ export default function RecipeContent(props) {
         setTabValue,
         contentIdx,
         contentLastIdx,
-        isAuthenticated
+        isAuthenticated,
+        handleUpdateRecipeContents,
     } = props;
+
+    // constants /////////////////
+
     const isMobile = useMediaQuery({ query: '(max-width: 1224px)' })
+
+
+    // event handlers ////////////
+
+    const handleRecipeContentReorder = (newOrderId) => {
+        handleUpdateRecipeContents({
+            contentId: content.contentId,
+            orderId: newOrderId,
+        });
+    }
+
+
+    // components ////////////////
 
     const Title = (props) => {
         const { title } = props;
@@ -84,7 +101,10 @@ export default function RecipeContent(props) {
                     isAuthenticated &&
                     <>
                         <Tooltip title='Move content up'>
-                            <IconButton disabled={contentIdx === 0}>
+                            <IconButton
+                                disabled={contentIdx === 0}
+                                onClick={() => handleRecipeContentReorder(content.orderId - 1)}
+                            >
                                 <KeyboardArrowUpIcon
                                     sx={{
                                         color: contentIdx === 0 ? '#a0a0a0' : CustomColorScheme['darkestBrown'],
@@ -95,6 +115,7 @@ export default function RecipeContent(props) {
                         <Tooltip title='Move content down'>
                             <IconButton
                                 disabled={contentIdx === contentLastIdx}
+                                onClick={() => handleRecipeContentReorder(content.orderId + 1)}
                             >
                                 <KeyboardArrowDownIcon
                                     sx={{
@@ -118,6 +139,9 @@ export default function RecipeContent(props) {
             </Stack>
         )
     }
+
+
+    // renter ////////////////////
 
     return (
         <>

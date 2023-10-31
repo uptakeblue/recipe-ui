@@ -58,6 +58,7 @@ export default function Recipe(props) {
         getRecipeByRoute,
         isAuthenticated,
         setIsAuthenticated,
+        updateRecipeContents,
     } = useContext(RecipeContext);
 
     const [tabValue, setTabValue] = useState(0);
@@ -92,6 +93,15 @@ export default function Recipe(props) {
         documentTitle: 'Recipe',
         onAfterPrint: () => console.log('Printed PDF successfully!'),
     });
+
+    const handleUpdateRecipeContents = (recipeContentObject) => {
+        updateRecipeContents({
+            recipeId: recipeMap.recipeId,
+            contentId: recipeContentObject.contentId,
+            orderId: recipeContentObject.orderId,
+            routeUrl: urltitle
+        })
+    }
 
 
     // render //////////////////
@@ -360,6 +370,7 @@ export default function Recipe(props) {
                                             tabValue={tabValue}
                                             setTabValue={setTabValue}
                                             isAuthenticated={isAuthenticated}
+                                            handleUpdateRecipeContents={handleUpdateRecipeContents}
                                         />
                                     )
                                 })

@@ -55,6 +55,7 @@ export default function App() {
     getRecipeByRoute: getRecipeByRoute,
     isAuthenticated: isAuthenticated,
     setIsAuthenticated: setIsAuthenticated,
+    updateRecipeContents: updateRecipeContents,
   };
 
   // useEffect ////////////
@@ -67,6 +68,24 @@ export default function App() {
   // API //////////////////
 
   axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+
+  // changes the orderId value of a reciepContent reltionship
+  async function updateRecipeContents(recipecontentObj) {
+    let url = `${process.env.REACT_APP_API_BASE_URL}/recipecontent/`
+    await axios
+      .put(
+        url,
+        recipecontentObj,
+      )
+      .then((response) => {
+        getRecipeByRoute(recipecontentObj.routeUrl)
+      })
+      .catch((error) => {
+        console.log('API updateRecipeContents error: ', recipecontentObj);
+        console.log('API error url: ', url);
+        processError(error);
+      });
+  }
 
   async function getRecipeSearchResults(keyword) {
     setCookie("keyword", keyword, { path: "/" })
