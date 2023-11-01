@@ -109,13 +109,15 @@ export default function Recipe(props) {
     }
 
     const handleUpdateContent = (contentObj) => {
-        updateContent({
-            contentId: contentObj.contentId,
-            ingredients: contentObj.ingredients,
-            instructions: contentObj.instructions,
-            title: contentObj.title,
-            routeUrl: urltitle,
-        })
+        contentObj.routeUrl = urltitle;
+        updateContent(contentObj)
+        // updateContent({
+        //     contentId: contentObj.contentId,
+        //     ingredients: contentObj.ingredients,
+        //     instructions: contentObj.instructions,
+        //     title: contentObj.title,
+        //     routeUrl: urltitle,
+        // })
     }
 
     // render //////////////////
@@ -410,6 +412,7 @@ export default function Recipe(props) {
                 dialogOpen={contentsDialogOpen}
                 setDialogOpen={setContentsDialogOpen}
                 content={dialogContent}
+                handleUpdateContent={handleUpdateContent}
             />
         </HelmetProvider >
     )

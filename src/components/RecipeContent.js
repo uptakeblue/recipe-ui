@@ -82,6 +82,7 @@ export default function RecipeContent(props) {
         setContentsDialogOpen(true)
     }
 
+
     // components ////////////////
 
     const Title = (props) => {
@@ -90,6 +91,10 @@ export default function RecipeContent(props) {
             <Stack
                 direction='row'
                 backgroundColor={CustomColorScheme['mediumBrown']}
+                sx={{
+                    borderBottom: 2,
+                    borderColor: CustomColorScheme['tan']
+                }}
             >
                 <Typography
                     id='id-x-100'
@@ -105,6 +110,7 @@ export default function RecipeContent(props) {
                         fontSize: 16,
                         color: CustomColorScheme['white'],
                         fontWeight: 'bold',
+
                     }}
                 >
                     {title}
@@ -224,7 +230,7 @@ export default function RecipeContent(props) {
                                         padding: 0.5,
                                         fontSize: 16,
                                         margin: 0,
-                                        borderTop: 2,
+                                        borderBottom: ingredient.endsWith(":") ? 0 : 2,
                                         borderColor: CustomColorScheme['tan']
                                     }}
                                 >
@@ -249,11 +255,11 @@ export default function RecipeContent(props) {
                                         padding: 0.5,
                                         fontSize: 16,
                                         margin: 0,
-                                        borderTop: 2,
+                                        borderBottom: instruction.endsWith(":") ? 0 : 2,
                                         borderColor: CustomColorScheme['tan']
                                     }}
                                 >
-                                    {instruction}
+                                    {instruction.endsWith(":") ? instruction : instruction}
                                 </Box>
                             )
                         })}
