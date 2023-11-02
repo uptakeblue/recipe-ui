@@ -53,7 +53,7 @@ export default function RecipePrintContent(props) {
     const imagefile = recipeMap && (
         recipeMap.imageFile
         && (
-            `${process.env.PUBLIC_URL + "/images/" + recipeMap.imageFile}`
+            `${process.env.REACT_APP_API_IMAGE_URL + "/" + recipeMap.imageFile}`
         )
     )
 

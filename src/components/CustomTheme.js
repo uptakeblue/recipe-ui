@@ -2,8 +2,12 @@ export const CustomColorScheme = {
   appbar: '#3b3b06', // darkBrown
   body: '#32a852', // green
 
-  brightorange: '#fcba03',
+  amber: '#ffd22b',
+  brightGreen: "#24ff5f",
+  brightOrange: '#fcba03',
+  brightestOrange: '#ffcf4a',
   cyan: '#3df0f2',
+  darkestGreen: '#047823',
   darkBrown: '#999966',
   darkGreen: '#538a63',
   darkGreenBrown: '#3b3b06',

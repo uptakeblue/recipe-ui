@@ -92,7 +92,7 @@ export default function RecipeContent(props) {
                 direction='row'
                 backgroundColor={CustomColorScheme['mediumBrown']}
                 sx={{
-                    borderBottom: 2,
+                    borderBottom: 1,
                     borderColor: CustomColorScheme['tan']
                 }}
             >
@@ -104,7 +104,8 @@ export default function RecipeContent(props) {
                     display='flex'
                     flexGrow={1}
                     sx={{
-                        padding: .5,
+                        paddingX: 1,
+                        paddingY: .5,
                         marginTop: 1,
                         backgroundColor: CustomColorScheme['mediumBrown'],
                         fontSize: 16,
@@ -225,16 +226,27 @@ export default function RecipeContent(props) {
                                     id={'id-x-7-' + idx}
                                     key={idx}
                                     sx={{
-                                        bgcolor: CustomColorScheme['brightorange'],
+                                        bgcolor: CustomColorScheme['brightOrange'],
                                         color: 'black',
-                                        padding: 0.5,
+                                        paddingX: 1,
+                                        paddingY: ingredient.endsWith(":") ? 1.5 : 0.5,
                                         fontSize: 16,
                                         margin: 0,
-                                        borderBottom: ingredient.endsWith(":") ? 0 : 2,
+                                        borderTop: 2,
                                         borderColor: CustomColorScheme['tan']
                                     }}
                                 >
-                                    {ingredient}
+                                    {ingredient.endsWith(":")
+                                        ?
+                                        <Typography
+                                            variant='body1'
+                                            component='div'
+                                            color={CustomColorScheme['amber']}
+                                            paddingTop={1}
+                                        >
+                                            {ingredient.toUpperCase()}
+                                        </Typography>
+                                        : ingredient}
                                 </Box>
                             )
                         })
@@ -252,14 +264,25 @@ export default function RecipeContent(props) {
                                     sx={{
                                         bgcolor: CustomColorScheme['darkGreen'],
                                         color: CustomColorScheme['white'],
-                                        padding: 0.5,
+                                        paddingX: 1,
+                                        paddingY: instruction.endsWith(":") ? 1.5 : 0.5,
                                         fontSize: 16,
                                         margin: 0,
-                                        borderBottom: instruction.endsWith(":") ? 0 : 2,
+                                        borderTop: 2,
                                         borderColor: CustomColorScheme['tan']
                                     }}
                                 >
-                                    {instruction.endsWith(":") ? instruction : instruction}
+                                    {instruction.endsWith(":")
+                                        ?
+                                        <Typography
+                                            variant='body1'
+                                            component='div'
+                                            color={CustomColorScheme['amber']}
+                                            paddingTop={1}
+                                        >
+                                            {instruction.toUpperCase()}
+                                        </Typography>
+                                        : instruction}
                                 </Box>
                             )
                         })}

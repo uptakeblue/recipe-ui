@@ -6,6 +6,7 @@ import { Parser } from "html-to-react";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import { useMediaQuery } from 'react-responsive'
 import { useReactToPrint } from 'react-to-print';
+import { useImageSize, getImageSize } from 'react-image-size';
 
 // material ui
 import Stack from '@mui/material/Stack';
@@ -85,18 +86,18 @@ export default function Recipe(props) {
     const imagefile = recipeMap && (
         recipeMap.imageFile
         && (
-            `${process.env.PUBLIC_URL + "/images/" + recipeMap.imageFile}`
+            `${process.env.REACT_APP_API_IMAGE_URL + "/" + recipeMap.imageFile}`
         )
     )
 
-    const contentLastIdx = recipeMap ? recipeMap.contents.length - 1 : 0;
+    const [imageDimensions] = useImageSize(imagefile);
 
     // event handlers //////////
 
     const handlePrint = useReactToPrint({
         content: () => componentRef.current,
         documentTitle: 'Recipe',
-        onAfterPrint: () => console.log('Printed PDF successfully!'),
+        onAfterPrint: () => console.log('PDF printed successfully'),
     });
 
     const handleUpdateRecipeContent = (recipeContentObj) => {
@@ -111,13 +112,6 @@ export default function Recipe(props) {
     const handleUpdateContent = (contentObj) => {
         contentObj.routeUrl = urltitle;
         updateContent(contentObj)
-        // updateContent({
-        //     contentId: contentObj.contentId,
-        //     ingredients: contentObj.ingredients,
-        //     instructions: contentObj.instructions,
-        //     title: contentObj.title,
-        //     routeUrl: urltitle,
-        // })
     }
 
     // render //////////////////
@@ -258,7 +252,6 @@ export default function Recipe(props) {
                                 {recipeMap.imageFile &&
                                     (
                                         <img
-                                            id='id-17'
                                             src={imagefile}
                                             width='100%'
                                             height='auto'
@@ -275,7 +268,7 @@ export default function Recipe(props) {
                                         },
                                     }}
                                 >
-                                    <ParsedText id='id-20' rawText={recipeMap.description} />
+                                    <ParsedText rawText={recipeMap.description} />
                                     {recipeMap.note && (
                                         <>
                                             <br /><b>Note:</b>
@@ -322,7 +315,8 @@ export default function Recipe(props) {
                                                     id='id-17'
                                                     src={imagefile}
                                                     width={400}
-                                                    height='auto'
+                                                    // height='auto'
+                                                    height={imageDimensions ? 400 / imageDimensions.width * imageDimensions.height : 'auto'}
                                                     style={{
                                                         borderTopLeftRadius: 20,
                                                         borderBottomLeftRadius: 20,
