@@ -64,8 +64,9 @@ export default function RecipeCard(props) {
     const isLandscape = useMediaQuery({ query: '(orientation: landscape)' })
 
     let imagefile = recipe.imageFile
-        ? `url("${process.env.REACT_APP_API_IMAGE_URL + (isMobile ? "/imagesthumbs/" : "/") + recipe.imageFile}")`
+        ? `url("${process.env.REACT_APP_API_IMAGE_URL + (isMobile ? "/thumbnail/" : "/") + recipe.imageFile}")`
         : `url("${process.env.REACT_APP_API_IMAGE_URL + "/orange-panel.png"}")`
+
     return (
         <Grid item key={recipe.recipeId} >
             <Paper
