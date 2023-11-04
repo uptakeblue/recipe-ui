@@ -31,6 +31,7 @@ import RecipeContent from '../components/RecipeContent';
 import { RecipeContext } from '../components/AllContext';
 import RecipePrintContent from './recipePrintContent';
 import ContentDialog from '../components/dialogs/ContentDialog';
+import RecipeDialog from '../components/dialogs/RecipeDialog';
 
 const ParsedText = (props) => {
     const { rawText } = props;
@@ -66,6 +67,7 @@ export default function Recipe(props) {
 
     const [tabValue, setTabValue] = useState(0);
     const [contentsDialogOpen, setContentsDialogOpen] = useState(false);
+    const [recipeDialogOpen, setRecipeDialogOpen] = useState(false);
     const [dialogContent, setDialogContent] = useState();
 
     const isMobile = useMediaQuery({ query: '(max-width: 750px)' })
@@ -223,8 +225,10 @@ export default function Recipe(props) {
                             >
                                 {
                                     isAuthenticated &&
-                                    <Tooltip title='Exit yhis recipe'>
-                                        <IconButton>
+                                    <Tooltip title='Edit this recipe'>
+                                        <IconButton
+                                            onClick={() => setRecipeDialogOpen(true)}
+                                        >
                                             <EditIcon fontSize='small' />
                                         </IconButton>
                                     </Tooltip>
@@ -408,6 +412,12 @@ export default function Recipe(props) {
                 content={dialogContent}
                 handleUpdateContent={handleUpdateContent}
             />
+            <RecipeDialog
+                dialogOpen={recipeDialogOpen}
+                setDialogOpen={setRecipeDialogOpen}
+                recipe={recipeMap}
+            />
+
         </HelmetProvider >
     )
 }
