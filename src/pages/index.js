@@ -29,13 +29,13 @@ export default function Index(props) {
           }
         />
         <Route
-          path='/recipe/:urltitle'
+          path='/recipe/:route'
           element={
             <Recipe />
           }
         />
         <Route
-          path='/detail/:urltitle'
+          path='/detail/:route'
           element={
             <Recipe />
           }

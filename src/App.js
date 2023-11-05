@@ -56,7 +56,8 @@ export default function App() {
     isAuthenticated: isAuthenticated,
     setIsAuthenticated: setIsAuthenticated,
     updateRecipeContent: updateRecipeContent,
-    updateContent: updateContent
+    updateContent: updateContent,
+    updateRecipe: updateRecipe,
   };
 
   // useEffect ////////////
@@ -69,6 +70,33 @@ export default function App() {
   // API //////////////////
 
   axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+
+  // update a recipe, including it's image 
+  async function updateRecipe(formData) {
+    let url = `${process.env.REACT_APP_API_BASE_URL}/image/`
+
+    let data = {};
+    formData.forEach((value, key) => data[key] = value);
+
+    await axios
+      .post(
+        url,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+      ).then((response) => {
+        getRecipeByRoute(data['route']);
+        // getRecipeSearchResults(cookie.keyword);
+      })
+      .catch((error) => {
+        console.log('API updateRecipe error: ', data);
+        console.log('API error url: ', url);
+        processError(error);
+      });
+  }
 
   // changes the orderId value of a reciepContent reltionship
   async function updateContent(contentsObj) {
@@ -130,6 +158,7 @@ export default function App() {
       .get(url)
       .then((response) => {
         setRecipeMap(response.data);
+        getRecipeSearchResults(cookie.keyword);
       })
       .catch((error) => {
         console.log('API getRecipeByRoute error: ', routeUrl);

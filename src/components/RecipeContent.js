@@ -119,29 +119,36 @@ export default function RecipeContent(props) {
                 {
                     isAuthenticated &&
                     <>
-                        <Tooltip title='Move content up'>
-                            <IconButton
-                                disabled={contentIdx === 0}
-                                onClick={() => handleRecipeContentReorder(content.orderId - 1)}
-                            >
-                                <KeyboardArrowUpIcon
-                                    sx={{
-                                        color: contentIdx === 0 ? '#a0a0a0' : CustomColorScheme['darkestBrown'],
-                                    }}
-                                />
-                            </IconButton>
+                        <Tooltip title={contentIdx !== 0 ? 'Move content up' : ''}>
+                            <span>
+                                <IconButton
+                                    disabled={contentIdx === 0}
+                                    onClick={() => handleRecipeContentReorder(content.orderId - 1)}
+                                >
+                                    <KeyboardArrowUpIcon
+                                        sx={{
+                                            color: contentIdx === 0 ? CustomColorScheme['lightGray'] : CustomColorScheme['darkestBrown'],
+                                        }}
+                                    />
+                                </IconButton>
+                            </span>
                         </Tooltip>
-                        <Tooltip title='Move content down'>
-                            <IconButton
-                                disabled={contentIdx === contentLastIdx}
-                                onClick={() => handleRecipeContentReorder(content.orderId + 1)}
-                            >
-                                <KeyboardArrowDownIcon
-                                    sx={{
-                                        color: contentIdx === contentLastIdx ? '#a0a0a0' : CustomColorScheme['darkestBrown'],
-                                    }}
-                                />
-                            </IconButton>
+                        <Tooltip
+                            title={contentIdx !== contentLastIdx ? 'Move content down' : ''}
+
+                        >
+                            <span>
+                                <IconButton
+                                    disabled={contentIdx === contentLastIdx}
+                                    onClick={() => handleRecipeContentReorder(content.orderId + 1)}
+                                >
+                                    <KeyboardArrowDownIcon
+                                        sx={{
+                                            color: contentIdx === contentLastIdx ? CustomColorScheme['lightGray'] : CustomColorScheme['darkestBrown'],
+                                        }}
+                                    />
+                                </IconButton>
+                            </span>
                         </Tooltip>
                         <Tooltip title='Edit recipe content'>
                             <IconButton
@@ -157,7 +164,7 @@ export default function RecipeContent(props) {
                         </Tooltip>
                     </>
                 }
-            </Stack>
+            </Stack >
         )
     }
 
@@ -220,6 +227,7 @@ export default function RecipeContent(props) {
                     {/* INGREDIENTS */}
                     <Title id='id-x-6' title={content.title} />
                     {
+                        content.ingredients &&
                         content.ingredients.split('\n').map((ingredient, idx) => {
                             return (
                                 <Box
@@ -256,6 +264,7 @@ export default function RecipeContent(props) {
                     {/* INSTRUCTIONS */}
                     <Title id='id-x-9' title={content.title} />
                     {
+                        content.instructions &&
                         content.instructions.split('\n').map((instruction, idx) => {
                             return (
                                 <Box

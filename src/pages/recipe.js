@@ -37,12 +37,11 @@ const ParsedText = (props) => {
     const { rawText } = props;
     const htmlParser = new Parser();
 
-    let innerHtml;
     return rawText && (
         <span>
             {
                 rawText.split('\n').map((sentence, idx) => {
-                    innerHtml = htmlParser.parse(sentence);
+                    let innerHtml = htmlParser.parse(sentence);
                     return (
                         <div key={idx}>{innerHtml}</div>
                     )
@@ -63,6 +62,7 @@ export default function Recipe(props) {
         setIsAuthenticated,
         updateRecipeContent,
         updateContent,
+        updateRecipe,
     } = useContext(RecipeContext);
 
     const [tabValue, setTabValue] = useState(0);
@@ -75,24 +75,24 @@ export default function Recipe(props) {
     // useEffect ///////////////
 
     useEffect(() => {
-        getRecipeByRoute(urltitle);
-        navigate('/recipe/' + urltitle)
+        getRecipeByRoute(route);
+        navigate('/recipe/' + route)
     }, []);
 
     // constants ///////////////
 
-    const { urltitle } = useParams();
+    const { route } = useParams();
     const navigate = useNavigate();
     const componentRef = useRef();
 
-    const imagefile = recipeMap && (
+    const imagefileUri = recipeMap && (
         recipeMap.imageFile
         && (
             `${process.env.REACT_APP_API_IMAGE_URL + "/" + recipeMap.imageFile}`
         )
     )
 
-    const [imageDimensions] = useImageSize(imagefile);
+    const [imageDimensions] = useImageSize(imagefileUri);
 
     // event handlers //////////
 
@@ -107,12 +107,12 @@ export default function Recipe(props) {
             recipeId: recipeMap.recipeId,
             contentId: recipeContentObj.contentId,
             orderId: recipeContentObj.orderId,
-            routeUrl: urltitle,
+            routeUrl: route,
         })
     }
 
     const handleUpdateContent = (contentObj) => {
-        contentObj.routeUrl = urltitle;
+        contentObj.routeUrl = route;
         updateContent(contentObj)
     }
 
@@ -256,7 +256,7 @@ export default function Recipe(props) {
                                 {recipeMap.imageFile &&
                                     (
                                         <img
-                                            src={imagefile}
+                                            src={imagefileUri}
                                             width='100%'
                                             height='auto'
                                             style={{
@@ -317,7 +317,7 @@ export default function Recipe(props) {
                                             (
                                                 <img
                                                     id='id-17'
-                                                    src={imagefile}
+                                                    src={imagefileUri}
                                                     width={400}
                                                     // height='auto'
                                                     height={imageDimensions ? 400 / imageDimensions.width * imageDimensions.height : 'auto'}
@@ -373,6 +373,7 @@ export default function Recipe(props) {
                             spacing={3}
                         >
                             {
+                                recipeMap.contents &&
                                 recipeMap.contents.map((content, idx) => {
                                     return (
                                         <RecipeContent
@@ -411,11 +412,13 @@ export default function Recipe(props) {
                 setDialogOpen={setContentsDialogOpen}
                 content={dialogContent}
                 handleUpdateContent={handleUpdateContent}
+                initialTabValue={tabValue}
             />
             <RecipeDialog
                 dialogOpen={recipeDialogOpen}
                 setDialogOpen={setRecipeDialogOpen}
                 recipe={recipeMap}
+                updateRecipe={updateRecipe}
             />
 
         </HelmetProvider >

@@ -58,7 +58,6 @@ const RecipeNote = (props) => {
 
 export default function RecipeCard(props) {
     const { recipe } = props;
-
     const navigate = useNavigate();
     const isMobile = useMediaQuery({ query: '(max-width: 1224px)' })
     const isLandscape = useMediaQuery({ query: '(orientation: landscape)' })
@@ -84,7 +83,7 @@ export default function RecipeCard(props) {
                         borderRadius: isMobile ? 3 : 5,
                     }
                 }}
-                onClick={() => navigate(`/recipe/${recipe.urlRoute}`)}
+                onClick={() => navigate(`/recipe/${recipe.route}`)}
             >
                 {recipe.isFavorite &&
                     <div style={{ position: 'absolute', top: 10, right: 10, zIndex: 1000 }}>
@@ -122,7 +121,7 @@ export default function RecipeCard(props) {
                             fontSize: 16,
                             color: CustomColorScheme['text'],
                         }}
-                        onClick={() => navigate(`/recipe/${recipe.urlRoute}`)}
+                        onClick={() => navigate(`/recipe/${recipe.route}`)}
                     >
                         {recipe.title}
                     </StyledLinkButton>

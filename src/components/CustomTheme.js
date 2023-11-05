@@ -15,6 +15,7 @@ export const CustomColorScheme = {
   darkestBrown: '#565603',
   gray: '#777',
   green: "#32a852",
+  lightGray: "#a0a0a0",
   lightTan: '#ebead8',
   lightYellow: '#f9ff8c',
   mediumBrown: '#c7c396',

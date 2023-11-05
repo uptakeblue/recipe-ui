@@ -28,6 +28,7 @@ const ContentDialog = (props) => {
         setDialogOpen,
         content,
         handleUpdateContent,
+        initialTabValue
     } = props;
 
     // constants////////////////
@@ -98,6 +99,7 @@ const ContentDialog = (props) => {
             setTitle(content.title);
             setIngredients(content.ingredients);
             setInstructions(content.instructions);
+            setTabValue(initialTabValue)
         }
         setIsTitleError(false);
         setIsIngredientsError(false);

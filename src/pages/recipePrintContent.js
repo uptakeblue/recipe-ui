@@ -18,12 +18,11 @@ const ParsedText = (props) => {
     const { rawText } = props;
     const htmlParser = new Parser();
 
-    let innerHtml;
     return rawText && (
         <span>
             {
                 rawText.split('\n').map((sentence, idx) => {
-                    innerHtml = htmlParser.parse(sentence);
+                    let innerHtml = htmlParser.parse(sentence);
                     return (
                         <span key={idx}>{innerHtml}</span>
                     )
@@ -123,6 +122,7 @@ export default function RecipePrintContent(props) {
                     spacing={3}
                 >
                     {
+                        recipeMap.contents &&
                         recipeMap.contents.map((content, cidx) => {
                             return (
                                 <div key={cidx}>
@@ -136,15 +136,17 @@ export default function RecipePrintContent(props) {
                                             paddingLeft: 2,
                                             margin: 0,
                                         }}>
-                                        {content.ingredients.split('\n').map((ingredient, idx) => {
-                                            return ingredient && (
-                                                <li key={idx}
-                                                    style={{
-                                                        margin: 0,
-                                                        paddingY: 0,
-                                                    }}>{ingredient}</li>
-                                            )
-                                        })}
+                                        {
+                                            content.ingredients &&
+                                            content.ingredients.split('\n').map((ingredient, idx) => {
+                                                return ingredient && (
+                                                    <li key={idx}
+                                                        style={{
+                                                            margin: 0,
+                                                            paddingY: 0,
+                                                        }}>{ingredient}</li>
+                                                )
+                                            })}
                                     </Box>
                                     <Box
                                         sx={{
@@ -153,16 +155,18 @@ export default function RecipePrintContent(props) {
                                             marginTop: 2,
                                             borderBottom: 1,
                                         }}>Instructions:</Box>
-                                    {content.instructions.split('\n').map((instruction, idx) => {
-                                        return instruction && (
-                                            <Box key={idx}
-                                                sx={{
-                                                    paddingY: 0.5,
-                                                    borderBottom: 1,
-                                                }}
-                                            >{instruction}</Box>
-                                        )
-                                    })}
+                                    {
+                                        content.instructions &&
+                                        content.instructions.split('\n').map((instruction, idx) => {
+                                            return instruction && (
+                                                <Box key={idx}
+                                                    sx={{
+                                                        paddingY: 0.5,
+                                                        borderBottom: 1,
+                                                    }}
+                                                >{instruction}</Box>
+                                            )
+                                        })}
                                 </div>
                             )
                         })
