@@ -83,7 +83,9 @@ const RecipeDialog = (props) => {
 
     const handleRecipeSave = () => {
         let formData = new FormData();
-        formData.append('file', previewFile);
+        if (previewFile) {
+            formData.append('file', previewFile);
+        }
         formData.append('recipeId', recipeId);
         formData.append('title', title);
         formData.append('description', description);

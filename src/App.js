@@ -73,23 +73,22 @@ export default function App() {
 
   // update a recipe, including it's image 
   async function updateRecipe(formData) {
-    let url = `${process.env.REACT_APP_API_BASE_URL}/image/`
+    let url = `${process.env.REACT_APP_API_BASE_URL}/recipe/`
 
     let data = {};
     formData.forEach((value, key) => data[key] = value);
 
     await axios
-      .post(
+      .put(
         url,
         formData,
         {
           headers: {
-            'Content-Type': 'multipart/form-data'
+            "Content-Type": "multipart/form-data",
           }
         }
       ).then((response) => {
         getRecipeByRoute(data['route']);
-        // getRecipeSearchResults(cookie.keyword);
       })
       .catch((error) => {
         console.log('API updateRecipe error: ', data);
