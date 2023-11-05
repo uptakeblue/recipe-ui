@@ -22,7 +22,9 @@ export default function App() {
   // constants ////////////
 
   const [recipeSearchResults, setRecipeSearchResults] = useState();
+  const [contentTitles, setContentTitles] = useState();
   const [recipeMap, setRecipeMap] = useState();
+  const [selectedContent, setSelectedContent] = useState();
   const [localKeyword, setLocalKeyword] = useState('');
   const [page, setPage] = useState(1);
   const [transmittedKeyword, setTransmittedKeyword] = useState('');
@@ -54,10 +56,13 @@ export default function App() {
     recipeMap: recipeMap,
     getRecipeByRoute: getRecipeByRoute,
     isAuthenticated: isAuthenticated,
-    setIsAuthenticated: setIsAuthenticated,
     updateRecipeContent: updateRecipeContent,
     updateContent: updateContent,
     updateRecipe: updateRecipe,
+    contentTitles: contentTitles,
+    getSelectedContent: getSelectedContent,
+    selectedContent: selectedContent,
+    setSelectedContent: setSelectedContent,
   };
 
   // useEffect ////////////
@@ -70,6 +75,21 @@ export default function App() {
   // API //////////////////
 
   axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+
+  async function getSelectedContent(contentId) {
+    let url = `${process.env.REACT_APP_API_BASE_URL}/content/${contentId}/`
+    await axios
+      .get(url)
+      .then((response) => {
+        setSelectedContent(response.data);
+      })
+      .catch((error) => {
+        console.log('API getContent error: ', contentId);
+        console.log('API error url: ', url);
+        processError(error);
+      });
+  }
+
 
   // update a recipe, including it's image 
   async function updateRecipe(formData) {
@@ -142,7 +162,8 @@ export default function App() {
     await axios
       .get(url)
       .then((response) => {
-        setRecipeSearchResults(response.data);
+        setRecipeSearchResults(response.data.recipes);
+        setContentTitles(response.data.contentTitles);
       })
       .catch((error) => {
         console.log('API getRecipeSearchResults error: ', keyword);

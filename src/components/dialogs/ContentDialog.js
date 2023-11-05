@@ -167,7 +167,7 @@ const ContentDialog = (props) => {
                                 <Tabs
                                     value={tabValue}
                                     onChange={(e, newValue) => setTabValue(newValue)}
-                                    textColor='inherit'
+                                    color='inherit'
                                     sx={{
                                         "& .MuiTabs-indicator": {
                                             bgcolor: CustomColorScheme['text']

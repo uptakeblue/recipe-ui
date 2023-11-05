@@ -31,6 +31,7 @@ import RecipeContent from '../components/RecipeContent';
 import { RecipeContext } from '../components/AllContext';
 import RecipePrintContent from './recipePrintContent';
 import ContentDialog from '../components/dialogs/ContentDialog';
+import ContentSearchDialog from '../components/dialogs/ContentSearchDialog';
 import RecipeDialog from '../components/dialogs/RecipeDialog';
 
 const ParsedText = (props) => {
@@ -59,14 +60,18 @@ export default function Recipe(props) {
         recipeMap,
         getRecipeByRoute,
         isAuthenticated,
-        setIsAuthenticated,
         updateRecipeContent,
         updateContent,
         updateRecipe,
+        contentTitles,
+        getSelectedContent,
+        selectedContent,
+        setSelectedContent,
     } = useContext(RecipeContext);
 
     const [tabValue, setTabValue] = useState(0);
-    const [contentsDialogOpen, setContentsDialogOpen] = useState(false);
+    const [contentDialogOpen, setContentDialogOpen] = useState(false);
+    const [contentSearchDialogOpen, setContentSearchDialogOpen] = useState(false);
     const [recipeDialogOpen, setRecipeDialogOpen] = useState(false);
     const [dialogContent, setDialogContent] = useState();
 
@@ -386,9 +391,8 @@ export default function Recipe(props) {
                                             setTabValue={setTabValue}
                                             isAuthenticated={isAuthenticated}
                                             handleUpdateRecipeContent={handleUpdateRecipeContent}
-                                            contentsDialogOpen={contentsDialogOpen}
-                                            setContentsDialogOpen={setContentsDialogOpen}
-                                            dialogContent={dialogContent}
+                                            setContentDialogOpen={setContentDialogOpen}
+                                            setContentSearchDialogOpen={setContentSearchDialogOpen}
                                             setDialogContent={setDialogContent}
                                         />
                                     )
@@ -408,8 +412,8 @@ export default function Recipe(props) {
                 />
             </Box>
             <ContentDialog
-                dialogOpen={contentsDialogOpen}
-                setDialogOpen={setContentsDialogOpen}
+                dialogOpen={contentDialogOpen}
+                setDialogOpen={setContentDialogOpen}
                 content={dialogContent}
                 handleUpdateContent={handleUpdateContent}
                 initialTabValue={tabValue}
@@ -419,6 +423,15 @@ export default function Recipe(props) {
                 setDialogOpen={setRecipeDialogOpen}
                 recipe={recipeMap}
                 updateRecipe={updateRecipe}
+            />
+            <ContentSearchDialog
+                dialogOpen={contentSearchDialogOpen}
+                setDialogOpen={setContentSearchDialogOpen}
+                initialTabValue={tabValue}
+                contentTitles={contentTitles}
+                getSelectedContent={getSelectedContent}
+                selectedContent={selectedContent}
+                setSelectedContent={setSelectedContent}
             />
 
         </HelmetProvider >

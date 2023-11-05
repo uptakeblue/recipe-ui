@@ -57,7 +57,10 @@ const RecipeNote = (props) => {
 
 
 export default function RecipeCard(props) {
-    const { recipe } = props;
+    const {
+        recipe
+    } = props;
+
     const navigate = useNavigate();
     const isMobile = useMediaQuery({ query: '(max-width: 1224px)' })
     const isLandscape = useMediaQuery({ query: '(orientation: landscape)' })

@@ -14,6 +14,7 @@ import Paper from '@mui/material/Paper';
 // icons
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
+import CloseIcon from '@mui/icons-material/Close';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
@@ -53,9 +54,8 @@ export default function RecipeContent(props) {
         contentLastIdx,
         isAuthenticated,
         handleUpdateRecipeContent,
-        contentsDialogOpen,
-        setContentsDialogOpen,
-        dialogContent,
+        setContentDialogOpen,
+        setContentSearchDialogOpen,
         setDialogContent,
     } = props;
 
@@ -79,7 +79,7 @@ export default function RecipeContent(props) {
 
     const handleDialogOpen = () => {
         setDialogContent(content)
-        setContentsDialogOpen(true)
+        setContentDialogOpen(true)
     }
 
 
@@ -150,6 +150,18 @@ export default function RecipeContent(props) {
                                 </IconButton>
                             </span>
                         </Tooltip>
+                        <Tooltip title='Disconnect recipe content'>
+                            <IconButton
+                            // onClick={handleDialogOpen}
+                            >
+                                <CloseIcon
+                                    fontSize='small'
+                                    sx={{
+                                        color: CustomColorScheme['darkestBrown'],
+                                    }}
+                                />
+                            </IconButton>
+                        </Tooltip>
                         <Tooltip title='Edit recipe content'>
                             <IconButton
                                 onClick={handleDialogOpen}
@@ -176,7 +188,7 @@ export default function RecipeContent(props) {
             <Paper
                 id='id-x-1'
                 elevation={0}
-                square
+                // square
                 sx={{
                     '&.MuiPaper-root': {
                         bgcolor: CustomColorScheme['tan'],
@@ -189,7 +201,7 @@ export default function RecipeContent(props) {
                             id='id-x-2'
                             value={tabValue}
                             onChange={(e, newValue) => setTabValue(newValue)}
-                            textColor='inherit'
+                            color='inherit'
                             sx={{
                                 "& .MuiTabs-indicator": {
                                     bgcolor: CustomColorScheme['text']
@@ -214,7 +226,9 @@ export default function RecipeContent(props) {
                                 {
                                     isAuthenticated &&
                                     <Tooltip title='Add recipe content'>
-                                        <IconButton>
+                                        <IconButton
+                                            onClick={() => setContentSearchDialogOpen(true)}
+                                        >
                                             <AddIcon />
                                         </IconButton>
                                     </Tooltip>

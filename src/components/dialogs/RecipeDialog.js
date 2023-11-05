@@ -85,6 +85,8 @@ const RecipeDialog = (props) => {
         let formData = new FormData();
         if (previewFile) {
             formData.append('file', previewFile);
+        } else {
+            formData.append('imageFile', imageFile);
         }
         formData.append('recipeId', recipeId);
         formData.append('title', title);
@@ -92,10 +94,6 @@ const RecipeDialog = (props) => {
         formData.append('note', note);
         formData.append('route', route);
         formData.append('favorite', isFavorite);
-
-        // var object = {};
-        // formData.forEach((value, key) => object[key] = value);
-        // console.log("handleRecipeSave", object);
         updateRecipe(formData);
         setDialogOpen(false);
     }

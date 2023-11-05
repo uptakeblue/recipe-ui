@@ -49,11 +49,11 @@ export default function Home(props) {
   const isMobile = useMediaQuery({ query: '(max-width: 750px)' })
 
   const pageCount = recipeSearchResults
-    ? Math.ceil(recipeSearchResults.recipes.length / countPerPage)
+    ? Math.ceil(recipeSearchResults.length / countPerPage)
     : 0;
 
   const recipesThisPage = recipeSearchResults
-    ? recipeSearchResults.recipes.slice((page - 1) * countPerPage, page * countPerPage)
+    ? recipeSearchResults.slice((page - 1) * countPerPage, page * countPerPage)
     : null
 
   // event handlers //////////////
@@ -86,8 +86,8 @@ export default function Home(props) {
   // components //////////////////
   const PageTitle = () => {
     let title = transmittedKeyword
-      ? `Search Results for "${transmittedKeyword}"` + (recipeSearchResults ? ` (${recipeSearchResults.recipes.length})` : "")
-      : (recipeSearchResults ? `All Recipes (${recipeSearchResults.recipes.length})` : 'All Recipes')
+      ? `Search Results for "${transmittedKeyword}"` + (recipeSearchResults ? ` (${recipeSearchResults.length})` : "")
+      : (recipeSearchResults ? `All Recipes (${recipeSearchResults.length})` : 'All Recipes')
 
     return (
       <Typography
