@@ -12,8 +12,8 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Stack from '@mui/material/Stack';
 import Dialog from '@mui/material/Dialog';
-import { Paper, Typography } from '@mui/material';
-import { green, red } from '@mui/material/colors';
+import Paper from '@mui/material/Paper';
+import green from '@mui/material/colors/green';
 
 // custom components
 import { CustomColorScheme } from '../CustomTheme';
@@ -58,14 +58,13 @@ const ContentDialog = (props) => {
         setIsIngredientsError(!t);
     }
 
-    const handleTInstructionsChange = (event) => {
+    const handleInstructionsChange = (event) => {
         let t = event.currentTarget.value;
         setInstructions(t);
         setIsInstructionsError(!t);
     }
 
     const handleContentSave = () => {
-
         if (!title) {
             setIsTitleError(true)
         }
@@ -170,17 +169,29 @@ const ContentDialog = (props) => {
                                     color='inherit'
                                     sx={{
                                         "& .MuiTabs-indicator": {
-                                            bgcolor: CustomColorScheme['text']
+                                            bgcolor: CustomColorScheme['black']
                                         },
                                     }}
                                 >
                                     <Tab
                                         label="Ingredients"
                                         index={0}
+                                        sx={{
+                                            "&.Mui-selected": {
+                                                color: CustomColorScheme['black'],
+                                                fontWeight: 'bold',
+                                            }
+                                        }}
                                     />
                                     <Tab
                                         label="Instructions"
                                         index={1}
+                                        sx={{
+                                            "&.Mui-selected": {
+                                                color: CustomColorScheme['black'],
+                                                fontWeight: 'bold',
+                                            }
+                                        }}
                                     />
 
                                 </Tabs>
@@ -226,7 +237,7 @@ const ContentDialog = (props) => {
                                     <Box></Box>
                                     <TextField
                                         value={instructions}
-                                        onChange={handleTInstructionsChange}
+                                        onChange={handleInstructionsChange}
                                         label='Instructions'
                                         variant='standard'
                                         multiline

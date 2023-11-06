@@ -1,5 +1,5 @@
 // general
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { useMediaQuery } from 'react-responsive'
 
 // material ui
@@ -16,8 +16,10 @@ import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AddIcon from '@mui/icons-material/Add';
 
+// custom componets
 import { CustomColorScheme } from './CustomTheme';
 import { AppbarContext } from './AllContext';
+import RecipeCreateDialog from './dialogs/RecipeCreateDialog';
 
 //////////////////////////////
 
@@ -29,9 +31,17 @@ export default function RecipeAppBar(props) {
   const {
     isAuthenticated,
     setIsAuthenticated,
+    createRecipe,
   } = useContext(AppbarContext);
 
+
+  // constants //////////////
+
   const isMobile = useMediaQuery({ query: '(max-width: 1224px)' })
+
+  const [recipeCreateDialogOpen, setRecipeCreateDialogOpen] = useState(false);
+
+  // render /////////////////
 
   return (
     <AppBar
@@ -92,6 +102,7 @@ export default function RecipeAppBar(props) {
                 <AddIcon sx={{
                   color: 'white'
                 }}
+                  onClick={() => setRecipeCreateDialogOpen(true)}
                 />
               </IconButton>
             </Tooltip>
@@ -117,6 +128,11 @@ export default function RecipeAppBar(props) {
           </Tooltip>
         </Stack>
       </Container>
+      <RecipeCreateDialog
+        dialogOpen={recipeCreateDialogOpen}
+        setDialogOpen={setRecipeCreateDialogOpen}
+        createRecipe={createRecipe}
+      />
     </AppBar>
   );
 }

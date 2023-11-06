@@ -37,6 +37,7 @@ export default function App() {
   const appbarContext = {
     isAuthenticated: isAuthenticated,
     setIsAuthenticated: setIsAuthenticated,
+    createRecipe: createRecipe,
   };
 
   const homeContext = {
@@ -87,6 +88,33 @@ export default function App() {
       })
       .catch((error) => {
         console.log('API getContent error: ', contentId);
+        console.log('API error url: ', url);
+        processError(error);
+      });
+  }
+
+
+  // create a recipe, including image, ingredients and instructions
+  async function createRecipe(formData) {
+    let url = `${process.env.REACT_APP_API_BASE_URL}/recipe/`
+
+    let data = {};
+    formData.forEach((value, key) => data[key] = value);
+
+    await axios
+      .post(
+        url,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          }
+        }
+      ).then((response) => {
+        getRecipeByRoute(data['route']);
+      })
+      .catch((error) => {
+        console.log('API createRecipe error: ', data);
         console.log('API error url: ', url);
         processError(error);
       });

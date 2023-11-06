@@ -3,6 +3,7 @@ export const CustomColorScheme = {
   body: '#32a852', // green
 
   amber: '#ffd22b',
+  black: "#000",
   brightGreen: "#24ff5f",
   brightOrange: '#fcba03',
   brightestOrange: '#ffcf4a',

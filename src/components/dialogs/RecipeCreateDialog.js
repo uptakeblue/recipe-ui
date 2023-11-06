@@ -10,6 +10,8 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Tooltip from '@mui/material/Tooltip';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
 import Dialog from '@mui/material/Dialog';
 import { IconButton, Paper, Typography } from '@mui/material';
 import { green } from '@mui/material/colors';
@@ -18,34 +20,37 @@ import { green } from '@mui/material/colors';
 import ImageSearchIcon from '@mui/icons-material/ImageSearch';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 
+
 // custom components
 import { CustomColorScheme } from '../CustomTheme';
 
 ////////////////////////////////
 
 
-const RecipeDialog = (props) => {
+const RecipeCreateDialog = (props) => {
     const {
         dialogOpen,
         setDialogOpen,
-        recipe,
-        updateRecipe,
+        createRecipe,
     } = props;
 
     // constants////////////////
 
     const [title, setTitle] = useState('');
-    const [recipeId, setRecipeId] = useState();
     const [description, setDescription] = useState('');
     const [note, setNote] = useState('');
-    const [imageFile, setImageFile] = useState(false);
+    const [ingredients, setIngredients] = useState('');
+    const [instructions, setInstructions] = useState('');
     const [previewFile, setPreviewFile] = useState(false);
     const [previewFileUri, setPreviewFileUri] = useState(false);
     const [previewFileName, setPreviewFileName] = useState(false);
-    const [route, setRoute] = useState(false);
     const [isFavorite, setIsFavorite] = useState(false);
 
+    const [tabValue, setTabValue] = useState(0);
+
     const [isTitleError, setIsTitleError] = useState(false);
+    const [isIngredientsError, setIsIngredientsError] = useState(false);
+    const [isInstructionsError, setIsInstructionsError] = useState(false);
 
     const isMobile = useMediaQuery({ query: '(max-width: 750px)' })
 
@@ -56,6 +61,18 @@ const RecipeDialog = (props) => {
         let t = event.currentTarget.value;
         setTitle(t);
         setIsTitleError(!t);
+    }
+
+    const handleIngredientsChange = (event) => {
+        let t = event.currentTarget.value;
+        setIngredients(t);
+        setIsIngredientsError(!t);
+    }
+
+    const handleInstructionsChange = (event) => {
+        let t = event.currentTarget.value;
+        setInstructions(t);
+        setIsInstructionsError(!t);
     }
 
     const handleFilePreview = (event) => {
@@ -71,52 +88,51 @@ const RecipeDialog = (props) => {
 
     const handleImageClear = () => {
         setPreviewFileUri(null);
-        setImageFile(null)
     }
 
-    const handleRecipeSave = () => {
-        let formData = new FormData();
-        if (previewFile) {
-            formData.append('file', previewFile);
-        } else {
-            formData.append('imageFile', imageFile);
+    const handleCreateRecipe = () => {
+        if (!title) {
+            setIsTitleError(true)
         }
-        formData.append('recipeId', recipeId);
-        formData.append('title', title);
-        formData.append('description', description);
-        formData.append('note', note);
-        formData.append('route', route);
-        formData.append('favorite', isFavorite);
-        updateRecipe(formData);
-        setDialogOpen(false);
+        if (!ingredients) {
+            setIsIngredientsError(true)
+        }
+        if (!ingredients) {
+            setIsIngredientsError(true)
+        }
+        if (!isTitleError && !isIngredientsError && !isInstructionsError) {
+
+            let formData = new FormData();
+            if (previewFile) {
+                formData.append('file', previewFile);
+            }
+            formData.append('title', title);
+            formData.append('description', description);
+            formData.append('note', note);
+            formData.append('favorite', isFavorite);
+            formData.append('ingredients', ingredients);
+            formData.append('instructions', instructions);
+
+            createRecipe(formData);
+            setDialogOpen(false);
+        }
     }
 
     // useEffect ///////////////
 
     useEffect(() => {
-        if (!dialogOpen) {
-            setTitle('');
-            setDescription('');
-            setNote('');
-            setImageFile('');
-            setRoute('');
-            setIsFavorite(false);
-            setRecipeId(null);
-            setPreviewFileUri(null);
-            setPreviewFile(null);
-            setPreviewFileName(null)
-        } else {
-            setTitle(recipe.title);
-            setDescription(recipe.description);
-            setNote(recipe.note);
-            setImageFile(recipe.imageFile);
-            setRoute(recipe.route);
-            setIsFavorite(recipe.isFavorite);
-            setRecipeId(recipe.recipeId);
-            setPreviewFileName(recipe.imageFile ? recipe.imageFile : '')
-            setPreviewFileUri(recipe.imageFile ? `${process.env.REACT_APP_API_IMAGE_URL + "/" + recipe.imageFile}` : '');
-        }
+        setTitle('');
+        setDescription('');
+        setNote('');
+        setIngredients('');
+        setInstructions('');
+        setIsFavorite(false);
+        setPreviewFileUri(null);
+        setPreviewFile(null);
+        setPreviewFileName(null);
         setIsTitleError(false);
+        setIsIngredientsError(false);
+        setIsInstructionsError(false);
     }, [dialogOpen]);
 
 
@@ -125,7 +141,6 @@ const RecipeDialog = (props) => {
     return (
         <>
             {
-                recipe &&
                 <Dialog
                     open={dialogOpen}
                     onClose={() => setDialogOpen(false)}
@@ -139,7 +154,7 @@ const RecipeDialog = (props) => {
                             paddingY={1}
                             paddingX={2.5}
                         >
-                            Edit Recipe
+                            Create A Recipe
                         </Box>
 
                         <Paper
@@ -297,6 +312,104 @@ const RecipeDialog = (props) => {
                                 />
 
                             </Stack>
+                            <Tabs
+                                value={tabValue}
+                                onChange={(e, newValue) => setTabValue(newValue)}
+                                color='inherit'
+                                sx={{
+                                    "& .MuiTabs-indicator": {
+                                        bgcolor: CustomColorScheme['text']
+                                    },
+                                }}
+                            >
+                                <Tab
+                                    label="Ingredients"
+                                    index={0}
+                                    sx={{
+                                        "&.Mui-selected": {
+                                            color: CustomColorScheme['black'],
+                                            fontWeight: 'bold',
+                                        }
+                                    }}
+                                />
+                                <Tab
+                                    label="Instructions"
+                                    index={1}
+                                    sx={{
+                                        "&.Mui-selected": {
+                                            color: CustomColorScheme['black'],
+                                            fontWeight: 'bold',
+                                        }
+                                    }}
+                                />
+
+                            </Tabs>
+                            <FormControl
+                                error={isIngredientsError}
+                                sx={{
+                                    display: tabValue === 0 ? 'flex' : 'none',
+                                }}
+                            >
+                                <Box></Box>
+                                <TextField
+                                    value={ingredients}
+                                    onChange={handleIngredientsChange}
+                                    label='Ingredients'
+                                    variant='standard'
+                                    multiline
+                                    minRows={8}
+                                    error={isIngredientsError}
+                                    InputLabelProps={{
+                                        shrink: true,
+                                        sx: {
+                                            marginLeft: 1,
+                                            marginTop: 0.5,
+                                        }
+                                    }}
+                                    sx={{
+                                        backgroundColor: CustomColorScheme['white'],
+                                        padding: 1,
+                                        marginBottom: 1,
+                                    }}
+                                />
+                                {
+                                    isIngredientsError &&
+                                    <FormHelperText>Ingredients are required</FormHelperText>
+                                }
+                            </FormControl>
+                            <FormControl
+                                error={isInstructionsError}
+                                sx={{
+                                    display: tabValue === 1 ? 'flex' : 'none',
+                                }}
+                            >
+                                <Box></Box>
+                                <TextField
+                                    value={instructions}
+                                    onChange={handleInstructionsChange}
+                                    label='Instructions'
+                                    variant='standard'
+                                    multiline
+                                    minRows={8}
+                                    error={isInstructionsError}
+                                    InputLabelProps={{
+                                        shrink: true,
+                                        sx: {
+                                            marginLeft: 1,
+                                            marginTop: 0.5,
+                                        }
+                                    }}
+                                    sx={{
+                                        backgroundColor: CustomColorScheme['white'],
+                                        padding: 1,
+                                        marginBottom: 1,
+                                    }}
+                                />
+                                {
+                                    isInstructionsError &&
+                                    <FormHelperText>Instructions are required</FormHelperText>
+                                }
+                            </FormControl>
                             <Stack
                                 direction='row'
                                 spacing={1}
@@ -313,7 +426,7 @@ const RecipeDialog = (props) => {
                                             borderColor: green[600],
                                         }
                                     }}
-                                    onClick={handleRecipeSave}
+                                    onClick={handleCreateRecipe}
                                 >Save
                                 </Button>
                                 <Button
@@ -333,4 +446,4 @@ const RecipeDialog = (props) => {
     )
 }
 
-export default RecipeDialog;
+export default RecipeCreateDialog;

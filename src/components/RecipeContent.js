@@ -212,17 +212,30 @@ export default function RecipeContent(props) {
                                 "& .MuiTabs-indicator": {
                                     bgcolor: CustomColorScheme['text']
                                 },
+                                marginBottom: .5,
                             }}
                         >
                             <Tab
                                 id='id-x-3'
                                 label="Ingredients"
                                 index={0}
+                                sx={{
+                                    "&.Mui-selected": {
+                                        color: CustomColorScheme['black'],
+                                        fontWeight: 'bold',
+                                    }
+                                }}
                             />
                             <Tab
                                 id='id-x-4'
                                 label="Instructions"
                                 index={1}
+                                sx={{
+                                    "&.Mui-selected": {
+                                        color: CustomColorScheme['black'],
+                                        fontWeight: 'bold',
+                                    }
+                                }}
                             />
                             <Box
                                 display='flex'

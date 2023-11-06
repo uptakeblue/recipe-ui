@@ -68,7 +68,7 @@ export default function Recipe(props) {
         selectedContent,
         setSelectedContent,
         createRecipeContent,
-        deleteRecipeContent
+        deleteRecipeContent,
     } = useContext(RecipeContext);
 
     const [tabValue, setTabValue] = useState(0);
@@ -132,11 +132,6 @@ export default function Recipe(props) {
     }
 
     const handleDeleteRecipeContent = (contentId) => {
-        console.log("recipe handleDeleteRecipeContent", {
-            recipeId: recipeMap.recipeId,
-            contentId: contentId,
-            route: route,
-        })
         deleteRecipeContent({
             recipeId: recipeMap.recipeId,
             contentId: contentId,
@@ -348,12 +343,11 @@ export default function Recipe(props) {
                                                     id='id-17'
                                                     src={imagefileUri}
                                                     width={400}
-                                                    // height='auto'
                                                     height={imageDimensions ? 400 / imageDimensions.width * imageDimensions.height : 'auto'}
                                                     style={{
                                                         borderTopLeftRadius: 20,
                                                         borderBottomLeftRadius: 20,
-                                                        marginRight: 10,
+                                                        margin: 0,
                                                     }}
                                                 />
                                             )

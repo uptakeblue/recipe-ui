@@ -57,6 +57,7 @@ const ContentSearchDialog = (props) => {
 
     const handleCreateRecipeContent = () => {
         if (selection && selection.contentId) {
+            console.log("ContntSearchDialog handleCreateRecipeContent", selection);
             createRecipeContent(selection.contentId);
         }
         setDialogOpen(false);
@@ -127,11 +128,10 @@ const ContentSearchDialog = (props) => {
                                         sx={{
                                             "&.MuiTab-root": {
                                                 bgcolor: CustomColorScheme['lightTan'],
-                                                color: CustomColorScheme['text'],
                                             },
                                             "&.Mui-selected": {
-                                                // bgcolor: CustomColorScheme['white'],
-                                                color: CustomColorScheme['text'],
+                                                color: CustomColorScheme['black'],
+                                                fontWeight: 'bold',
                                             }
                                         }}
                                     />
@@ -141,11 +141,10 @@ const ContentSearchDialog = (props) => {
                                         sx={{
                                             "&.MuiTab-root": {
                                                 bgcolor: CustomColorScheme['lightTan'],
-                                                color: CustomColorScheme['text'],
                                             },
                                             "&.Mui-selected": {
-                                                // bgcolor: CustomColorScheme['white'],
-                                                color: CustomColorScheme['text'],
+                                                color: CustomColorScheme['black'],
+                                                fontWeight: 'bold',
                                             }
                                         }}
                                     />
