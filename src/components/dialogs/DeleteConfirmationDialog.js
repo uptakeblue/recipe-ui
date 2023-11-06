@@ -22,7 +22,7 @@ const DeleteConfirmationDialog = (props) => {
           backgroundColor: 'white',
         }}
       >
-        <DialogTitle id='confirm-dialog'>Confirm Dateitem Deletion</DialogTitle>
+        <DialogTitle id='confirm-dialog'>Confirm Deletion</DialogTitle>
         <DialogContent>{message}</DialogContent>
         <DialogActions>
           <Box

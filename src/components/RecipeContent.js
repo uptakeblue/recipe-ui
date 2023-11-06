@@ -1,5 +1,6 @@
 // general
 import '../App.css';
+import React, { useState } from 'react';
 import { useMediaQuery } from 'react-responsive'
 
 // material ui
@@ -21,7 +22,9 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 // components
 import { CustomColorScheme } from '../components/CustomTheme';
 import { Add } from '@mui/icons-material';
-import { Stack } from '@mui/material';
+import { Stack, useScrollTrigger } from '@mui/material';
+import DeleteConfirmationDialog from './dialogs/DeleteConfirmationDialog';
+import { setSelectionRange } from '@testing-library/user-event/dist/utils';
 
 
 const TabPanel = (props) => {
@@ -57,10 +60,13 @@ export default function RecipeContent(props) {
         setContentDialogOpen,
         setContentSearchDialogOpen,
         setDialogContent,
+        deleteRecipeContent,
     } = props;
 
     // constants /////////////////
 
+
+    const [deletionConfirmationDialogOpen, setDeletionConfirmationDialogOpen] = useState(false);
     const isMobile = useMediaQuery({ query: '(max-width: 1224px)' })
 
 
@@ -73,8 +79,8 @@ export default function RecipeContent(props) {
         });
     }
 
-    const handleContentUpdate = (contentObj) => {
-
+    const handleRecipeContentDelete = () => {
+        deleteRecipeContent(content.contentId);
     }
 
     const handleDialogOpen = () => {
@@ -152,7 +158,7 @@ export default function RecipeContent(props) {
                         </Tooltip>
                         <Tooltip title='Disconnect recipe content'>
                             <IconButton
-                            // onClick={handleDialogOpen}
+                                onClick={() => setDeletionConfirmationDialogOpen(true)}
                             >
                                 <CloseIcon
                                     fontSize='small'
@@ -310,6 +316,12 @@ export default function RecipeContent(props) {
                             )
                         })}
                 </TabPanel>
+                <DeleteConfirmationDialog
+                    message={`Remove "${content.title}" from this recipe?`}
+                    open={deletionConfirmationDialogOpen}
+                    setOpen={setDeletionConfirmationDialogOpen}
+                    onDelete={handleRecipeContentDelete}
+                />
             </Paper>
         </>
     )

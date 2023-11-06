@@ -30,6 +30,7 @@ const ContentSearchDialog = (props) => {
         getSelectedContent,
         selectedContent,
         setSelectedContent,
+        createRecipeContent,
     } = props;
 
     // constants////////////////
@@ -52,6 +53,13 @@ const ContentSearchDialog = (props) => {
         if (selection) {
             getSelectedContent(selection.contentId);
         }
+    }
+
+    const handleCreateRecipeContent = () => {
+        if (selection && selection.contentId) {
+            createRecipeContent(selection.contentId);
+        }
+        setDialogOpen(false);
     }
 
     // useEffect ///////////////
@@ -240,7 +248,7 @@ const ContentSearchDialog = (props) => {
                                                 borderColor: green[600],
                                             }
                                         }}
-                                        onClick={() => setDialogOpen(false)}
+                                        onClick={handleCreateRecipeContent}
                                     >Select
                                     </Button>
                                     <Button

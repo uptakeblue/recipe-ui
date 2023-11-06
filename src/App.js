@@ -63,6 +63,8 @@ export default function App() {
     getSelectedContent: getSelectedContent,
     selectedContent: selectedContent,
     setSelectedContent: setSelectedContent,
+    createRecipeContent: createRecipeContent,
+    deleteRecipeContent: deleteRecipeContent,
   };
 
   // useEffect ////////////
@@ -117,7 +119,7 @@ export default function App() {
       });
   }
 
-  // changes the orderId value of a reciepContent reltionship
+  // changes the orderId value of a recipeContent reltionship
   async function updateContent(contentsObj) {
     let url = `${process.env.REACT_APP_API_BASE_URL}/content/`
     await axios
@@ -126,7 +128,7 @@ export default function App() {
         contentsObj,
       )
       .then((response) => {
-        getRecipeByRoute(contentsObj.routeUrl)
+        getRecipeByRoute(contentsObj.route)
       })
       .catch((error) => {
         console.log('API updateContent error: ', contentsObj);
@@ -136,7 +138,42 @@ export default function App() {
   }
 
 
-  // changes the orderId value of a reciepContent reltionship
+  // creates a new recipeContent relationship
+  async function createRecipeContent(recipecontentsObj) {
+    let url = `${process.env.REACT_APP_API_BASE_URL}/recipecontent/`
+    await axios
+      .post(
+        url,
+        recipecontentsObj,
+      )
+      .then((response) => {
+        getRecipeByRoute(recipecontentsObj.route)
+      })
+      .catch((error) => {
+        console.log('API createRecipeContent error: ', recipecontentsObj);
+        console.log('API error url: ', url);
+        processError(error);
+      });
+  }
+
+
+  // deletes a recipeContent relationship
+  async function deleteRecipeContent(recipecontentsObj) {
+    let url = `${process.env.REACT_APP_API_BASE_URL}/recipecontent/${recipecontentsObj.recipeId}/${recipecontentsObj.contentId}/`
+    await axios
+      .delete(url)
+      .then((response) => {
+        getRecipeByRoute(recipecontentsObj.route)
+      })
+      .catch((error) => {
+        console.log('API deleteRecipeContent error: ', recipecontentsObj);
+        console.log('API error url: ', url);
+        processError(error);
+      });
+  }
+
+
+  // changes the orderId value of a recipeContent relationship
   async function updateRecipeContent(recipecontentsObj) {
     let url = `${process.env.REACT_APP_API_BASE_URL}/recipecontent/`
     await axios
@@ -145,7 +182,7 @@ export default function App() {
         recipecontentsObj,
       )
       .then((response) => {
-        getRecipeByRoute(recipecontentsObj.routeUrl)
+        getRecipeByRoute(recipecontentsObj.route)
       })
       .catch((error) => {
         console.log('API updateRecipeContent error: ', recipecontentsObj);
@@ -172,8 +209,8 @@ export default function App() {
       });
   }
 
-  async function getRecipeByRoute(routeUrl) {
-    let url = `${process.env.REACT_APP_API_BASE_URL}/recipe/route/${routeUrl}/`
+  async function getRecipeByRoute(route) {
+    let url = `${process.env.REACT_APP_API_BASE_URL}/recipe/route/${route}/`
     await axios
       .get(url)
       .then((response) => {
@@ -181,7 +218,7 @@ export default function App() {
         getRecipeSearchResults(cookie.keyword);
       })
       .catch((error) => {
-        console.log('API getRecipeByRoute error: ', routeUrl);
+        console.log('API getRecipeByRoute error: ', route);
         console.log('API error url: ', url);
         processError(error);
       });

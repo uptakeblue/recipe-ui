@@ -81,7 +81,7 @@ const ContentDialog = (props) => {
                 title: title,
                 ingredients: ingredients,
                 instructions: instructions,
-                routeUrl: '',
+                route: '',
             })
             setDialogOpen(false);
         }

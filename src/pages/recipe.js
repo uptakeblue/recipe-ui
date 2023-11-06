@@ -67,6 +67,8 @@ export default function Recipe(props) {
         getSelectedContent,
         selectedContent,
         setSelectedContent,
+        createRecipeContent,
+        deleteRecipeContent
     } = useContext(RecipeContext);
 
     const [tabValue, setTabValue] = useState(0);
@@ -107,19 +109,41 @@ export default function Recipe(props) {
         onAfterPrint: () => console.log('PDF printed successfully'),
     });
 
+    const handleUpdateContent = (contentObj) => {
+        contentObj.route = route;
+        updateContent(contentObj)
+    }
+
     const handleUpdateRecipeContent = (recipeContentObj) => {
         updateRecipeContent({
             recipeId: recipeMap.recipeId,
             contentId: recipeContentObj.contentId,
             orderId: recipeContentObj.orderId,
-            routeUrl: route,
+            route: route,
         })
     }
 
-    const handleUpdateContent = (contentObj) => {
-        contentObj.routeUrl = route;
-        updateContent(contentObj)
+    const handleCreateRecipeContent = (contentId) => {
+        createRecipeContent({
+            recipeId: recipeMap.recipeId,
+            contentId: contentId,
+            route: route,
+        })
     }
+
+    const handleDeleteRecipeContent = (contentId) => {
+        console.log("recipe handleDeleteRecipeContent", {
+            recipeId: recipeMap.recipeId,
+            contentId: contentId,
+            route: route,
+        })
+        deleteRecipeContent({
+            recipeId: recipeMap.recipeId,
+            contentId: contentId,
+            route: route,
+        })
+    }
+
 
     // render //////////////////
 
@@ -394,6 +418,7 @@ export default function Recipe(props) {
                                             setContentDialogOpen={setContentDialogOpen}
                                             setContentSearchDialogOpen={setContentSearchDialogOpen}
                                             setDialogContent={setDialogContent}
+                                            deleteRecipeContent={handleDeleteRecipeContent}
                                         />
                                     )
                                 })
@@ -432,6 +457,7 @@ export default function Recipe(props) {
                 getSelectedContent={getSelectedContent}
                 selectedContent={selectedContent}
                 setSelectedContent={setSelectedContent}
+                createRecipeContent={handleCreateRecipeContent}
             />
 
         </HelmetProvider >
