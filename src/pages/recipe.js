@@ -16,12 +16,16 @@ import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
 import Container from '@mui/material/Container';
 import Paper from '@mui/material/Paper';
+import Snackbar from '@mui/material/Snackbar';
+import Slide from '@mui/material/Slide';
+import Alert from '@mui/material/Alert';
 
 // icons
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import PrintIcon from '@mui/icons-material/Print';
 import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 // components
 import { CustomColorScheme } from '../components/CustomTheme';
@@ -32,7 +36,9 @@ import { RecipeContext } from '../components/AllContext';
 import RecipePrintContent from './recipePrintContent';
 import ContentDialog from '../components/dialogs/ContentDialog';
 import ContentSearchDialog from '../components/dialogs/ContentSearchDialog';
+import DeleteConfirmationDialog from '../components/dialogs/DeleteConfirmationDialog';
 import RecipeDialog from '../components/dialogs/RecipeDialog';
+import { Button } from '@mui/material';
 
 const ParsedText = (props) => {
     const { rawText } = props;
@@ -69,6 +75,9 @@ export default function Recipe(props) {
         setSelectedContent,
         createRecipeContent,
         deleteRecipeContent,
+        statusMessage,
+        setStatusMessage,
+        deleteRecipe,
     } = useContext(RecipeContext);
 
     const [tabValue, setTabValue] = useState(0);
@@ -76,8 +85,11 @@ export default function Recipe(props) {
     const [contentSearchDialogOpen, setContentSearchDialogOpen] = useState(false);
     const [recipeDialogOpen, setRecipeDialogOpen] = useState(false);
     const [dialogContent, setDialogContent] = useState();
+    const [deleteConfirmationDialogOpen, setDeleteConfirmationDialogOpen] = useState(false);
 
     const isMobile = useMediaQuery({ query: '(max-width: 750px)' })
+
+    const [open, setOpen] = useState(false);
 
     // useEffect ///////////////
 
@@ -85,6 +97,13 @@ export default function Recipe(props) {
         getRecipeByRoute(route);
         navigate('/recipe/' + route)
     }, []);
+
+    useEffect(() => {
+        if (statusMessage && statusMessage.route) {
+            navigate(`/recipe/${statusMessage.route}`)
+        }
+    }, [statusMessage]);
+
 
     // constants ///////////////
 
@@ -100,6 +119,7 @@ export default function Recipe(props) {
     )
 
     const [imageDimensions] = useImageSize(imagefileUri);
+
 
     // event handlers //////////
 
@@ -139,6 +159,14 @@ export default function Recipe(props) {
         })
     }
 
+    const handleRecipeDelete = () => {
+        deleteRecipe(recipeMap.recipeId);
+    }
+
+    const handleSnackbarTransition = (props) => {
+        return <Slide {...props} direction="left" />;
+    }
+
 
     // render //////////////////
 
@@ -161,13 +189,26 @@ export default function Recipe(props) {
                     id='1d-3'
                     direction="row"
                     paddingY={1}
-                    marginRight={2}
+                    marginRight={1}
                 >
                     <Box
                         id='id-4'
                         display='flex'
                         flexGrow={1}
                     />
+                    <Tooltip title='Delete this recipe'>
+                        <IconButton
+                            onClick={() => setDeleteConfirmationDialogOpen(true)}
+                            sx={{
+                                ':hover': {
+                                    color: 'white',
+                                },
+                            }}
+                        >
+                            <DeleteIcon />
+                        </IconButton>
+                    </Tooltip>
+
                     <Tooltip title='Print this recipe!'>
                         <IconButton
                             onClick={handlePrint}
@@ -248,16 +289,6 @@ export default function Recipe(props) {
                                 alignItems='center'
                             >
                                 {
-                                    isAuthenticated &&
-                                    <Tooltip title='Edit this recipe'>
-                                        <IconButton
-                                            onClick={() => setRecipeDialogOpen(true)}
-                                        >
-                                            <EditIcon fontSize='small' />
-                                        </IconButton>
-                                    </Tooltip>
-                                }
-                                {
                                     recipeMap.isFavorite &&
                                     <Tooltip title='A favorite!'>
                                         <FavoriteIcon
@@ -266,6 +297,16 @@ export default function Recipe(props) {
                                                 color: CustomColorScheme['darkRed'],
                                             }}
                                         />
+                                    </Tooltip>
+                                }
+                                {
+                                    isAuthenticated &&
+                                    <Tooltip title='Edit this recipe'>
+                                        <IconButton
+                                            onClick={() => setRecipeDialogOpen(true)}
+                                        >
+                                            <EditIcon fontSize='small' />
+                                        </IconButton>
                                     </Tooltip>
                                 }
 
@@ -420,9 +461,27 @@ export default function Recipe(props) {
                         </Stack>
 
                     </Stack>
-
                 </Paper>
             </Container >
+            <Snackbar
+                open={statusMessage !== ''}
+                onClose={() => setStatusMessage('')}
+                autoHideDuration={statusMessage.status === "success" ? 3000 : 9000}
+                TransitionComponent={handleSnackbarTransition}
+                anchorOrigin={{
+                    horizontal: 'center',
+                    vertical: 'bottom'
+                }}
+            >
+                <Alert
+                    onClose={() => setStatusMessage('')}
+                    severity={statusMessage.status}
+                    variant='filled'
+                    autoHideDuration={3000}
+                >
+                    {statusMessage.message}
+                </Alert>
+            </Snackbar>
             <Copywrite />
             <Box display='none'>
                 <RecipePrintContent
@@ -452,6 +511,12 @@ export default function Recipe(props) {
                 selectedContent={selectedContent}
                 setSelectedContent={setSelectedContent}
                 createRecipeContent={handleCreateRecipeContent}
+            />
+            <DeleteConfirmationDialog
+                message={`Delete recipe "${recipeMap.title}"?`}
+                open={deleteConfirmationDialogOpen}
+                setOpen={setDeleteConfirmationDialogOpen}
+                onDelete={handleRecipeDelete}
             />
 
         </HelmetProvider >

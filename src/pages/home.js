@@ -1,6 +1,6 @@
 // general
 import '../App.css';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import { useMediaQuery } from 'react-responsive'
 
@@ -13,6 +13,9 @@ import Pagination from '@mui/material/Pagination';
 import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
 import { IconButton, InputAdornment, Paper } from '@mui/material';
+import Snackbar from '@mui/material/Snackbar';
+import Slide from '@mui/material/Slide';
+import Alert from '@mui/material/Alert';
 
 // icons
 import SearchIcon from '@mui/icons-material/Search';
@@ -41,7 +44,11 @@ export default function Home(props) {
     setTransmittedKeyword,
     isAuthenticated,
     setIsAuthenticated,
+    cookie,
+    statusMessage,
+    setStatusMessage,
   } = useContext(HomeContext);
+
 
   // constants ///////////////////
 
@@ -55,6 +62,16 @@ export default function Home(props) {
   const recipesThisPage = recipeSearchResults
     ? recipeSearchResults.slice((page - 1) * countPerPage, page * countPerPage)
     : null
+
+
+  // useEffect ///////////////////
+
+  useEffect(() => {
+    if (!recipeSearchResults) {
+      getRecipeSearchResults(cookie.keyword);
+    }
+  }, []);
+
 
   // event handlers //////////////
 
@@ -83,7 +100,13 @@ export default function Home(props) {
     }
   };
 
+  const handleSnackbarTransition = (props) => {
+    return <Slide {...props} direction="left" />;
+  }
+
+
   // components //////////////////
+
   const PageTitle = () => {
     let title = transmittedKeyword
       ? `Search Results for "${transmittedKeyword}"` + (recipeSearchResults ? ` (${recipeSearchResults.length})` : "")
@@ -100,6 +123,7 @@ export default function Home(props) {
 
   }
 
+
   // render //////////////////////
 
   return (
@@ -107,7 +131,7 @@ export default function Home(props) {
       <Helmet>
         <title>Michael's Recipes</title>
       </Helmet>
-      <Appbar showAddIcon />
+      <Appbar />
       <Container
         maxWidth='false'
         sx={{
@@ -204,6 +228,25 @@ export default function Home(props) {
           />
         </Box>
       </Container>
+      <Snackbar
+        open={statusMessage !== ''}
+        onClose={() => setStatusMessage('')}
+        autoHideDuration={3000}
+        TransitionComponent={handleSnackbarTransition}
+        anchorOrigin={{
+          horizontal: 'center',
+          vertical: 'bottom'
+        }}
+      >
+        <Alert
+          onClose={() => setStatusMessage('')}
+          severity={statusMessage.status}
+          variant='filled'
+          autoHideDuration={3000}
+        >
+          {statusMessage.message}
+        </Alert>
+      </Snackbar>
       <Copywrite />
     </HelmetProvider>
   );

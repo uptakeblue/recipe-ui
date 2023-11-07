@@ -91,31 +91,41 @@ const RecipeCreateDialog = (props) => {
     }
 
     const handleCreateRecipe = () => {
+        let newTabValue = -1;
+        let isError = false;
         if (!title) {
-            setIsTitleError(true)
+            isError = true;
+            setIsTitleError(true);
         }
         if (!ingredients) {
-            setIsIngredientsError(true)
+            setIsIngredientsError(true);
+            newTabValue = 0;
+            isError = true;
         }
-        if (!ingredients) {
-            setIsIngredientsError(true)
+        if (!instructions) {
+            setIsInstructionsError(true);
+            if (newTabValue === -1) newTabValue = 1;
+            isError = true;
         }
-        if (!isTitleError && !isIngredientsError && !isInstructionsError) {
-
+        if (!isError) {
             let formData = new FormData();
             if (previewFile) {
-                formData.append('file', previewFile);
+                formData.append("file", previewFile);
             }
-            formData.append('title', title);
-            formData.append('description', description);
-            formData.append('note', note);
-            formData.append('favorite', isFavorite);
-            formData.append('ingredients', ingredients);
-            formData.append('instructions', instructions);
+            formData.append("title", title);
+            formData.append("description", description);
+            formData.append("note", note);
+            formData.append("favorite", isFavorite);
+            formData.append("ingredients", ingredients);
+            formData.append("instructions", instructions);
+            formData.append("route", title.replace(/[\W_]+/g, "-").replace(/^-+/, '').replace(/-+$/, '').toLowerCase());
 
             createRecipe(formData);
             setDialogOpen(false);
+        } else if (newTabValue > -1) {
+            setTabValue(newTabValue);
         }
+
     }
 
     // useEffect ///////////////
@@ -133,6 +143,7 @@ const RecipeCreateDialog = (props) => {
         setIsTitleError(false);
         setIsIngredientsError(false);
         setIsInstructionsError(false);
+        setTabValue(0)
     }, [dialogOpen]);
 
 

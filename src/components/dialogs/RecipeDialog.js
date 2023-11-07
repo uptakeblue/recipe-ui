@@ -1,6 +1,7 @@
 // general
 import React, { useState, useEffect } from 'react';
 import { useMediaQuery } from 'react-responsive'
+import { useNavigate } from 'react-router-dom';
 
 // material ui
 import Button from '@mui/material/Button';
@@ -17,6 +18,8 @@ import { green } from '@mui/material/colors';
 // icons
 import ImageSearchIcon from '@mui/icons-material/ImageSearch';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 // custom components
 import { CustomColorScheme } from '../CustomTheme';
@@ -35,19 +38,21 @@ const RecipeDialog = (props) => {
     // constants////////////////
 
     const [title, setTitle] = useState('');
+    const [originalTitle, setOriginalTitle] = useState('');
     const [recipeId, setRecipeId] = useState();
     const [description, setDescription] = useState('');
     const [note, setNote] = useState('');
-    const [imageFile, setImageFile] = useState(false);
-    const [previewFile, setPreviewFile] = useState(false);
-    const [previewFileUri, setPreviewFileUri] = useState(false);
-    const [previewFileName, setPreviewFileName] = useState(false);
-    const [route, setRoute] = useState(false);
+    const [imageFile, setImageFile] = useState('');
+    const [previewFile, setPreviewFile] = useState('');
+    const [previewFileUri, setPreviewFileUri] = useState('');
+    const [previewFileName, setPreviewFileName] = useState('');
+    const [originalRoute, setOriginalRoute] = useState('');
     const [isFavorite, setIsFavorite] = useState(false);
 
     const [isTitleError, setIsTitleError] = useState(false);
 
     const isMobile = useMediaQuery({ query: '(max-width: 750px)' })
+    const navigate = useNavigate();
 
 
     // event handlers //////////
@@ -75,6 +80,10 @@ const RecipeDialog = (props) => {
     }
 
     const handleRecipeSave = () => {
+        let route = (title === originalTitle)
+            ? originalRoute
+            : title.replace(/[\W_]+/g, "-").replace(/^-+/, '').replace(/-+$/, '').toLowerCase();
+
         let formData = new FormData();
         if (previewFile) {
             formData.append('file', previewFile);
@@ -86,7 +95,7 @@ const RecipeDialog = (props) => {
         formData.append('description', description);
         formData.append('note', note);
         formData.append('route', route);
-        formData.append('favorite', isFavorite);
+        formData.append('isfavorite', isFavorite);
         updateRecipe(formData);
         setDialogOpen(false);
     }
@@ -96,10 +105,11 @@ const RecipeDialog = (props) => {
     useEffect(() => {
         if (!dialogOpen) {
             setTitle('');
+            setOriginalTitle('');
             setDescription('');
             setNote('');
             setImageFile('');
-            setRoute('');
+            setOriginalRoute('');
             setIsFavorite(false);
             setRecipeId(null);
             setPreviewFileUri(null);
@@ -107,10 +117,11 @@ const RecipeDialog = (props) => {
             setPreviewFileName(null)
         } else {
             setTitle(recipe.title);
+            setOriginalTitle(recipe.title);
             setDescription(recipe.description);
             setNote(recipe.note);
             setImageFile(recipe.imageFile);
-            setRoute(recipe.route);
+            setOriginalRoute(recipe.route);
             setIsFavorite(recipe.isFavorite);
             setRecipeId(recipe.recipeId);
             setPreviewFileName(recipe.imageFile ? recipe.imageFile : '')
@@ -150,37 +161,66 @@ const RecipeDialog = (props) => {
                             }}
                         >
                             <Stack spacing={1}>
-                                <FormControl
-                                    error={isTitleError}
-                                >
-                                    <TextField
-                                        value={title}
-                                        onChange={handleTitleChange}
-                                        label="Title"
-                                        variant='standard'
+                                <Stack direction='row'>
+                                    <FormControl
                                         error={isTitleError}
-                                        padding={1}
-                                        InputLabelProps={{
-                                            shrink: true,
-                                            sx: {
-                                                marginLeft: 1,
-                                                marginTop: 0.5,
-                                            }
-                                        }}
                                         sx={{
-                                            backgroundColor: CustomColorScheme['white'],
-                                            padding: 1,
-                                            '& .MuiInput-input': {
-                                                fontFamily: 'monospace',
-                                                color: 'darkblue',
-                                            }
+                                            width: '100%',
+                                            marginRight: 1,
                                         }}
-                                    />
-                                    {
-                                        isTitleError &&
-                                        <FormHelperText>Title is required</FormHelperText>
-                                    }
-                                </FormControl>
+                                    >
+                                        <TextField
+                                            value={title}
+                                            onChange={handleTitleChange}
+                                            label="Title"
+                                            variant='standard'
+                                            error={isTitleError}
+                                            padding={1}
+                                            width='100%'
+                                            InputLabelProps={{
+                                                shrink: true,
+                                                sx: {
+                                                    marginLeft: 1,
+                                                    marginTop: 0.5,
+                                                }
+                                            }}
+                                            sx={{
+                                                backgroundColor: CustomColorScheme['white'],
+                                                padding: 1,
+                                                '& .MuiInput-input': {
+                                                    fontFamily: 'monospace',
+                                                    color: 'darkblue',
+                                                    fontSize: 18,
+                                                }
+                                            }}
+                                        />
+                                        {
+                                            isTitleError &&
+                                            <FormHelperText>Title is required</FormHelperText>
+                                        }
+                                    </FormControl>
+                                    <Box
+                                        sx={{
+                                            display: 'flex',
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                        }}
+                                    >
+                                        <IconButton
+                                            onClick={() => setIsFavorite(!isFavorite)}
+                                        >
+                                            {
+                                                isFavorite
+                                                    ? <FavoriteIcon
+                                                        sx={{
+                                                            color: CustomColorScheme['darkRed'],
+                                                        }}
+                                                    />
+                                                    : <FavoriteBorderIcon />
+                                            }
+                                        </IconButton>
+                                    </Box>
+                                </Stack>
                                 <Stack direction='row' spacing={1}>
                                     {
                                         previewFileUri &&

@@ -2,18 +2,19 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { CookiesProvider, useCookies } from "react-cookie";
-import {
-  RecipeContext,
-  HomeContext,
-  AppbarContext,
-} from './components/AllContext'
+import { useCookies } from "react-cookie";
+import { useNavigate, useParams } from 'react-router-dom';
 
 // material
 import dayjs from 'dayjs';
 
 // components
 import Index from './pages/index';
+import {
+  RecipeContext,
+  HomeContext,
+  AppbarContext,
+} from './components/AllContext'
 
 ///////////////////////
 
@@ -29,8 +30,10 @@ export default function App() {
   const [page, setPage] = useState(1);
   const [transmittedKeyword, setTransmittedKeyword] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [statusMessage, setStatusMessage] = useState('');
 
   const [cookie, setCookie] = useCookies(["keyword"]);
+  const navigate = useNavigate();
 
   // context //////////////
 
@@ -51,6 +54,9 @@ export default function App() {
     setTransmittedKeyword: setTransmittedKeyword,
     isAuthenticated: isAuthenticated,
     setIsAuthenticated: setIsAuthenticated,
+    cookie: cookie,
+    statusMessage: statusMessage,
+    setStatusMessage: setStatusMessage,
   };
 
   const recipeContext = {
@@ -66,6 +72,9 @@ export default function App() {
     setSelectedContent: setSelectedContent,
     createRecipeContent: createRecipeContent,
     deleteRecipeContent: deleteRecipeContent,
+    statusMessage: statusMessage,
+    setStatusMessage: setStatusMessage,
+    deleteRecipe: deleteRecipe,
   };
 
   // useEffect ////////////
@@ -93,6 +102,22 @@ export default function App() {
       });
   }
 
+  // delete a recipe
+  async function deleteRecipe(recipeId) {
+    let url = `${process.env.REACT_APP_API_BASE_URL}/recipe/${recipeId}/`
+    await axios
+      .delete(url)
+      .then((response) => {
+        getRecipeSearchResults(cookie.keyword);
+        navigate("/");
+      })
+      .catch((error) => {
+        console.log('API deleteRecipe error: ', recipeId);
+        console.log('API error url: ', url);
+        processError(error);
+      });
+  }
+
 
   // create a recipe, including image, ingredients and instructions
   async function createRecipe(formData) {
@@ -111,9 +136,17 @@ export default function App() {
           }
         }
       ).then((response) => {
-        getRecipeByRoute(data['route']);
+        navigate(`/recipe/${data['route']}`);
       })
       .catch((error) => {
+        let errMessage = "Recipe was not created"
+        if (error.response && error.response.data && error.response.data.description) {
+          errMessage += '. ' + error.response.data.description;
+        }
+        setStatusMessage({
+          status: "error",
+          message: errMessage,
+        })
         console.log('API createRecipe error: ', data);
         console.log('API error url: ', url);
         processError(error);
@@ -127,7 +160,7 @@ export default function App() {
 
     let data = {};
     formData.forEach((value, key) => data[key] = value);
-
+    // console.log('API updateRecipe: ', data);
     await axios
       .put(
         url,
@@ -138,9 +171,19 @@ export default function App() {
           }
         }
       ).then((response) => {
-        getRecipeByRoute(data['route']);
+        getRecipe(data['recipeId']);
+        setStatusMessage({
+          status: "success",
+          message: "Recipe was updated",
+          route: data['route'],
+        })
+        getRecipeSearchResults(cookie.keyword)
       })
       .catch((error) => {
+        setStatusMessage({
+          status: "error",
+          message: "Recipe was not updated",
+        })
         console.log('API updateRecipe error: ', data);
         console.log('API error url: ', url);
         processError(error);
@@ -224,6 +267,7 @@ export default function App() {
     let url = keyword
       ? `${process.env.REACT_APP_API_BASE_URL}/recipe/search/${keyword}/`
       : `${process.env.REACT_APP_API_BASE_URL}/recipe/map/`;
+    // console.log('API getRecipeSearchResults', url);
     await axios
       .get(url)
       .then((response) => {
@@ -232,6 +276,21 @@ export default function App() {
       })
       .catch((error) => {
         console.log('API getRecipeSearchResults error: ', keyword);
+        console.log('API error url: ', url);
+        processError(error);
+      });
+  }
+
+  async function getRecipe(recipeId) {
+    let url = `${process.env.REACT_APP_API_BASE_URL}/recipe/${recipeId}/`
+    await axios
+      .get(url)
+      .then((response) => {
+        setRecipeMap(response.data);
+        getRecipeSearchResults(cookie.keyword);
+      })
+      .catch((error) => {
+        console.log('API getRecipe error: ', recipeId);
         console.log('API error url: ', url);
         processError(error);
       });

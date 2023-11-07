@@ -24,9 +24,6 @@ import RecipeCreateDialog from './dialogs/RecipeCreateDialog';
 //////////////////////////////
 
 export default function RecipeAppBar(props) {
-  const {
-    showAddIcon
-  } = props;
 
   const {
     isAuthenticated,
@@ -95,14 +92,14 @@ export default function RecipeAppBar(props) {
             height={30}
           />
           {
-            showAddIcon &&
             isAuthenticated &&
             <Tooltip title='Add a recipe' >
-              <IconButton >
+              <IconButton
+                onClick={() => setRecipeCreateDialogOpen(true)}
+              >
                 <AddIcon sx={{
                   color: 'white'
                 }}
-                  onClick={() => setRecipeCreateDialogOpen(true)}
                 />
               </IconButton>
             </Tooltip>
