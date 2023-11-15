@@ -80,7 +80,7 @@ export default function RecipeAppBar(props) {
           display: 'flex',
           maxWidth: 900,
           padding: 0,
-          height: 40,
+          height: 50,
           justifyContent: 'start', // horizontal
           alignItems: 'center', // vertical
         }}
