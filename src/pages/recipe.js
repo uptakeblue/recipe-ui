@@ -7,6 +7,7 @@ import { Helmet, HelmetProvider } from "react-helmet-async";
 import { useMediaQuery } from 'react-responsive'
 import { useReactToPrint } from 'react-to-print';
 import { useImageSize, getImageSize } from 'react-image-size';
+import { useAuth0 } from "@auth0/auth0-react";
 
 // material ui
 import Stack from '@mui/material/Stack';
@@ -58,14 +59,15 @@ const ParsedText = (props) => {
     )
 }
 
+
 ////////////////////////
+
 
 export default function Recipe(props) {
 
     const {
         recipeMap,
         getRecipeByRoute,
-        isAuthenticated,
         updateRecipeContent,
         updateContent,
         updateRecipe,
@@ -80,6 +82,9 @@ export default function Recipe(props) {
         deleteRecipe,
     } = useContext(RecipeContext);
 
+
+    // constants ///////////////
+
     const [tabValue, setTabValue] = useState(0);
     const [contentDialogOpen, setContentDialogOpen] = useState(false);
     const [contentSearchDialogOpen, setContentSearchDialogOpen] = useState(false);
@@ -88,6 +93,7 @@ export default function Recipe(props) {
     const [deleteConfirmationDialogOpen, setDeleteConfirmationDialogOpen] = useState(false);
 
     const isMobile = useMediaQuery({ query: '(max-width: 750px)' })
+    const { isAuthenticated } = useAuth0();
 
     const [open, setOpen] = useState(false);
 
@@ -448,7 +454,6 @@ export default function Recipe(props) {
                                             content={content}
                                             tabValue={tabValue}
                                             setTabValue={setTabValue}
-                                            isAuthenticated={isAuthenticated}
                                             handleUpdateRecipeContent={handleUpdateRecipeContent}
                                             setContentDialogOpen={setContentDialogOpen}
                                             setContentSearchDialogOpen={setContentSearchDialogOpen}

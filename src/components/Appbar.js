@@ -1,6 +1,8 @@
 // general
 import { useContext, useState } from 'react';
 import { useMediaQuery } from 'react-responsive'
+import { useAuth0 } from "@auth0/auth0-react";
+import { useLocation } from 'react-router-dom'
 
 // material ui
 import AppBar from '@mui/material/AppBar';
@@ -26,8 +28,6 @@ import RecipeCreateDialog from './dialogs/RecipeCreateDialog';
 export default function RecipeAppBar(props) {
 
   const {
-    isAuthenticated,
-    setIsAuthenticated,
     createRecipe,
   } = useContext(AppbarContext);
 
@@ -35,8 +35,33 @@ export default function RecipeAppBar(props) {
   // constants //////////////
 
   const isMobile = useMediaQuery({ query: '(max-width: 1224px)' })
+  const location = useLocation();
+  const { loginWithRedirect } = useAuth0();
+  const { logout } = useAuth0();
+  const { isAuthenticated } = useAuth0();
 
   const [recipeCreateDialogOpen, setRecipeCreateDialogOpen] = useState(false);
+
+
+  // event handlers //////////////
+
+  const handleLogin = async () => {
+    await loginWithRedirect({
+      appState: {
+        returnTo: "/",
+      },
+    });
+  };
+
+  const handleLogout = () => {
+    logout({
+      logoutParams: {
+        returnTo: window.location.origin,
+        // returnTo: window.history.go(-2)
+      },
+    });
+  };
+
 
   // render /////////////////
 
@@ -92,37 +117,40 @@ export default function RecipeAppBar(props) {
             height={30}
           />
           {
-            isAuthenticated &&
-            <Tooltip title='Add a recipe' >
-              <IconButton
-                onClick={() => setRecipeCreateDialogOpen(true)}
-              >
-                <AddIcon sx={{
-                  color: 'white'
-                }}
-                />
-              </IconButton>
-            </Tooltip>
+            isAuthenticated
+              ?
+              <>
+                <Tooltip title='Add a recipe' >
+                  <IconButton
+                    onClick={() => setRecipeCreateDialogOpen(true)}
+                  >
+                    <AddIcon sx={{
+                      color: 'white'
+                    }}
+                    />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title='Log out of Recipes Admin Area' >
+                  <IconButton onClick={handleLogout} >
+                    <LogoutIcon
+                      sx={{
+                        color: CustomColorScheme['white']
+                      }}
+                    />
+                  </IconButton>
+                </Tooltip>
+              </>
+              :
+              <Tooltip title='Log into Recipes  Admin Area' >
+                <IconButton onClick={handleLogin} >
+                  <LoginIcon
+                    sx={{
+                      color: CustomColorScheme['white']
+                    }}
+                  />
+                </IconButton>
+              </Tooltip>
           }
-          <Tooltip title={isAuthenticated ? 'Log out' : 'Log in'} >
-            <IconButton
-              onClick={() => setIsAuthenticated(!isAuthenticated)}
-            >
-              {
-                isAuthenticated
-                  ? <LogoutIcon
-                    sx={{
-                      color: 'white'
-                    }}
-                  />
-                  : <LoginIcon
-                    sx={{
-                      color: 'white'
-                    }}
-                  />
-              }
-            </IconButton>
-          </Tooltip>
         </Stack>
       </Container>
       <RecipeCreateDialog

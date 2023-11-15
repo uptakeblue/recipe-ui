@@ -2,6 +2,7 @@
 import '../App.css';
 import React, { useState } from 'react';
 import { useMediaQuery } from 'react-responsive'
+import { useAuth0 } from "@auth0/auth0-react";
 
 // material ui
 import Box from '@mui/material/Box';
@@ -55,7 +56,6 @@ export default function RecipeContent(props) {
         setTabValue,
         contentIdx,
         contentLastIdx,
-        isAuthenticated,
         handleUpdateRecipeContent,
         setContentDialogOpen,
         setContentSearchDialogOpen,
@@ -63,11 +63,12 @@ export default function RecipeContent(props) {
         deleteRecipeContent,
     } = props;
 
-    // constants /////////////////
 
+    // constants /////////////////
 
     const [deletionConfirmationDialogOpen, setDeletionConfirmationDialogOpen] = useState(false);
     const isMobile = useMediaQuery({ query: '(max-width: 1224px)' })
+    const { isAuthenticated } = useAuth0();
 
 
     // event handlers ////////////

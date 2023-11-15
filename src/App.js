@@ -2,8 +2,9 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useCookies } from "react-cookie";
 import { useNavigate, useParams } from 'react-router-dom';
+import { useAuth0 } from "@auth0/auth0-react";
+import Cookies from "js-cookie";
 
 // material
 import dayjs from 'dayjs';
@@ -15,6 +16,7 @@ import {
   HomeContext,
   AppbarContext,
 } from './components/AllContext'
+import { CoPresent } from '@mui/icons-material';
 
 ///////////////////////
 
@@ -28,18 +30,14 @@ export default function App() {
   const [selectedContent, setSelectedContent] = useState();
   const [localKeyword, setLocalKeyword] = useState('');
   const [page, setPage] = useState(1);
-  const [transmittedKeyword, setTransmittedKeyword] = useState('');
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
 
-  const [cookie, setCookie] = useCookies(["keyword"]);
   const navigate = useNavigate();
+  const auth0 = useAuth0();
 
   // context //////////////
 
   const appbarContext = {
-    isAuthenticated: isAuthenticated,
-    setIsAuthenticated: setIsAuthenticated,
     createRecipe: createRecipe,
   };
 
@@ -50,11 +48,6 @@ export default function App() {
     setLocalKeyword: setLocalKeyword,
     page: page,
     setPage: setPage,
-    transmittedKeyword: transmittedKeyword,
-    setTransmittedKeyword: setTransmittedKeyword,
-    isAuthenticated: isAuthenticated,
-    setIsAuthenticated: setIsAuthenticated,
-    cookie: cookie,
     statusMessage: statusMessage,
     setStatusMessage: setStatusMessage,
   };
@@ -62,7 +55,6 @@ export default function App() {
   const recipeContext = {
     recipeMap: recipeMap,
     getRecipeByRoute: getRecipeByRoute,
-    isAuthenticated: isAuthenticated,
     updateRecipeContent: updateRecipeContent,
     updateContent: updateContent,
     updateRecipe: updateRecipe,
@@ -77,12 +69,6 @@ export default function App() {
     deleteRecipe: deleteRecipe,
   };
 
-  // useEffect ////////////
-
-  useEffect(() => {
-    getRecipeSearchResults(cookie.keyword);
-    setTransmittedKeyword(cookie.keyword)
-  }, []);
 
   // API //////////////////
 
@@ -105,10 +91,20 @@ export default function App() {
   // delete a recipe
   async function deleteRecipe(recipeId) {
     let url = `${process.env.REACT_APP_API_BASE_URL}/recipe/${recipeId}/`
+    const token = await auth0.getAccessTokenSilently();
+    let headers = {
+      "headers": {
+        "Authorization": `Bearer ${token}`,
+      }
+    }
     await axios
-      .delete(url)
+      .delete(
+        url,
+        headers,
+      )
       .then((response) => {
-        getRecipeSearchResults(cookie.keyword);
+        let keyword = Cookies.get("keyword");
+        getRecipeSearchResults(keyword);
         navigate("/");
       })
       .catch((error) => {
@@ -122,6 +118,13 @@ export default function App() {
   // create a recipe, including image, ingredients and instructions
   async function createRecipe(formData) {
     let url = `${process.env.REACT_APP_API_BASE_URL}/recipe/`
+    const token = await auth0.getAccessTokenSilently();
+    let headers = {
+      "headers": {
+        "Content-Type": "multipart/form-data",
+        "Authorization": `Bearer ${token}`,
+      }
+    }
 
     let data = {};
     formData.forEach((value, key) => data[key] = value);
@@ -130,11 +133,7 @@ export default function App() {
       .post(
         url,
         formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          }
-        }
+        headers,
       ).then((response) => {
         navigate(`/recipe/${data['route']}`);
       })
@@ -157,19 +156,22 @@ export default function App() {
   // update a recipe, including it's image 
   async function updateRecipe(formData) {
     let url = `${process.env.REACT_APP_API_BASE_URL}/recipe/`
+    const token = await auth0.getAccessTokenSilently();
+    let headers = {
+      "headers": {
+        "Content-Type": "multipart/form-data",
+        "Authorization": `Bearer ${token}`,
+      }
+    }
 
     let data = {};
     formData.forEach((value, key) => data[key] = value);
-    // console.log('API updateRecipe: ', data);
+
     await axios
       .put(
         url,
         formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          }
-        }
+        headers,
       ).then((response) => {
         getRecipe(data['recipeId']);
         setStatusMessage({
@@ -177,7 +179,8 @@ export default function App() {
           message: "Recipe was updated",
           route: data['route'],
         })
-        getRecipeSearchResults(cookie.keyword)
+        let keyword = Cookies.get("keyword");
+        getRecipeSearchResults(keyword)
       })
       .catch((error) => {
         setStatusMessage({
@@ -193,10 +196,17 @@ export default function App() {
   // changes the orderId value of a recipeContent reltionship
   async function updateContent(contentsObj) {
     let url = `${process.env.REACT_APP_API_BASE_URL}/content/`
+    const token = await auth0.getAccessTokenSilently();
+    let headers = {
+      "headers": {
+        "Authorization": `Bearer ${token}`,
+      }
+    }
     await axios
       .put(
         url,
         contentsObj,
+        headers,
       )
       .then((response) => {
         getRecipeByRoute(contentsObj.route)
@@ -212,10 +222,17 @@ export default function App() {
   // creates a new recipeContent relationship
   async function createRecipeContent(recipecontentsObj) {
     let url = `${process.env.REACT_APP_API_BASE_URL}/recipecontent/`
+    const token = await auth0.getAccessTokenSilently();
+    let headers = {
+      "headers": {
+        "Authorization": `Bearer ${token}`,
+      }
+    }
     await axios
       .post(
         url,
         recipecontentsObj,
+        headers,
       )
       .then((response) => {
         getRecipeByRoute(recipecontentsObj.route)
@@ -231,8 +248,17 @@ export default function App() {
   // deletes a recipeContent relationship
   async function deleteRecipeContent(recipecontentsObj) {
     let url = `${process.env.REACT_APP_API_BASE_URL}/recipecontent/${recipecontentsObj.recipeId}/${recipecontentsObj.contentId}/`
+    const token = await auth0.getAccessTokenSilently();
+    let headers = {
+      "headers": {
+        "Authorization": `Bearer ${token}`,
+      }
+    }
     await axios
-      .delete(url)
+      .delete(
+        url,
+        headers,
+      )
       .then((response) => {
         getRecipeByRoute(recipecontentsObj.route)
       })
@@ -247,10 +273,17 @@ export default function App() {
   // changes the orderId value of a recipeContent relationship
   async function updateRecipeContent(recipecontentsObj) {
     let url = `${process.env.REACT_APP_API_BASE_URL}/recipecontent/`
+    const token = await auth0.getAccessTokenSilently();
+    let headers = {
+      "headers": {
+        "Authorization": `Bearer ${token}`,
+      }
+    }
     await axios
       .put(
         url,
         recipecontentsObj,
+        headers,
       )
       .then((response) => {
         getRecipeByRoute(recipecontentsObj.route)
@@ -263,7 +296,6 @@ export default function App() {
   }
 
   async function getRecipeSearchResults(keyword) {
-    setCookie("keyword", keyword, { path: "/" })
     let url = keyword
       ? `${process.env.REACT_APP_API_BASE_URL}/recipe/search/${keyword}/`
       : `${process.env.REACT_APP_API_BASE_URL}/recipe/map/`;
@@ -287,7 +319,8 @@ export default function App() {
       .get(url)
       .then((response) => {
         setRecipeMap(response.data);
-        getRecipeSearchResults(cookie.keyword);
+        let keyword = Cookies.get("keyword");
+        getRecipeSearchResults(keyword);
       })
       .catch((error) => {
         console.log('API getRecipe error: ', recipeId);
@@ -301,8 +334,9 @@ export default function App() {
     await axios
       .get(url)
       .then((response) => {
+        let keyword = Cookies.get("keyword");
         setRecipeMap(response.data);
-        getRecipeSearchResults(cookie.keyword);
+        getRecipeSearchResults(keyword);
       })
       .catch((error) => {
         console.log('API getRecipeByRoute error: ', route);

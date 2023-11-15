@@ -3,6 +3,7 @@ import '../App.css';
 import React, { useContext, useEffect } from 'react';
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import { useMediaQuery } from 'react-responsive'
+import Cookies from "js-cookie";
 
 // material ui
 import Stack from '@mui/material/Stack';
@@ -27,6 +28,7 @@ import Appbar from '../components/Appbar';
 import Copywrite from '../components/Copywrite';
 import RecipeCard from '../components/RecipeCard';
 import { HomeContext } from '../components/AllContext';
+import { keyboard } from '@testing-library/user-event/dist/keyboard';
 
 
 //////////////////////////////////
@@ -40,11 +42,6 @@ export default function Home(props) {
     setLocalKeyword,
     page,
     setPage,
-    transmittedKeyword,
-    setTransmittedKeyword,
-    isAuthenticated,
-    setIsAuthenticated,
-    cookie,
     statusMessage,
     setStatusMessage,
   } = useContext(HomeContext);
@@ -67,9 +64,10 @@ export default function Home(props) {
   // useEffect ///////////////////
 
   useEffect(() => {
-    if (!recipeSearchResults) {
-      getRecipeSearchResults(cookie.keyword);
-    }
+    let keyword = Cookies.get("keyword")
+    console.log("Home useEffect keyword:", keyword)
+    setLocalKeyword(keyword);
+    getRecipeSearchResults(keyword);
   }, []);
 
 
@@ -77,19 +75,19 @@ export default function Home(props) {
 
   const handleGetSearchResults = (keyword) => {
     setPage(1)
+    Cookies.set("keyword", keyword)
     setLocalKeyword(keyword);
-    setTransmittedKeyword(keyword)
     getRecipeSearchResults(keyword);
   }
 
   const handleEnterKeyPress = (event) => {
     if (event.key === 'Enter') {
       setPage(1)
-      setTransmittedKeyword(localKeyword)
+      Cookies.set("keyword", localKeyword);
       getRecipeSearchResults(localKeyword);
     } else if (event.key === 'Escape') {
       setPage(1)
-      setTransmittedKeyword('')
+      Cookies.remove("keyword");
       handleGetSearchResults('');
     }
   }
@@ -108,8 +106,9 @@ export default function Home(props) {
   // components //////////////////
 
   const PageTitle = () => {
-    let title = transmittedKeyword
-      ? `Search Results for "${transmittedKeyword}"` + (recipeSearchResults ? ` (${recipeSearchResults.length})` : "")
+    let keyword = Cookies.get("keyword");
+    let title = keyword
+      ? `Search Results for "${keyword}"` + (recipeSearchResults ? ` (${recipeSearchResults.length})` : "")
       : (recipeSearchResults ? `All Recipes (${recipeSearchResults.length})` : 'All Recipes')
 
     return (
