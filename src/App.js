@@ -16,7 +16,7 @@ import {
   HomeContext,
   AppbarContext,
 } from './components/AllContext'
-import { CoPresent } from '@mui/icons-material';
+
 
 ///////////////////////
 
@@ -31,6 +31,7 @@ export default function App() {
   const [localKeyword, setLocalKeyword] = useState('');
   const [page, setPage] = useState(1);
   const [statusMessage, setStatusMessage] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
   const auth0 = useAuth0();
@@ -50,6 +51,7 @@ export default function App() {
     setPage: setPage,
     statusMessage: statusMessage,
     setStatusMessage: setStatusMessage,
+    loading: loading,
   };
 
   const recipeContext = {
@@ -299,14 +301,16 @@ export default function App() {
     let url = keyword
       ? `${process.env.REACT_APP_API_BASE_URL}/recipe/search/${keyword}/`
       : `${process.env.REACT_APP_API_BASE_URL}/recipe/map/`;
-    // console.log('API getRecipeSearchResults', url);
+    setLoading(true);
     await axios
       .get(url)
       .then((response) => {
         setRecipeSearchResults(response.data.recipes);
         setContentTitles(response.data.contentTitles);
+        setLoading(false);
       })
       .catch((error) => {
+        setLoading(false);
         console.log('API getRecipeSearchResults error: ', keyword);
         console.log('API error url: ', url);
         processError(error);

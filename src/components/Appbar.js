@@ -2,7 +2,7 @@
 import { useContext, useState } from 'react';
 import { useMediaQuery } from 'react-responsive'
 import { useAuth0 } from "@auth0/auth0-react";
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 // material ui
 import AppBar from '@mui/material/AppBar';
@@ -40,6 +40,8 @@ export default function RecipeAppBar(props) {
   const { logout } = useAuth0();
   const { isAuthenticated } = useAuth0();
 
+  const navigate = useNavigate();
+
   const [recipeCreateDialogOpen, setRecipeCreateDialogOpen] = useState(false);
 
 
@@ -57,7 +59,6 @@ export default function RecipeAppBar(props) {
     logout({
       logoutParams: {
         returnTo: window.location.origin,
-        // returnTo: window.history.go(-2)
       },
     });
   };
@@ -104,10 +105,19 @@ export default function RecipeAppBar(props) {
             width={24}
           />
           <Typography
-            sx={{ paddingLeft: 1 }}
+            sx={{
+              paddingLeft: 1,
+              cursor: location.pathname === "/" ? "" : 'pointer',
+              ':hover': {
+                color: location.pathname === "/" ? CustomColorScheme['white'] : CustomColorScheme['lightYellow'],
+              }
+            }}
             variant='body1'
             component='div'
             fontSize={18}
+            onClick={() =>
+              location.pathname === "/" ? "" : navigate("/")
+            }
           >
             Michael's Recipe Collection
           </Typography>

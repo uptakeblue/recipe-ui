@@ -230,7 +230,7 @@ export default function Recipe(props) {
                     <Tooltip title='Return'>
                         <IconButton
                             onClick={() => {
-                                navigate('/')
+                                navigate("/")
                             }}
                             sx={{
                                 ':hover': {

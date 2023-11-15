@@ -17,6 +17,7 @@ import { IconButton, InputAdornment, Paper } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
 import Slide from '@mui/material/Slide';
 import Alert from '@mui/material/Alert';
+import CircularProgress from '@mui/material/CircularProgress';
 
 // icons
 import SearchIcon from '@mui/icons-material/Search';
@@ -44,6 +45,7 @@ export default function Home(props) {
     setPage,
     statusMessage,
     setStatusMessage,
+    loading,
   } = useContext(HomeContext);
 
 
@@ -75,19 +77,19 @@ export default function Home(props) {
 
   const handleGetSearchResults = (keyword) => {
     setPage(1)
-    Cookies.set("keyword", keyword)
+    if (keyword) {
+      Cookies.set("keyword", keyword);
+    } else {
+      Cookies.remove("keyword");
+    }
     setLocalKeyword(keyword);
     getRecipeSearchResults(keyword);
   }
 
   const handleEnterKeyPress = (event) => {
     if (event.key === 'Enter') {
-      setPage(1)
-      Cookies.set("keyword", localKeyword);
-      getRecipeSearchResults(localKeyword);
+      handleGetSearchResults(localKeyword);
     } else if (event.key === 'Escape') {
-      setPage(1)
-      Cookies.remove("keyword");
       handleGetSearchResults('');
     }
   }
@@ -201,31 +203,51 @@ export default function Home(props) {
           />
 
         </Stack>
-        <Grid
-          container
-          spacing={1}
-        >
-          {recipesThisPage &&
-            Object.keys(recipesThisPage).map((idx) => {
-              let rcp = recipesThisPage[idx];
-              return (
-                <RecipeCard key={idx} recipe={rcp} />
-              );
-            })}
-        </Grid>
-        <Box
-          display='flex'
-          flexGrow={1}
-          alignItems='center'
-          justifyContent='center'
-          paddingTop={2}
-        >
-          <Pagination
-            count={pageCount}
-            page={page}
-            onChange={handlePaginationChange}
-          />
-        </Box>
+        {
+          loading
+            ?
+            <Box
+              display='flex'
+              flexGrow={1}
+              height={350}
+              justifyContent='center'
+              alignItems='center'
+            >
+              <CircularProgress
+                sx={{
+                  color: CustomColorScheme['yellow'],
+                }}
+              />
+            </Box>
+            :
+            <>
+              <Grid
+                container
+                spacing={1}
+              >
+                {recipesThisPage &&
+                  Object.keys(recipesThisPage).map((idx) => {
+                    let rcp = recipesThisPage[idx];
+                    return (
+                      <RecipeCard key={idx} recipe={rcp} />
+                    );
+                  })}
+              </Grid>
+              <Box
+                display='flex'
+                flexGrow={1}
+                alignItems='center'
+                justifyContent='center'
+                paddingTop={2}
+              >
+                <Pagination
+                  count={pageCount}
+                  page={page}
+                  onChange={handlePaginationChange}
+                />
+              </Box>
+            </>
+        }
       </Container>
       <Snackbar
         open={statusMessage !== ''}
