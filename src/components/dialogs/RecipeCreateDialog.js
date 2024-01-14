@@ -239,7 +239,6 @@ const RecipeCreateDialog = (props) => {
                                     >
                                         <Stack>
                                             <input
-                                                id="image-select"
                                                 style={{
                                                     display: "none"
                                                 }}

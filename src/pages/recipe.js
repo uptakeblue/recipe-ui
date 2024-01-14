@@ -7,7 +7,7 @@ import { Helmet, HelmetProvider } from "react-helmet-async";
 import { useMediaQuery } from 'react-responsive'
 import { useReactToPrint } from 'react-to-print';
 import { useImageSize, getImageSize } from 'react-image-size';
-import { useAuth0 } from "@auth0/auth0-react";
+
 
 // material ui
 import Stack from '@mui/material/Stack';
@@ -39,7 +39,8 @@ import ContentDialog from '../components/dialogs/ContentDialog';
 import ContentSearchDialog from '../components/dialogs/ContentSearchDialog';
 import DeleteConfirmationDialog from '../components/dialogs/DeleteConfirmationDialog';
 import RecipeDialog from '../components/dialogs/RecipeDialog';
-import { Button } from '@mui/material';
+import { AuthContext } from '../AuthContext';
+
 
 const ParsedText = (props) => {
     const { rawText } = props;
@@ -93,7 +94,8 @@ export default function Recipe(props) {
     const [deleteConfirmationDialogOpen, setDeleteConfirmationDialogOpen] = useState(false);
 
     const isMobile = useMediaQuery({ query: '(max-width: 750px)' })
-    const { isAuthenticated } = useAuth0();
+    // const { isAuthenticated } = useContext(AuthContext)
+    const isAuthenticated = false
 
     const [open, setOpen] = useState(false);
 
@@ -117,12 +119,11 @@ export default function Recipe(props) {
     const navigate = useNavigate();
     const componentRef = useRef();
 
-    const imagefileUri = recipeMap && (
-        recipeMap.imageFile
-        && (
-            `${process.env.REACT_APP_API_IMAGE_URL + "/" + recipeMap.imageFile}`
-        )
-    )
+    const imagefileUri =
+        recipeMap && recipeMap.imageFile && recipeMap.imageFile != 'None'
+            ? `${process.env.REACT_APP_IMAGE_BASE_URL + "/" + recipeMap.imageFile}`
+            : `${process.env.REACT_APP_IMAGE_BASE_URL + "/orange-panel.png"}`
+
 
     const [imageDimensions] = useImageSize(imagefileUri);
 
@@ -183,7 +184,6 @@ export default function Recipe(props) {
             </Helmet>
             <Appbar />
             <Container
-                id='1d-2'
                 maxWidth='false'
                 disableGutters={isMobile}
                 sx={{
@@ -192,29 +192,29 @@ export default function Recipe(props) {
             >
                 {/* tool bar */}
                 <Stack
-                    id='1d-3'
                     direction="row"
                     paddingY={1}
                     marginRight={1}
                 >
                     <Box
-                        id='id-4'
                         display='flex'
                         flexGrow={1}
                     />
-                    <Tooltip title='Delete this recipe'>
-                        <IconButton
-                            onClick={() => setDeleteConfirmationDialogOpen(true)}
-                            sx={{
-                                ':hover': {
-                                    color: 'white',
-                                },
-                            }}
-                        >
-                            <DeleteIcon />
-                        </IconButton>
-                    </Tooltip>
-
+                    {
+                        isAuthenticated &&
+                        <Tooltip title='Delete this recipe'>
+                            <IconButton
+                                onClick={() => setDeleteConfirmationDialogOpen(true)}
+                                sx={{
+                                    ':hover': {
+                                        color: 'white',
+                                    },
+                                }}
+                            >
+                                <DeleteIcon />
+                            </IconButton>
+                        </Tooltip>
+                    }
                     <Tooltip title='Print this recipe!'>
                         <IconButton
                             onClick={handlePrint}
@@ -245,7 +245,6 @@ export default function Recipe(props) {
 
                 {/* recipe surface */}
                 <Paper
-                    id='id-6'
                     elevation={0}
                     sx={{
                         padding: isMobile ? 1 : 4,
@@ -257,20 +256,19 @@ export default function Recipe(props) {
                     }}
                 >
                     <Stack
-                        id='id-7'
                         direction='column'
                         width="100%"
                         spacing={2}
                     >
                         {/* title and favorite icon */}
                         <Stack
-                            id='id-8'
                             direction='row'
                             width='100%'
                         >
-                            <Box id='id-9' width={100} />
                             <Box
-                                id='id-10'
+                                width={100}
+                            />
+                            <Box
                                 display='flex'
                                 height={37}
                                 flexGrow={1}
@@ -278,7 +276,6 @@ export default function Recipe(props) {
                                 alignItems='center'
                             >
                                 <Typography
-                                    id='id-11'
                                     display='flex'
                                     variant='h5'
                                     component='div'
@@ -288,7 +285,6 @@ export default function Recipe(props) {
                                 </Typography>
                             </Box>
                             <Box
-                                id='id-12'
                                 width={100}
                                 display='flex'
                                 justifyContent='end'
@@ -298,7 +294,6 @@ export default function Recipe(props) {
                                     recipeMap.isFavorite &&
                                     <Tooltip title='A favorite!'>
                                         <FavoriteIcon
-                                            id='id-13'
                                             sx={{
                                                 color: CustomColorScheme['darkRed'],
                                             }}
@@ -348,7 +343,6 @@ export default function Recipe(props) {
                                         <>
                                             <br /><b>Note:</b>
                                             <ParsedText
-                                                id='id-23'
                                                 rawText={recipeMap.note}
                                                 sx={{
                                                     marginTop: 0,
@@ -364,12 +358,10 @@ export default function Recipe(props) {
                             :
                             // desktop
                             <Stack
-                                id='id-14'
                                 direction='row'
                                 spacing={4}
                             >
                                 <Box
-                                    id='id-15'
                                     width='100%'
                                     bgcolor='white'
                                     borderRadius={5}
@@ -381,13 +373,11 @@ export default function Recipe(props) {
 
                                 >
                                     <Stack
-                                        id='id-16'
                                         direction='row'
                                     >
                                         {recipeMap.imageFile &&
                                             (
                                                 <img
-                                                    id='id-17'
                                                     src={imagefileUri}
                                                     width={400}
                                                     height={imageDimensions ? 400 / imageDimensions.width * imageDimensions.height : 'auto'}
@@ -400,20 +390,21 @@ export default function Recipe(props) {
                                             )
                                         }
                                         <Stack
-                                            id='id-18'
                                             direction='column'
                                             spacing={0}
                                         >
                                             <Box
-                                                id='id-19'
                                                 padding={1}
                                             >
-                                                <ParsedText id='id-20' rawText={recipeMap.description} />
+                                                <ParsedText
+                                                    rawText={recipeMap.description}
+                                                />
                                             </Box>
                                             {recipeMap.note && (
-                                                <Box id='id-21' padding={1}>
+                                                <Box
+                                                    padding={1}
+                                                >
                                                     <Typography
-                                                        id='id-22'
                                                         variant='body1'
                                                         component='div'
                                                         marginTop={1}
@@ -424,7 +415,6 @@ export default function Recipe(props) {
                                                         Note:
                                                     </Typography>
                                                     <ParsedText
-                                                        id='id-23'
                                                         rawText={recipeMap.note}
                                                         sx={{
                                                             color: CustomColorScheme['text']
@@ -447,7 +437,6 @@ export default function Recipe(props) {
                                 recipeMap.contents.map((content, idx) => {
                                     return (
                                         <RecipeContent
-                                            id={'id-2_' + idx}
                                             key={idx}
                                             contentIdx={idx}
                                             contentLastIdx={recipeMap.contents.length - 1}

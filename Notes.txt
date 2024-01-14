@@ -11,15 +11,3 @@ alignItems: "top"/"center"/"bottom"
 NPM
 ----------------------------------
 npm start
-
-
-Flask from command line:
-----------------------------------
-CD C:\Users\Michael\Documents\Github\recipes-api
-.venv\Scripts\activate
-flask --app app.py run
-
-D:
-CD D:\Michael\Documents\Github\recipes-api
-.venv\Scripts\activate
-flask --app app.py run

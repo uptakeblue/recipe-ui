@@ -1,8 +1,7 @@
 // general
 import '../App.css';
-import React, { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useMediaQuery } from 'react-responsive'
-import { useAuth0 } from "@auth0/auth0-react";
 
 // material ui
 import Box from '@mui/material/Box';
@@ -12,6 +11,7 @@ import Tooltip from '@mui/material/Tooltip';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Paper from '@mui/material/Paper';
+import Stack from '@mui/material/Stack';
 
 // icons
 import EditIcon from '@mui/icons-material/Edit';
@@ -22,10 +22,8 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 // components
 import { CustomColorScheme } from '../components/CustomTheme';
-import { Add } from '@mui/icons-material';
-import { Stack, useScrollTrigger } from '@mui/material';
 import DeleteConfirmationDialog from './dialogs/DeleteConfirmationDialog';
-import { setSelectionRange } from '@testing-library/user-event/dist/utils';
+import { AuthContext } from '../AuthContext';
 
 
 const TabPanel = (props) => {
@@ -35,7 +33,6 @@ const TabPanel = (props) => {
         <div
             role="tabpanel"
             hidden={value !== index}
-            id={`simple-tabpanel-${index}`}
             {...other}
         >
             {value === index && (
@@ -68,7 +65,8 @@ export default function RecipeContent(props) {
 
     const [deletionConfirmationDialogOpen, setDeletionConfirmationDialogOpen] = useState(false);
     const isMobile = useMediaQuery({ query: '(max-width: 1224px)' })
-    const { isAuthenticated } = useAuth0();
+    // const { isAuthenticated } = useContext(AuthContext)
+    const isAuthenticated = false
 
 
     // event handlers ////////////
@@ -104,7 +102,6 @@ export default function RecipeContent(props) {
                 }}
             >
                 <Typography
-                    id='id-x-100'
                     variant='h6'
                     component='div'
                     justifyContent='start'
@@ -193,7 +190,6 @@ export default function RecipeContent(props) {
     return (
         <>
             <Paper
-                id='id-x-1'
                 elevation={0}
                 // square
                 sx={{
@@ -205,7 +201,6 @@ export default function RecipeContent(props) {
                 {
                     contentIdx === 0 && (
                         <Tabs
-                            id='id-x-2'
                             value={tabValue}
                             onChange={(e, newValue) => setTabValue(newValue)}
                             color='inherit'
@@ -217,7 +212,6 @@ export default function RecipeContent(props) {
                             }}
                         >
                             <Tab
-                                id='id-x-3'
                                 label="Ingredients"
                                 index={0}
                                 sx={{
@@ -228,7 +222,6 @@ export default function RecipeContent(props) {
                                 }}
                             />
                             <Tab
-                                id='id-x-4'
                                 label="Instructions"
                                 index={1}
                                 sx={{
@@ -257,15 +250,14 @@ export default function RecipeContent(props) {
                         </Tabs>
                     )
                 }
-                <TabPanel id='id-x-5' value={tabValue} index={0} >
+                <TabPanel value={tabValue} index={0} >
                     {/* INGREDIENTS */}
-                    <Title id='id-x-6' title={content.title} />
+                    <Title title={content.title} />
                     {
                         content.ingredients &&
                         content.ingredients.split('\n').map((ingredient, idx) => {
                             return (
                                 <Box
-                                    id={'id-x-7-' + idx}
                                     key={idx}
                                     sx={{
                                         bgcolor: CustomColorScheme['brightOrange'],
@@ -294,15 +286,14 @@ export default function RecipeContent(props) {
                         })
                     }
                 </TabPanel>
-                <TabPanel id='id-x-8' value={tabValue} index={1}>
+                <TabPanel value={tabValue} index={1}>
                     {/* INSTRUCTIONS */}
-                    <Title id='id-x-9' title={content.title} />
+                    <Title title={content.title} />
                     {
                         content.instructions &&
                         content.instructions.split('\n').map((instruction, idx) => {
                             return (
                                 <Box
-                                    id={'id-x-10-' + idx}
                                     key={idx}
                                     sx={{
                                         bgcolor: CustomColorScheme['darkGreen'],

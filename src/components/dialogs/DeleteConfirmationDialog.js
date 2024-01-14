@@ -22,7 +22,7 @@ const DeleteConfirmationDialog = (props) => {
           backgroundColor: 'white',
         }}
       >
-        <DialogTitle id='confirm-dialog'>Confirm Deletion</DialogTitle>
+        <DialogTitle>Confirm Deletion</DialogTitle>
         <DialogContent>{message}</DialogContent>
         <DialogActions>
           <Box
@@ -39,7 +39,6 @@ const DeleteConfirmationDialog = (props) => {
               justifyContent='flex-start'
             >
               <Button
-                id='delete-button'
                 variant='contained'
                 size='small'
                 onClick={() => {
@@ -50,7 +49,6 @@ const DeleteConfirmationDialog = (props) => {
                 Delete
               </Button>
               <Button
-                id='cancel-button'
                 variant='outlined'
                 size='small'
                 onClick={() => {

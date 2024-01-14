@@ -1,7 +1,6 @@
 // general
 import { useContext, useState } from 'react';
 import { useMediaQuery } from 'react-responsive'
-import { useAuth0 } from "@auth0/auth0-react";
 import { useLocation, useNavigate } from 'react-router-dom'
 
 // material ui
@@ -22,6 +21,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { CustomColorScheme } from './CustomTheme';
 import { AppbarContext } from './AllContext';
 import RecipeCreateDialog from './dialogs/RecipeCreateDialog';
+import { AuthContext } from '../AuthContext';
 
 //////////////////////////////
 
@@ -36,31 +36,29 @@ export default function RecipeAppBar(props) {
 
   const isMobile = useMediaQuery({ query: '(max-width: 1224px)' })
   const location = useLocation();
-  const { loginWithRedirect } = useAuth0();
-  const { logout } = useAuth0();
-  const { isAuthenticated } = useAuth0();
-
   const navigate = useNavigate();
 
+  // const {
+  //   signIn,
+  //   signOut,
+  //   isAuthenticated,
+  // } = useContext(AuthContext)
+
+
+  const isAuthenticated = false
   const [recipeCreateDialogOpen, setRecipeCreateDialogOpen] = useState(false);
 
 
   // event handlers //////////////
 
   const handleLogin = async () => {
-    await loginWithRedirect({
-      appState: {
-        returnTo: "/",
-      },
-    });
+    // signOut();
+    navigate("/");
   };
 
   const handleLogout = () => {
-    logout({
-      logoutParams: {
-        returnTo: window.location.origin,
-      },
-    });
+    // signOut();
+    navigate("/");
   };
 
 

@@ -3,7 +3,6 @@ import '../App.css';
 import React, { useContext, useEffect } from 'react';
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import { useMediaQuery } from 'react-responsive'
-import Cookies from "js-cookie";
 
 // material ui
 import Stack from '@mui/material/Stack';
@@ -66,8 +65,9 @@ export default function Home(props) {
   // useEffect ///////////////////
 
   useEffect(() => {
-    let keyword = Cookies.get("keyword")
-    console.log("Home useEffect keyword:", keyword)
+    let keyword = localStorage.getItem("keyword") !== null
+      ? JSON.parse(localStorage.getItem("keyword"))
+      : ""
     setLocalKeyword(keyword);
     getRecipeSearchResults(keyword);
   }, []);
@@ -78,9 +78,9 @@ export default function Home(props) {
   const handleGetSearchResults = (keyword) => {
     setPage(1)
     if (keyword) {
-      Cookies.set("keyword", keyword);
-    } else {
-      Cookies.remove("keyword");
+      localStorage.setItem("keyword", JSON.stringify(keyword));
+    } else if (localStorage.getItem("keyword") !== null) {
+      localStorage.removeItem("keyword");
     }
     setLocalKeyword(keyword);
     getRecipeSearchResults(keyword);
@@ -108,7 +108,9 @@ export default function Home(props) {
   // components //////////////////
 
   const PageTitle = () => {
-    let keyword = Cookies.get("keyword");
+    let keyword = localStorage.getItem("keyword") !== null
+      ? JSON.parse(localStorage.getItem("keyword"))
+      : ""
     let title = keyword
       ? `Search Results for "${keyword}"` + (recipeSearchResults ? ` (${recipeSearchResults.length})` : "")
       : (recipeSearchResults ? `All Recipes (${recipeSearchResults.length})` : 'All Recipes')

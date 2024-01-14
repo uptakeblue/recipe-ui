@@ -65,10 +65,11 @@ export default function RecipeCard(props) {
     const isMobile = useMediaQuery({ query: '(max-width: 1224px)' })
     const isLandscape = useMediaQuery({ query: '(orientation: landscape)' })
 
-    let imagefile = recipe.imageFile
-        ? `url("${process.env.REACT_APP_API_IMAGE_URL + (isMobile ? "/thumbnail/" : "/") + recipe.imageFile}")`
-        : `url("${process.env.REACT_APP_API_IMAGE_URL + "/orange-panel.png"}")`
+    let imagefile = recipe.imageFile && recipe.imageFile != 'None'
+        ? `url("${process.env.REACT_APP_IMAGE_BASE_URL + "/" + recipe.imageFile}")`
+        : `url("${process.env.REACT_APP_IMAGE_BASE_URL + "/orange-panel.png"}")`
 
+    // console.log("RecipeCard imageFile", imagefile)
     return (
         <Grid item key={recipe.recipeId} >
             <Paper
@@ -79,7 +80,9 @@ export default function RecipeCard(props) {
                     justifyContent: 'end',
                     alignItems: 'end',
                     background: imagefile,
-                    backgroundSize: isMobile ? 'auto 105' : 276,
+                    // backgroundSize: isMobile ? 'auto 105' : 276,
+                    backgroundSize: isMobile ? 85 : 276,
+                    // backgroundColor: CustomColorScheme['brightOrange'],
                     backgroundRepeat: "no-repeat",
                     position: 'relative',
                     '&.MuiPaper-root': {
@@ -88,7 +91,8 @@ export default function RecipeCard(props) {
                 }}
                 onClick={() => navigate(`/recipe/${recipe.route}`)}
             >
-                {recipe.isFavorite &&
+                {
+                    recipe.isFavorite &&
                     <div style={{ position: 'absolute', top: 10, right: 10, zIndex: 1000 }}>
                         <Tooltip title='Always a Favorite!'>
                             <FavoriteIcon

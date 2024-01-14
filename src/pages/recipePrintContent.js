@@ -69,7 +69,6 @@ export default function RecipePrintContent(props) {
     return recipeMap && (
         <Paper
             ref={componentRef}
-            id='id-6'
             elevation={0}
             sx={{
                 padding: 4,
@@ -77,13 +76,11 @@ export default function RecipePrintContent(props) {
             }}
         >
             <Stack
-                id='id-7'
                 direction='column'
                 width="100%"
                 spacing={2}
             >
                 <Typography
-                    id='id-11'
                     display='flex'
                     variant='h5'
                     component='div'
@@ -91,10 +88,10 @@ export default function RecipePrintContent(props) {
                 >
                     {recipeMap.title}
                 </Typography>
-                <Box
-                    id='id-19'
-                >
-                    <ParsedText id='id-20' rawText={recipeMap.description} />
+                <Box>
+                    <ParsedText
+                        rawText={recipeMap.description}
+                    />
                 </Box>
                 {recipeMap.note && (
                     <>
@@ -102,7 +99,6 @@ export default function RecipePrintContent(props) {
                             Note:
                         </div>
                         <ParsedText
-                            id='id-23'
                             rawText={recipeMap.note}
                         />
                     </>
@@ -110,7 +106,6 @@ export default function RecipePrintContent(props) {
                 {recipeMap.imageFile &&
                     (
                         <img
-                            id='id-17'
                             src={imagefile}
                             width='33%'
                             height='auto'
