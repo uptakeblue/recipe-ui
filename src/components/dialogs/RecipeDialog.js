@@ -1,7 +1,6 @@
 // general
 import React, { useState, useEffect } from 'react';
 import { useMediaQuery } from 'react-responsive'
-import { useNavigate } from 'react-router-dom';
 
 // material ui
 import Button from '@mui/material/Button';
@@ -52,7 +51,6 @@ const RecipeDialog = (props) => {
     const [isTitleError, setIsTitleError] = useState(false);
 
     const isMobile = useMediaQuery({ query: '(max-width: 750px)' })
-    const navigate = useNavigate();
 
 
     // event handlers //////////
@@ -124,8 +122,8 @@ const RecipeDialog = (props) => {
             setOriginalRoute(recipe.route);
             setIsFavorite(recipe.isFavorite);
             setRecipeId(recipe.recipeId);
-            setPreviewFileName(recipe.imageFile ? recipe.imageFile : '')
-            setPreviewFileUri(recipe.imageFile ? `${process.env.REACT_APP_API_IMAGE_URL + "/" + recipe.imageFile}` : '');
+            setPreviewFileName(recipe.imageFile && recipe.imageFile !== 'None' ? recipe.imageFile : '')
+            setPreviewFileUri(recipe.imageFile && recipe.imageFile !== 'None' ? `${process.env.REACT_APP_IMAGE_BASE_URL + "/" + recipe.imageFile}` : '');
         }
         setIsTitleError(false);
     }, [dialogOpen]);
@@ -170,7 +168,7 @@ const RecipeDialog = (props) => {
                                         }}
                                     >
                                         <TextField
-                                            value={title}
+                                            value={title ? title : ''}
                                             onChange={handleTitleChange}
                                             label="Title"
                                             variant='standard'
@@ -223,27 +221,30 @@ const RecipeDialog = (props) => {
                                 </Stack>
                                 <Stack direction='row' spacing={1}>
                                     {
-                                        previewFileUri &&
-                                        <Stack>
-                                            <img
-                                                src={previewFileUri}
-                                                width={isMobile ? 250 : 350}
-                                                height='auto'
-                                                border='none'
-                                                style={{
-                                                    borderRadius: 10,
-                                                }}
-                                            />
-                                            <Typography
-                                                variant='body1'
-                                                component='div'
-                                                fontSize={14}
-                                                fontWeight='bold'
-                                                paddingY={1}
-                                            >
-                                                {previewFileName}
-                                            </Typography>
-                                        </Stack>
+                                        previewFileUri
+                                            ?
+                                            <Stack>
+                                                <img
+                                                    src={previewFileUri}
+                                                    width={isMobile ? 250 : 350}
+                                                    height='auto'
+                                                    border='none'
+                                                    style={{
+                                                        borderRadius: 10,
+                                                    }}
+                                                />
+                                                <Typography
+                                                    variant='body1'
+                                                    component='div'
+                                                    fontSize={14}
+                                                    fontWeight='bold'
+                                                    paddingY={1}
+                                                >
+                                                    {previewFileName}
+                                                </Typography>
+                                            </Stack>
+                                            :
+                                            <Box height={300}></Box>
                                     }
                                     <Box
                                         display='flex'
@@ -283,7 +284,7 @@ const RecipeDialog = (props) => {
                                     </Box>
                                 </Stack>
                                 <TextField
-                                    value={description}
+                                    value={description ? description : ''}
                                     onChange={(e) => setDescription(e.currentTarget.value)}
                                     label="Description"
                                     variant='standard'
@@ -310,7 +311,7 @@ const RecipeDialog = (props) => {
                                     }}
                                 />
                                 <TextField
-                                    value={note}
+                                    value={note ? note : ''}
                                     onChange={(e) => setNote(e.currentTarget.value)}
                                     label="Note"
                                     variant='standard'

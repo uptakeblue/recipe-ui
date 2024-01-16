@@ -3,6 +3,7 @@ import '../App.css';
 import React, { useContext, useEffect } from 'react';
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import { useMediaQuery } from 'react-responsive'
+import { useLocation } from 'react-router-dom';
 
 // material ui
 import Stack from '@mui/material/Stack';
@@ -24,12 +25,10 @@ import ClearIcon from '@mui/icons-material/Clear';
 
 // components
 import { CustomColorScheme } from '../components/CustomTheme';
-import Appbar from '../components/Appbar';
 import Copywrite from '../components/Copywrite';
 import RecipeCard from '../components/RecipeCard';
 import { HomeContext } from '../components/AllContext';
-import { keyboard } from '@testing-library/user-event/dist/keyboard';
-
+import { AuthContext } from '../AuthContext';
 
 //////////////////////////////////
 
@@ -44,14 +43,15 @@ export default function Home(props) {
     setPage,
     statusMessage,
     setStatusMessage,
-    loading,
   } = useContext(HomeContext);
 
 
   // constants ///////////////////
 
   const countPerPage = 12;
-  const isMobile = useMediaQuery({ query: '(max-width: 750px)' })
+  const isMobile = useMediaQuery({ query: '(max-width: 750px)' });
+  const { isAuthenticated } = useContext(AuthContext);
+  const location = useLocation();
 
   const pageCount = recipeSearchResults
     ? Math.ceil(recipeSearchResults.length / countPerPage)
@@ -133,8 +133,10 @@ export default function Home(props) {
     <HelmetProvider>
       <Helmet>
         <title>Michael's Recipes</title>
+        <meta property="og:title" content="Michael's Recipes" />
+        <meta property="og:image" content="apple-touch-icon.png" />
+        <meta property="og:url" content={location.pathname} />
       </Helmet>
-      <Appbar />
       <Container
         maxWidth='false'
         sx={{
@@ -206,28 +208,15 @@ export default function Home(props) {
 
         </Stack>
         {
-          loading
+          recipesThisPage
             ?
-            <Box
-              display='flex'
-              flexGrow={1}
-              height={350}
-              justifyContent='center'
-              alignItems='center'
-            >
-              <CircularProgress
-                sx={{
-                  color: CustomColorScheme['yellow'],
-                }}
-              />
-            </Box>
-            :
             <>
               <Grid
                 container
                 spacing={1}
               >
-                {recipesThisPage &&
+                {
+                  recipesThisPage &&
                   Object.keys(recipesThisPage).map((idx) => {
                     let rcp = recipesThisPage[idx];
                     return (
@@ -249,6 +238,20 @@ export default function Home(props) {
                 />
               </Box>
             </>
+            :
+            <Box
+              display='flex'
+              flexGrow={1}
+              height={350}
+              justifyContent='center'
+              alignItems='center'
+            >
+              <CircularProgress
+                sx={{
+                  color: CustomColorScheme['yellow'],
+                }}
+              />
+            </Box>
         }
       </Container>
       <Snackbar

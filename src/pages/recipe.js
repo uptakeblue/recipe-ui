@@ -1,12 +1,12 @@
 // general
 import '../App.css';
 import React, { useState, useEffect, useContext, useRef } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { Parser } from "html-to-react";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import { useMediaQuery } from 'react-responsive'
 import { useReactToPrint } from 'react-to-print';
-import { useImageSize, getImageSize } from 'react-image-size';
+import { useImageSize } from 'react-image-size';
 
 
 // material ui
@@ -30,7 +30,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 // components
 import { CustomColorScheme } from '../components/CustomTheme';
-import Appbar from '../components/Appbar';
 import Copywrite from '../components/Copywrite';
 import RecipeContent from '../components/RecipeContent';
 import { RecipeContext } from '../components/AllContext';
@@ -92,17 +91,22 @@ export default function Recipe(props) {
     const [recipeDialogOpen, setRecipeDialogOpen] = useState(false);
     const [dialogContent, setDialogContent] = useState();
     const [deleteConfirmationDialogOpen, setDeleteConfirmationDialogOpen] = useState(false);
+    const [imagefileUri, setImagefileUri] = useState();
+    const [metaImage, setMetaImage] = useState();
+    const [metaTitle, setMetaTitle] = useState();
 
     const isMobile = useMediaQuery({ query: '(max-width: 750px)' })
-    // const { isAuthenticated } = useContext(AuthContext)
-    const isAuthenticated = false
+    const { isAuthenticated } = useContext(AuthContext)
+    // const isAuthenticated = false
 
     const [open, setOpen] = useState(false);
 
     // useEffect ///////////////
 
     useEffect(() => {
+        console.log("Recipe useEffect")
         getRecipeByRoute(route);
+        setImagefileUri(null);
         navigate('/recipe/' + route)
     }, []);
 
@@ -112,21 +116,34 @@ export default function Recipe(props) {
         }
     }, [statusMessage]);
 
+    useEffect(() => {
+        setImagefileUri(
+            recipeMap && recipeMap.imageFile && recipeMap.imageFile != 'None'
+                ? `${process.env.REACT_APP_IMAGE_BASE_URL + "/" + recipeMap.imageFile}`
+                : `${process.env.REACT_APP_IMAGE_BASE_URL + "/orange-panel.png"}`
+        )
+        setMetaImage(
+            recipeMap && recipeMap.imageFile && recipeMap.imageFile != 'None'
+                ? `${process.env.REACT_APP_IMAGE_BASE_URL + "/" + recipeMap.imageFile}`
+                : `${"apple-touch-icon.png"}`
+        )
+        setMetaTitle
+            (recipeMap && recipeMap.title
+                ? recipeMap.title
+                : "Michael's Recipes"
+            )
+    }, [recipeMap]);
+
+
 
     // constants ///////////////
 
     const { route } = useParams();
     const navigate = useNavigate();
     const componentRef = useRef();
-
-    const imagefileUri =
-        recipeMap && recipeMap.imageFile && recipeMap.imageFile != 'None'
-            ? `${process.env.REACT_APP_IMAGE_BASE_URL + "/" + recipeMap.imageFile}`
-            : `${process.env.REACT_APP_IMAGE_BASE_URL + "/orange-panel.png"}`
-
+    const location = useLocation();
 
     const [imageDimensions] = useImageSize(imagefileUri);
-
 
     // event handlers //////////
 
@@ -180,9 +197,11 @@ export default function Recipe(props) {
     return recipeMap && (
         <HelmetProvider>
             <Helmet>
-                <title>{recipeMap && recipeMap.title}</title>
+                <title>{metaTitle}</title>
+                <meta property="og:title" content={metaTitle} />
+                <meta property="og:image" content={metaImage} />
+                <meta property="og:url" content={location.pathname} />
             </Helmet>
-            <Appbar />
             <Container
                 maxWidth='false'
                 disableGutters={isMobile}
@@ -230,6 +249,7 @@ export default function Recipe(props) {
                     <Tooltip title='Return'>
                         <IconButton
                             onClick={() => {
+                                setImagefileUri(null);
                                 navigate("/")
                             }}
                             sx={{
@@ -315,117 +335,119 @@ export default function Recipe(props) {
                         </Stack>
 
                         {/* recipe image, description & notes */}
-                        {isMobile
-                            ?
-                            <>
-                                {/* mobile  */}
-                                {recipeMap.imageFile &&
-                                    (
-                                        <img
-                                            src={imagefileUri}
-                                            width='100%'
-                                            height='auto'
-                                            style={{
-                                                borderRadius: 10,
-                                            }}
-                                        />
-                                    )
-                                }
-                                <Box
-                                    sx={{
-                                        '&.MuiBox-root a': {
-                                            color: CustomColorScheme['text'],
-                                        },
-                                    }}
-                                >
-                                    <ParsedText rawText={recipeMap.description} />
-                                    {recipeMap.note && (
-                                        <>
-                                            <br /><b>Note:</b>
-                                            <ParsedText
-                                                rawText={recipeMap.note}
-                                                sx={{
-                                                    marginTop: 0,
-                                                    color: CustomColorScheme['text']
+                        {
+                            isMobile
+                                ?
+                                <>
+                                    {/* mobile  */}
+                                    {recipeMap.imageFile &&
+                                        (
+                                            <img
+                                                src={imagefileUri}
+                                                width='100%'
+                                                height='auto'
+                                                style={{
+                                                    borderRadius: 10,
                                                 }}
                                             />
-                                        </>
-                                    )}
-
-                                </Box>
-
-                            </>
-                            :
-                            // desktop
-                            <Stack
-                                direction='row'
-                                spacing={4}
-                            >
-                                <Box
-                                    width='100%'
-                                    bgcolor='white'
-                                    borderRadius={5}
-                                    sx={{
-                                        '&.MuiBox-root a': {
-                                            color: CustomColorScheme['text'],
-                                        },
-                                    }}
-
-                                >
-                                    <Stack
-                                        direction='row'
+                                        )
+                                    }
+                                    <Box
+                                        sx={{
+                                            '&.MuiBox-root a': {
+                                                color: CustomColorScheme['text'],
+                                            },
+                                        }}
                                     >
-                                        {recipeMap.imageFile &&
-                                            (
-                                                <img
-                                                    src={imagefileUri}
-                                                    width={400}
-                                                    height={imageDimensions ? 400 / imageDimensions.width * imageDimensions.height : 'auto'}
-                                                    style={{
-                                                        borderTopLeftRadius: 20,
-                                                        borderBottomLeftRadius: 20,
-                                                        margin: 0,
+                                        <ParsedText rawText={recipeMap.description} />
+                                        {recipeMap.note && (
+                                            <>
+                                                <br /><b>Note:</b>
+                                                <ParsedText
+                                                    rawText={recipeMap.note}
+                                                    sx={{
+                                                        marginTop: 0,
+                                                        color: CustomColorScheme['text']
                                                     }}
                                                 />
-                                            )
-                                        }
+                                            </>
+                                        )}
+
+                                    </Box>
+
+                                </>
+                                :
+                                // desktop
+                                <Stack
+                                    direction='row'
+                                    spacing={4}
+                                >
+                                    <Box
+                                        width='100%'
+                                        bgcolor='white'
+                                        borderRadius={5}
+                                        sx={{
+                                            '&.MuiBox-root a': {
+                                                color: CustomColorScheme['text'],
+                                            },
+                                        }}
+
+                                    >
                                         <Stack
-                                            direction='column'
-                                            spacing={0}
+                                            direction='row'
                                         >
-                                            <Box
-                                                padding={1}
+                                            {
+                                                recipeMap.imageFile &&
+                                                (
+                                                    <img
+                                                        src={imagefileUri}
+                                                        width={400}
+                                                        height={imageDimensions ? 400 / imageDimensions.width * imageDimensions.height : 'auto'}
+                                                        style={{
+                                                            borderTopLeftRadius: 20,
+                                                            borderBottomLeftRadius: 20,
+                                                            margin: 0,
+                                                        }}
+                                                    />
+                                                )
+                                            }
+                                            <Stack
+                                                direction='column'
+                                                spacing={0}
                                             >
-                                                <ParsedText
-                                                    rawText={recipeMap.description}
-                                                />
-                                            </Box>
-                                            {recipeMap.note && (
                                                 <Box
                                                     padding={1}
                                                 >
-                                                    <Typography
-                                                        variant='body1'
-                                                        component='div'
-                                                        marginTop={1}
-                                                        fontSize={14}
-                                                        fontWeight='bold'
-                                                        color={CustomColorScheme['text']}
-                                                    >
-                                                        Note:
-                                                    </Typography>
                                                     <ParsedText
-                                                        rawText={recipeMap.note}
-                                                        sx={{
-                                                            color: CustomColorScheme['text']
-                                                        }}
+                                                        rawText={recipeMap.description}
                                                     />
                                                 </Box>
-                                            )}
+                                                {recipeMap.note && (
+                                                    <Box
+                                                        padding={1}
+                                                    >
+                                                        <Typography
+                                                            variant='body1'
+                                                            component='div'
+                                                            marginTop={1}
+                                                            fontSize={14}
+                                                            fontWeight='bold'
+                                                            color={CustomColorScheme['text']}
+                                                        >
+                                                            Note:
+                                                        </Typography>
+                                                        <ParsedText
+                                                            rawText={recipeMap.note}
+                                                            sx={{
+                                                                color: CustomColorScheme['text']
+                                                            }}
+                                                        />
+                                                    </Box>
+                                                )}
+                                            </Stack>
                                         </Stack>
-                                    </Stack>
-                                </Box>
-                            </Stack>
+                                    </Box>
+                                </Stack>
                         }
 
                         {/* recipe content */}
@@ -433,13 +455,13 @@ export default function Recipe(props) {
                             spacing={3}
                         >
                             {
-                                recipeMap.contents &&
-                                recipeMap.contents.map((content, idx) => {
+                                recipeMap.content &&
+                                recipeMap.content.map((content, idx) => {
                                     return (
                                         <RecipeContent
                                             key={idx}
                                             contentIdx={idx}
-                                            contentLastIdx={recipeMap.contents.length - 1}
+                                            contentLastIdx={recipeMap.content.length - 1}
                                             content={content}
                                             tabValue={tabValue}
                                             setTabValue={setTabValue}

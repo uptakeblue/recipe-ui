@@ -115,7 +115,8 @@ const ContentDialog = (props) => {
                 <Dialog
                     open={dialogOpen}
                     onClose={() => setDialogOpen(false)}
-                    maxWidth='xl'         >
+                    maxWidth='xl'
+                >
                     <Box
                         width={isMobile ? 350 : 700}
                     >

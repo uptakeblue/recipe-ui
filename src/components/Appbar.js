@@ -22,6 +22,7 @@ import { CustomColorScheme } from './CustomTheme';
 import { AppbarContext } from './AllContext';
 import RecipeCreateDialog from './dialogs/RecipeCreateDialog';
 import { AuthContext } from '../AuthContext';
+import LoginDialog from './dialogs/LoginDialog';
 
 //////////////////////////////
 
@@ -38,27 +39,25 @@ export default function RecipeAppBar(props) {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // const {
-  //   signIn,
-  //   signOut,
-  //   isAuthenticated,
-  // } = useContext(AuthContext)
+  const {
+    signOut,
+    isAuthenticated,
+  } = useContext(AuthContext)
 
 
-  const isAuthenticated = false
-  const [recipeCreateDialogOpen, setRecipeCreateDialogOpen] = useState(false);
+  const [recipeDialogOpen, setRecipeDialogOpen] = useState(false);
+  const [loginDialogOpen, setLoginDialogOpen] = useState(false);
 
 
   // event handlers //////////////
 
   const handleLogin = async () => {
-    // signOut();
-    navigate("/");
+    setLoginDialogOpen(true)
   };
 
   const handleLogout = () => {
-    // signOut();
-    navigate("/");
+    signOut();
+    // navigate("/");
   };
 
 
@@ -130,7 +129,7 @@ export default function RecipeAppBar(props) {
               <>
                 <Tooltip title='Add a recipe' >
                   <IconButton
-                    onClick={() => setRecipeCreateDialogOpen(true)}
+                    onClick={() => setRecipeDialogOpen(true)}
                   >
                     <AddIcon sx={{
                       color: 'white'
@@ -162,9 +161,13 @@ export default function RecipeAppBar(props) {
         </Stack>
       </Container>
       <RecipeCreateDialog
-        dialogOpen={recipeCreateDialogOpen}
-        setDialogOpen={setRecipeCreateDialogOpen}
+        dialogOpen={recipeDialogOpen}
+        setDialogOpen={setRecipeDialogOpen}
         createRecipe={createRecipe}
+      />
+      <LoginDialog
+        dialogOpen={loginDialogOpen}
+        setDialogOpen={setLoginDialogOpen}
       />
     </AppBar>
   );

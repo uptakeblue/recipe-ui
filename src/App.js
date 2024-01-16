@@ -27,7 +27,6 @@ export default function App() {
   const [localKeyword, setLocalKeyword] = useState('');
   const [page, setPage] = useState(1);
   const [statusMessage, setStatusMessage] = useState('');
-  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
   const keyword = localStorage.getItem("keyword") !== null
@@ -50,7 +49,6 @@ export default function App() {
     setPage: setPage,
     statusMessage: statusMessage,
     setStatusMessage: setStatusMessage,
-    loading: loading,
   };
 
   const recipeContext = {
@@ -339,16 +337,13 @@ export default function App() {
     let url = searchParam
       ? `${process.env.REACT_APP_API_BASE_URL}/recipe/map/search/${searchParam}`
       : `${process.env.REACT_APP_API_BASE_URL}/recipe/map/`;
-    setLoading(true);
     await axios
       .get(url)
       .then((response) => {
         setRecipeSearchResults(response.data.recipes);
         setContentTitles(response.data.contentTitles);
-        setLoading(false);
       })
       .catch((error) => {
-        setLoading(false);
         console.log('API getRecipeSearchResults error: ', searchParam);
         console.log('API error url: ', url);
         processError(error);

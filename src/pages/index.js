@@ -12,6 +12,7 @@ import Recipe from './recipe';
 
 // custom components
 import { BodyColor } from '../components/CustomTheme';
+import Appbar from '../components/Appbar';
 
 /////////////////////
 
@@ -21,6 +22,7 @@ export default function Index(props) {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <Appbar />
       <Routes>
         <Route
           path='/'
