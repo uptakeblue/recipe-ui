@@ -21,6 +21,7 @@ export const CustomColorScheme = {
   lightYellow: '#f9ff8c',
   mediumBrown: '#c7c396',
   offwhite: '#f5f4e4',
+  orange: '#ff9900',
   rose: '#ff75b1',
   tan: '#d9d9b0',
   text: '#565603',

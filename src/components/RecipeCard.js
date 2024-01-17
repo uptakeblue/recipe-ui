@@ -80,9 +80,7 @@ export default function RecipeCard(props) {
                     justifyContent: 'end',
                     alignItems: 'end',
                     background: imagefile,
-                    // backgroundSize: isMobile ? 'auto 105' : 276,
                     backgroundSize: isMobile ? 85 : 276,
-                    // backgroundColor: CustomColorScheme['brightOrange'],
                     backgroundRepeat: "no-repeat",
                     position: 'relative',
                     '&.MuiPaper-root': {

@@ -65,8 +65,8 @@ export default function RecipeContent(props) {
 
     const [deletionConfirmationDialogOpen, setDeletionConfirmationDialogOpen] = useState(false);
     const isMobile = useMediaQuery({ query: '(max-width: 1224px)' })
-    // const { isAuthenticated } = useContext(AuthContext)
-    const isAuthenticated = false
+    const { isAuthenticated } = useContext(AuthContext)
+    // const isAuthenticated = false
 
 
     // event handlers ////////////
@@ -255,7 +255,7 @@ export default function RecipeContent(props) {
                     <Title title={content.title} />
                     {
                         content.ingredients &&
-                        content.ingredients.split('\n').map((ingredient, idx) => {
+                        content.ingredients.replace('\r', '').split('\n').map((ingredient, idx) => {
                             return (
                                 <Box
                                     key={idx}
@@ -270,17 +270,19 @@ export default function RecipeContent(props) {
                                         borderColor: CustomColorScheme['tan']
                                     }}
                                 >
-                                    {ingredient.endsWith(":")
-                                        ?
-                                        <Typography
-                                            variant='body1'
-                                            component='div'
-                                            color={CustomColorScheme['amber']}
-                                            paddingTop={1}
-                                        >
-                                            {ingredient.toUpperCase()}
-                                        </Typography>
-                                        : ingredient}
+                                    {
+                                        ingredient.endsWith(":")
+                                            ?
+                                            <Typography
+                                                variant='body1'
+                                                component='div'
+                                                paddingTop={.5}
+                                                fontWeight="450"
+                                            >
+                                                {ingredient.toUpperCase()}
+                                            </Typography>
+                                            : ingredient
+                                    }
                                 </Box>
                             )
                         })
@@ -291,7 +293,7 @@ export default function RecipeContent(props) {
                     <Title title={content.title} />
                     {
                         content.instructions &&
-                        content.instructions.split('\n').map((instruction, idx) => {
+                        content.instructions.replace('\r', '').split('\n').map((instruction, idx) => {
                             return (
                                 <Box
                                     key={idx}
@@ -306,17 +308,20 @@ export default function RecipeContent(props) {
                                         borderColor: CustomColorScheme['tan']
                                     }}
                                 >
-                                    {instruction.endsWith(":")
-                                        ?
-                                        <Typography
-                                            variant='body1'
-                                            component='div'
-                                            color={CustomColorScheme['amber']}
-                                            paddingTop={1}
-                                        >
-                                            {instruction.toUpperCase()}
-                                        </Typography>
-                                        : instruction}
+                                    {
+                                        instruction.endsWith(":")
+                                            ?
+                                            <Typography
+                                                variant='body1'
+                                                component='div'
+                                                color={CustomColorScheme['amber']}
+                                                paddingTop={.5}
+                                                fontWeight="425"
+                                            >
+                                                {instruction.toUpperCase()}
+                                            </Typography>
+                                            : instruction
+                                    }
                                 </Box>
                             )
                         })}

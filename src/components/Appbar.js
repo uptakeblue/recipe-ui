@@ -57,7 +57,6 @@ export default function RecipeAppBar(props) {
 
   const handleLogout = () => {
     signOut();
-    // navigate("/");
   };
 
 
@@ -127,16 +126,19 @@ export default function RecipeAppBar(props) {
             isAuthenticated
               ?
               <>
-                <Tooltip title='Add a recipe' >
-                  <IconButton
-                    onClick={() => setRecipeDialogOpen(true)}
-                  >
-                    <AddIcon sx={{
-                      color: 'white'
-                    }}
-                    />
-                  </IconButton>
-                </Tooltip>
+                {
+                  location.pathname === "/" &&
+                  <Tooltip title='Add a recipe' >
+                    <IconButton
+                      onClick={() => setRecipeDialogOpen(true)}
+                    >
+                      <AddIcon sx={{
+                        color: 'white'
+                      }}
+                      />
+                    </IconButton>
+                  </Tooltip>
+                }
                 <Tooltip title='Log out of Recipes Admin Area' >
                   <IconButton onClick={handleLogout} >
                     <LogoutIcon

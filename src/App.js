@@ -53,6 +53,7 @@ export default function App() {
 
   const recipeContext = {
     recipeMap: recipeMap,
+    setRecipeMap: setRecipeMap,
     getRecipeByRoute: getRecipeByRoute,
     updateRecipeContent: updateRecipeContent,
     updateContent: updateContent,

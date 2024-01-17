@@ -83,10 +83,12 @@ const RecipeDialog = (props) => {
             : title.replace(/[\W_]+/g, "-").replace(/^-+/, '').replace(/-+$/, '').toLowerCase();
 
         let formData = new FormData();
-        if (previewFile) {
-            formData.append('file', previewFile);
-        } else {
+        if (previewFile !== null) {
+            formData.append('imageFile', previewFile);
+        } else if (imageFile !== null) {
             formData.append('imageFile', imageFile);
+        } else {
+            formData.append('retainImageFile', false);
         }
         formData.append('recipeId', recipeId);
         formData.append('title', title);
@@ -253,20 +255,20 @@ const RecipeDialog = (props) => {
                                         alignItems='center'
                                     >
                                         <Stack>
-                                            <input
-                                                style={{
-                                                    display: "none"
-                                                }}
-                                                type="file"
-                                                onChange={handleFilePreview}
-                                                name="file"
-                                            />
                                             <Tooltip title='Browse for an image file' >
                                                 <label htmlFor='image-select'>
                                                     <IconButton
-                                                        component="span"
+                                                        component="label"
                                                     >
                                                         <ImageSearchIcon />
+                                                        <input
+                                                            style={{
+                                                                display: "none"
+                                                            }}
+                                                            type="file"
+                                                            onChange={handleFilePreview}
+                                                            name="file"
+                                                        />
                                                     </IconButton>
                                                 </label>
                                             </Tooltip>

@@ -131,11 +131,12 @@ export default function Home(props) {
 
   return (
     <HelmetProvider>
-      <Helmet>
+      <Helmet prioritizeSeoTags>
         <title>Michael's Recipes</title>
         <meta property="og:title" content="Michael's Recipes" />
-        <meta property="og:image" content="apple-touch-icon.png" />
+        {/* <meta property="og:image" content="apple-touch-icon.png" /> */}
         <meta property="og:url" content={location.pathname} />
+        <meta property="og:image" content="https://zp2swlijyg.execute-api.us-west-2.amazonaws.com/dev/recipes-uptakeblue/image/1429_overnight-levain-white-bread.jpg" />
       </Helmet>
       <Container
         maxWidth='false'

@@ -110,7 +110,7 @@ const RecipeCreateDialog = (props) => {
         if (!isError) {
             let formData = new FormData();
             if (previewFile) {
-                formData.append("file", previewFile);
+                formData.append("imageFile", previewFile);
             }
             formData.append("title", title);
             formData.append("description", description);
@@ -238,20 +238,20 @@ const RecipeCreateDialog = (props) => {
                                         alignItems='center'
                                     >
                                         <Stack>
-                                            <input
-                                                style={{
-                                                    display: "none"
-                                                }}
-                                                type="file"
-                                                onChange={handleFilePreview}
-                                                name="file"
-                                            />
                                             <Tooltip title='Browse for an image file' >
                                                 <label htmlFor='image-select'>
                                                     <IconButton
-                                                        component="span"
+                                                        component="label"
                                                     >
                                                         <ImageSearchIcon />
+                                                        <input
+                                                            style={{
+                                                                display: "none"
+                                                            }}
+                                                            type="file"
+                                                            onChange={handleFilePreview}
+                                                            name="file"
+                                                        />
                                                     </IconButton>
                                                 </label>
                                             </Tooltip>

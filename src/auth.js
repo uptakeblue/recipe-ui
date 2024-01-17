@@ -61,7 +61,7 @@ export async function getCurrentUser() {
         const cognitoUser = userPool.getCurrentUser()
 
         if (!cognitoUser) {
-            reject(new Error("No user found"))
+            // reject(new Error("No user found"))
             return
         }
 
