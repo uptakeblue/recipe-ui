@@ -7,7 +7,8 @@ import { Helmet, HelmetProvider } from "react-helmet-async";
 import { useMediaQuery } from 'react-responsive'
 import { useReactToPrint } from 'react-to-print';
 import { useImageSize } from 'react-image-size';
-
+import Zoom from 'react-medium-image-zoom'
+import 'react-medium-image-zoom/dist/styles.css'
 
 // material ui
 import Stack from '@mui/material/Stack';
@@ -348,14 +349,19 @@ export default function Recipe(props) {
                                                 {/* mobile  */}
                                                 {recipeMap.imageFile &&
                                                     (
-                                                        <img
-                                                            src={imagefileUri}
-                                                            width='100%'
-                                                            height='auto'
-                                                            style={{
-                                                                borderRadius: 10,
-                                                            }}
-                                                        />
+                                                        <Zoom
+                                                            classDialog="custom-zoom-thumb"
+
+                                                        >
+                                                            <img
+                                                                src={imagefileUri}
+                                                                width='100%'
+                                                                height='auto'
+                                                                style={{
+                                                                    borderRadius: 10,
+                                                                }}
+                                                            />
+                                                        </Zoom>
                                                     )
                                                 }
                                                 <Box
@@ -405,16 +411,21 @@ export default function Recipe(props) {
                                                         {
                                                             recipeMap.imageFile &&
                                                             (
-                                                                <img
-                                                                    src={imagefileUri}
-                                                                    width={400}
-                                                                    height={imageDimensions ? 400 / imageDimensions.width * imageDimensions.height : 'auto'}
-                                                                    style={{
-                                                                        borderTopLeftRadius: 20,
-                                                                        borderBottomLeftRadius: 20,
-                                                                        margin: 0,
-                                                                    }}
-                                                                />
+                                                                <Zoom
+                                                                    classDialog="custom-zoom"
+                                                                    zoomMargin={50}
+                                                                >
+                                                                    <img
+                                                                        src={imagefileUri}
+                                                                        width={400}
+                                                                        height={imageDimensions ? 400 / imageDimensions.width * imageDimensions.height : 'auto'}
+                                                                        style={{
+                                                                            borderTopLeftRadius: 20,
+                                                                            borderBottomLeftRadius: 20,
+                                                                            margin: 0,
+                                                                        }}
+                                                                    />
+                                                                </Zoom>
                                                             )
                                                         }
                                                         <Box

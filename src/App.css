@@ -42,3 +42,34 @@
   background: #8b6868;
   padding: 1;
 }
+
+.custom-zoom-thumb [data-rmiz-modal-overlay],
+.custom-zoom-thumb [data-rmiz-modal-img],
+.custom-zoom [data-rmiz-modal-overlay],
+.custom-zoom [data-rmiz-modal-img] {
+  transition-duration: 0.4s;
+  transition-timing-function: linear;
+}
+
+.custom-zoom [data-rmiz-modal-overlay="hidden"] {
+  background-color: rgb(50, 168, 82, 0);
+}
+
+.custom-zoom [data-rmiz-modal-overlay="visible"] {
+  margin-top: 5rem;
+  background-color: rgb(50, 168, 82, 1);
+}
+
+.custom-zoom [data-rmiz-btn-unzoom] {
+  background-color: #32a852;
+  color: #000;
+}
+
+.custom-zoom [data-rmiz-btn-unzoom]:focus-visible {
+  outline-offset: 0.4rem;
+  outline: 0.2rem solid #32a852;
+}
+
+.custom-zoom-thumb [data-rmiz-modal-overlay="visible"] {
+  background-color: rgb(50, 168, 82, 1);
+}

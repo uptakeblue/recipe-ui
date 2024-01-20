@@ -69,7 +69,6 @@ export default function RecipeCard(props) {
         ? `url("${process.env.REACT_APP_IMAGE_BASE_URL + "/" + recipe.imageFile}")`
         : `url("${process.env.REACT_APP_IMAGE_BASE_URL + "/orange-panel.png"}")`
 
-    // console.log("RecipeCard imageFile", imagefile)
     return (
         <Grid item key={recipe.recipeId} >
             <Paper
