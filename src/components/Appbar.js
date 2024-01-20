@@ -30,6 +30,7 @@ export default function RecipeAppBar(props) {
 
   const {
     createRecipe,
+    getRecipeSearchResults,
   } = useContext(AppbarContext);
 
 
@@ -58,6 +59,18 @@ export default function RecipeAppBar(props) {
   const handleLogout = () => {
     signOut();
   };
+
+
+  const handleRefresh = () => {
+    if (location.pathname === "/") {
+      let keyword = localStorage.getItem("keyword") !== null
+        ? JSON.parse(localStorage.getItem("keyword"))
+        : ""
+      getRecipeSearchResults(keyword);
+    } else {
+      navigate("/")
+    }
+  }
 
 
   // render /////////////////
@@ -103,17 +116,15 @@ export default function RecipeAppBar(props) {
           <Typography
             sx={{
               paddingLeft: 1,
-              cursor: location.pathname === "/" ? "" : 'pointer',
+              cursor: 'pointer',
               ':hover': {
-                color: location.pathname === "/" ? CustomColorScheme['white'] : CustomColorScheme['lightYellow'],
+                color: CustomColorScheme['lightYellow'],
               }
             }}
             variant='body1'
             component='div'
             fontSize={18}
-            onClick={() =>
-              location.pathname === "/" ? "" : navigate("/")
-            }
+            onClick={handleRefresh}
           >
             Michael's Recipe Collection
           </Typography>
@@ -139,7 +150,7 @@ export default function RecipeAppBar(props) {
                     </IconButton>
                   </Tooltip>
                 }
-                <Tooltip title='Log out of Recipes Admin Area' >
+                <Tooltip title='Log Out' >
                   <IconButton onClick={handleLogout} >
                     <LogoutIcon
                       sx={{
@@ -150,7 +161,7 @@ export default function RecipeAppBar(props) {
                 </Tooltip>
               </>
               :
-              <Tooltip title='Log into Recipes  Admin Area' >
+              <Tooltip title='Administrative LogIn' >
                 <IconButton onClick={handleLogin} >
                   <LoginIcon
                     sx={{

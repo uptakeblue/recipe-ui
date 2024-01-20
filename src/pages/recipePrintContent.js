@@ -41,9 +41,6 @@ export default function RecipePrintContent(props) {
         componentRef
     } = props;
 
-    // const {
-    //     recipeMap,
-    // } = useContext(RecipePrintContext)
 
     // constants //////////////
 
@@ -52,7 +49,7 @@ export default function RecipePrintContent(props) {
     const imagefile = recipeMap && (
         recipeMap.imageFile
         && (
-            `${process.env.REACT_APP_API_IMAGE_URL + "/" + recipeMap.imageFile}`
+            `${process.env.REACT_APP_IMAGE_BASE_URL + "/" + recipeMap.imageFile}`
         )
     )
 

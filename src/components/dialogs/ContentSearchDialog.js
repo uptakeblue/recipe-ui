@@ -57,7 +57,6 @@ const ContentSearchDialog = (props) => {
 
     const handleCreateRecipeContent = () => {
         if (selection && selection.contentId) {
-            console.log("ContntSearchDialog handleCreateRecipeContent", selection);
             createRecipeContent(selection.contentId);
         }
         setDialogOpen(false);
@@ -78,6 +77,7 @@ const ContentSearchDialog = (props) => {
     return (
         <>
             {
+                contentTitles &&
                 <Dialog
                     open={dialogOpen}
                     onClose={() => setDialogOpen(false)}

@@ -13,7 +13,7 @@ import Typography from '@mui/material/Typography';
 import Pagination from '@mui/material/Pagination';
 import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
-import { IconButton, InputAdornment, Paper } from '@mui/material';
+import { IconButton, InputAdornment } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
 import Slide from '@mui/material/Slide';
 import Alert from '@mui/material/Alert';
@@ -28,7 +28,6 @@ import { CustomColorScheme } from '../components/CustomTheme';
 import Copywrite from '../components/Copywrite';
 import RecipeCard from '../components/RecipeCard';
 import { HomeContext } from '../components/AllContext';
-import { AuthContext } from '../AuthContext';
 
 //////////////////////////////////
 
@@ -50,7 +49,6 @@ export default function Home(props) {
 
   const countPerPage = 12;
   const isMobile = useMediaQuery({ query: '(max-width: 750px)' });
-  const { isAuthenticated } = useContext(AuthContext);
   const location = useLocation();
 
   const pageCount = recipeSearchResults

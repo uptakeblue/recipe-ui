@@ -274,6 +274,7 @@ export default function Recipe(props) {
                                 elevation={0}
                                 sx={{
                                     padding: isMobile ? 1 : 4,
+                                    paddingTop: isMobile ? 1 : 2,
                                     margin: 1,
                                     '&.MuiPaper-root': {
                                         borderRadius: 5,
@@ -296,7 +297,6 @@ export default function Recipe(props) {
                                         />
                                         <Box
                                             display='flex'
-                                            height={37}
                                             flexGrow={1}
                                             justifyContent='center'
                                             alignItems='center'
@@ -390,9 +390,9 @@ export default function Recipe(props) {
                                             >
                                                 <Box
                                                     width='100%'
-                                                    bgcolor='white'
-                                                    borderRadius={5}
+                                                    bgcolor={CustomColorScheme['mediumBrown']}
                                                     sx={{
+                                                        borderRadius: 6,
                                                         '&.MuiBox-root a': {
                                                             color: CustomColorScheme['text'],
                                                         },
@@ -417,40 +417,56 @@ export default function Recipe(props) {
                                                                 />
                                                             )
                                                         }
-                                                        <Stack
-                                                            direction='column'
-                                                            spacing={0}
+                                                        <Box
+                                                            backgroundColor={CustomColorScheme['white']}
+                                                            sx={{
+                                                                borderTopRightRadius: 25,
+                                                                borderBottomRightRadius: 25,
+                                                            }}
+
                                                         >
-                                                            <Box
-                                                                padding={1}
+                                                            <Stack
+                                                                direction='column'
+                                                                spacing={0}
                                                             >
-                                                                <ParsedText
-                                                                    rawText={recipeMap.description}
-                                                                />
-                                                            </Box>
-                                                            {recipeMap.note && (
                                                                 <Box
                                                                     padding={1}
+                                                                    sx={{
+                                                                        borderTopRightRadius: 25,
+                                                                    }}
                                                                 >
-                                                                    <Typography
-                                                                        variant='body1'
-                                                                        component='div'
-                                                                        marginTop={1}
-                                                                        fontSize={14}
-                                                                        fontWeight='bold'
-                                                                        color={CustomColorScheme['text']}
-                                                                    >
-                                                                        Note:
-                                                                    </Typography>
                                                                     <ParsedText
-                                                                        rawText={recipeMap.note}
-                                                                        sx={{
-                                                                            color: CustomColorScheme['text']
-                                                                        }}
+                                                                        rawText={recipeMap.description}
                                                                     />
                                                                 </Box>
-                                                            )}
-                                                        </Stack>
+                                                                {recipeMap.note && (
+                                                                    <Box
+                                                                        padding={1}
+                                                                        sx={{
+                                                                            borderBottomRightRadius: 25,
+                                                                        }}
+
+                                                                    >
+                                                                        <Typography
+                                                                            variant='body1'
+                                                                            component='div'
+                                                                            marginTop={1}
+                                                                            fontSize={14}
+                                                                            fontWeight='bold'
+                                                                            color={CustomColorScheme['text']}
+                                                                        >
+                                                                            Note:
+                                                                        </Typography>
+                                                                        <ParsedText
+                                                                            rawText={recipeMap.note}
+                                                                            sx={{
+                                                                                color: CustomColorScheme['text']
+                                                                            }}
+                                                                        />
+                                                                    </Box>
+                                                                )}
+                                                            </Stack>
+                                                        </Box>
                                                     </Stack>
                                                 </Box>
                                             </Stack>

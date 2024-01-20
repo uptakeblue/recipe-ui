@@ -38,6 +38,7 @@ export default function App() {
 
   const appbarContext = {
     createRecipe: createRecipe,
+    getRecipeSearchResults: getRecipeSearchResults,
   };
 
   const homeContext = {
@@ -101,6 +102,7 @@ export default function App() {
     let headers = {
       "headers": {
         "Authorization": `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
       }
     }
 
@@ -221,6 +223,7 @@ export default function App() {
     let headers = {
       "headers": {
         "Authorization": `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
       }
     }
 
@@ -252,6 +255,7 @@ export default function App() {
     let headers = {
       "headers": {
         "Authorization": `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
       }
     }
 
@@ -283,6 +287,7 @@ export default function App() {
     let headers = {
       "headers": {
         "Authorization": `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
       }
     }
 
@@ -308,11 +313,17 @@ export default function App() {
     let url = `${process.env.REACT_APP_API_BASE_URL}/recipecontent`
 
     const session = await auth.getSession();
+    // const accessToken = session.refreshToken.token
+    // const accessToken = session.idToken.jwtToken
     const accessToken = session.accessToken.jwtToken
+    // const accessToken = 'eyJraWQiOiIzUDRHMXdycndEZGJEbVBYNENGbzBsbitzMXFSQmVWajIrczNmZlVJYzNRPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIzNDM2Njk5Yi0zMjNhLTQ1OWUtOTY4OC1mMGQ2MjdiNmRiODciLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtd2VzdC0yLmFtYXpvbmF3cy5jb21cL3VzLXdlc3QtMl9KMWdxSzVyS0siLCJ2ZXJzaW9uIjoyLCJjbGllbnRfaWQiOiIxcmJqZWk3ZjU0OHNpbTJnMWVzMWtwZXI1ZiIsImV2ZW50X2lkIjoiZTExYmZmMTctOGI1Mi00Mjc0LTgzN2MtOGE1YzhhZTJkODk0IiwidG9rZW5fdXNlIjoiYWNjZXNzIiwic2NvcGUiOiJhd3MuY29nbml0by5zaWduaW4udXNlci5hZG1pbiBwaG9uZSBvcGVuaWQgZW1haWwiLCJhdXRoX3RpbWUiOjE3MDU2MjAwODUsImV4cCI6MTcwNTYyMzY4NSwiaWF0IjoxNzA1NjIwMDg1LCJqdGkiOiJkMDhhNWM2OC05MjIyLTQ1ZmEtOTRhYS1jNDI5NjVjOTgwMzMiLCJ1c2VybmFtZSI6Ik1pY2hhZWwifQ.MYfOA0KiTPMEXB68VOepHU1nhF8vFF5zGMquRYARpbaq4bdOyD1dJpjmfxH204UL5RCFXOmJFX8lRDPJZp5jo3l4UumFbJmAFJFl_dWT4bCK-3APtYlVPYe9jhRZ6yvO7Cm63n45DUJESfUOPzkA19H3Rocwft8yplD23pmgOn0nijtjyX7cLQsotqze-RekwU8jKkA_1EF780Rye6S9H___teAd0og2ZJOSUi9GlSWrvc8c-JeOnotcR3onPPsPhKpOQ7DXThucEc-zNw98NMNlTuxsDLEIEiadHH1M9eGhagykVJeCOCPIPK6EZ6X8Rw481cLtgYfFrdJPFpsQaw'
+
+    console.log("updateRecipeContent session.accessToken", session.accessToken)
 
     let headers = {
       "headers": {
         "Authorization": `Bearer ${accessToken}`,
+        "Content-Type": "application/json"
       }
     }
 

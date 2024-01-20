@@ -199,7 +199,8 @@ export default function RecipeContent(props) {
                 }}
             >
                 {
-                    contentIdx === 0 && (
+                    contentIdx === 0 &&
+                    <Stack direction='row'>
                         <Tabs
                             value={tabValue}
                             onChange={(e, newValue) => setTabValue(newValue)}
@@ -231,24 +232,25 @@ export default function RecipeContent(props) {
                                     }
                                 }}
                             />
-                            <Box
-                                display='flex'
-                                flexGrow={1}
-                                justifyContent='end'
-                            >
-                                {
-                                    isAuthenticated &&
-                                    <Tooltip title='Add recipe content'>
-                                        <IconButton
-                                            onClick={() => setContentSearchDialogOpen(true)}
-                                        >
-                                            <AddIcon />
-                                        </IconButton>
-                                    </Tooltip>
-                                }
-                            </Box>
+
                         </Tabs>
-                    )
+                        <Box
+                            display='flex'
+                            flexGrow={1}
+                            justifyContent='end'
+                        >
+                            {
+                                isAuthenticated &&
+                                <Tooltip title='Add recipe content'>
+                                    <IconButton
+                                        onClick={() => setContentSearchDialogOpen(true)}
+                                    >
+                                        <AddIcon />
+                                    </IconButton>
+                                </Tooltip>
+                            }
+                        </Box>
+                    </Stack>
                 }
                 <TabPanel value={tabValue} index={0} >
                     {/* INGREDIENTS */}
