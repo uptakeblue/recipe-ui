@@ -137,7 +137,6 @@ export default function Recipe(props) {
     }, [recipeMap]);
 
 
-
     // constants ///////////////
 
     const { route } = useParams();
@@ -348,22 +347,37 @@ export default function Recipe(props) {
                                             <>
                                                 {/* mobile  */}
                                                 {recipeMap.imageFile &&
-                                                    (
-                                                        <Zoom
-                                                            classDialog="custom-zoom-thumb"
 
-                                                        >
-                                                            <img
-                                                                src={imagefileUri}
-                                                                width='100%'
-                                                                height='auto'
-                                                                style={{
-                                                                    borderRadius: 10,
-                                                                }}
-                                                            />
-                                                        </Zoom>
-                                                    )
+                                                    <Zoom
+                                                        classDialog="custom-zoom-thumb"
+
+                                                    >
+                                                        <img
+                                                            src={imagefileUri}
+                                                            width='100%'
+                                                            height='auto'
+                                                            style={{
+                                                                borderRadius: 10,
+                                                            }}
+                                                        />
+                                                    </Zoom>
                                                 }
+                                                {
+                                                    recipeMap.photoCredit &&
+                                                    <Typography
+                                                        sx={{
+                                                            display: 'flex',
+                                                            flexGrow: 1,
+                                                            alignItems: 'end',
+                                                            padding: 0,
+                                                            fontSize: 12,
+                                                            color: CustomColorScheme['darkGreenBrown']
+                                                        }}
+                                                    >
+                                                        photo credit: {recipeMap.photoCredit}
+                                                    </Typography>
+                                                }
+
                                                 <Box
                                                     sx={{
                                                         '&.MuiBox-root a': {
@@ -409,11 +423,12 @@ export default function Recipe(props) {
                                                         direction='row'
                                                     >
                                                         {
-                                                            recipeMap.imageFile &&
-                                                            (
+                                                            recipeMap.imageFile
+                                                                ?
                                                                 <Zoom
                                                                     classDialog="custom-zoom"
                                                                     zoomMargin={50}
+                                                                    margin={0}
                                                                 >
                                                                     <img
                                                                         src={imagefileUri}
@@ -423,10 +438,14 @@ export default function Recipe(props) {
                                                                             borderTopLeftRadius: 20,
                                                                             borderBottomLeftRadius: 20,
                                                                             margin: 0,
+                                                                            marginBottom: -4,
                                                                         }}
                                                                     />
                                                                 </Zoom>
-                                                            )
+                                                                :
+                                                                <Box
+                                                                    width={400}
+                                                                />
                                                         }
                                                         <Box
                                                             backgroundColor={CustomColorScheme['white']}
@@ -439,6 +458,7 @@ export default function Recipe(props) {
                                                             <Stack
                                                                 direction='column'
                                                                 spacing={0}
+                                                                height='100%'
                                                             >
                                                                 <Box
                                                                     padding={1}
@@ -476,6 +496,21 @@ export default function Recipe(props) {
                                                                         />
                                                                     </Box>
                                                                 )}
+                                                                {
+                                                                    recipeMap.photoCredit &&
+                                                                    <Typography
+                                                                        sx={{
+                                                                            display: 'flex',
+                                                                            flexGrow: 1,
+                                                                            alignItems: 'end',
+                                                                            padding: 1,
+                                                                            fontSize: 12,
+                                                                            color: CustomColorScheme['darkGreenBrown']
+                                                                        }}
+                                                                    >
+                                                                        photo credit: {recipeMap.photoCredit}
+                                                                    </Typography>
+                                                                }
                                                             </Stack>
                                                         </Box>
                                                     </Stack>

@@ -66,7 +66,7 @@
 }
 
 .custom-zoom [data-rmiz-btn-unzoom]:focus-visible {
-  outline-offset: 0.4rem;
+  outline-offset: 0rem;
   outline: 0.2rem solid #32a852;
 }
 
