@@ -155,9 +155,12 @@ const RecipeCreateDialog = (props) => {
                 <Dialog
                     open={dialogOpen}
                     onClose={() => setDialogOpen(false)}
-                    maxWidth='xl'         >
+                    sx={{
+                        marginX: -2,
+                    }}
+                >
                     <Box
-                        width={isMobile ? 350 : 500}
+                        width={isMobile ? 385 : 600}
                     >
                         <Box
                             bgcolor={CustomColorScheme['text']}

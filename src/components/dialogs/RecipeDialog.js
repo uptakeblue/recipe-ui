@@ -37,6 +37,7 @@ const RecipeDialog = (props) => {
     // constants////////////////
 
     const [title, setTitle] = useState('');
+    const [photoCredit, setPhotoCredit] = useState('');
     const [originalTitle, setOriginalTitle] = useState('');
     const [recipeId, setRecipeId] = useState();
     const [description, setDescription] = useState('');
@@ -85,15 +86,17 @@ const RecipeDialog = (props) => {
         let formData = new FormData();
         if (previewFile !== null) {
             formData.append('imageFile', previewFile);
+            formData.append('photoCredit', photoCredit ? photoCredit : '');
         } else if (imageFile !== null) {
             formData.append('imageFile', imageFile);
+            formData.append('photoCredit', photoCredit ? photoCredit : '');
         } else {
             formData.append('retainImageFile', false);
         }
         formData.append('recipeId', recipeId);
         formData.append('title', title);
-        formData.append('description', description);
-        formData.append('note', note);
+        formData.append('description', description ? description : '');
+        formData.append('note', note ? note : '');
         formData.append('route', route);
         formData.append('isfavorite', isFavorite);
         updateRecipe(formData);
@@ -109,6 +112,7 @@ const RecipeDialog = (props) => {
             setDescription('');
             setNote('');
             setImageFile('');
+            setPhotoCredit('')
             setOriginalRoute('');
             setIsFavorite(false);
             setRecipeId(null);
@@ -121,6 +125,7 @@ const RecipeDialog = (props) => {
             setDescription(recipe.description);
             setNote(recipe.note);
             setImageFile(recipe.imageFile);
+            setPhotoCredit(recipe.photoCredit)
             setOriginalRoute(recipe.route);
             setIsFavorite(recipe.isFavorite);
             setRecipeId(recipe.recipeId);
@@ -140,9 +145,13 @@ const RecipeDialog = (props) => {
                 <Dialog
                     open={dialogOpen}
                     onClose={() => setDialogOpen(false)}
-                    maxWidth='xl'         >
+                    sx={{
+                        marginX: -3,
+                    }}
+                // maxWidth='xl'
+                >
                     <Box
-                        width={isMobile ? 350 : 500}
+                        width={isMobile ? 385 : 600}
                     >
                         <Box
                             bgcolor={CustomColorScheme['text']}
@@ -157,7 +166,7 @@ const RecipeDialog = (props) => {
                             sx={{
                                 padding: 2,
                                 bgcolor: CustomColorScheme['lightTan'],
-                                width: isMobile ? '85%' : 'auto',
+                                width: isMobile ? '90%' : 'auto',
                             }}
                         >
                             <Stack spacing={1}>
@@ -285,6 +294,32 @@ const RecipeDialog = (props) => {
                                         </Stack>
                                     </Box>
                                 </Stack>
+                                {
+                                    previewFileUri &&
+                                    <TextField
+                                        value={photoCredit ? photoCredit : ''}
+                                        onChange={(e) => setPhotoCredit(e.target.value)}
+                                        label="Photo Credit"
+                                        variant='standard'
+                                        padding={1}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                            sx: {
+                                                marginLeft: 1,
+                                                marginTop: 0.5,
+                                            }
+                                        }}
+                                        sx={{
+                                            backgroundColor: CustomColorScheme['white'],
+                                            padding: 1,
+                                            '& .MuiInput-input': {
+                                                fontFamily: 'monospace',
+                                                color: 'darkblue',
+                                                fontSize: 18,
+                                            }
+                                        }}
+                                    />
+                                }
                                 <TextField
                                     value={description ? description : ''}
                                     onChange={(e) => setDescription(e.currentTarget.value)}

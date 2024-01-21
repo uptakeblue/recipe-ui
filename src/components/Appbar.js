@@ -126,7 +126,7 @@ export default function RecipeAppBar(props) {
             fontSize={18}
             onClick={handleRefresh}
           >
-            Michael's Recipe Collection
+            {isMobile ? "Michael's Recipes" : "Michael's Recipe Collection"}
           </Typography>
           <Box
             display='flex'

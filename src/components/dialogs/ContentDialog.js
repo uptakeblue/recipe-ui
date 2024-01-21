@@ -116,9 +116,12 @@ const ContentDialog = (props) => {
                     open={dialogOpen}
                     onClose={() => setDialogOpen(false)}
                     maxWidth='xl'
+                    sx={{
+                        marginX: -3,
+                    }}
                 >
                     <Box
-                        width={isMobile ? 350 : 700}
+                        width={isMobile ? 385 : 800}
                     >
                         <Box
                             bgcolor={CustomColorScheme['text']}
@@ -133,10 +136,12 @@ const ContentDialog = (props) => {
                             sx={{
                                 padding: 2,
                                 bgcolor: CustomColorScheme['lightTan'],
-                                width: isMobile ? '85%' : 'auto',
+                                width: isMobile ? '90%' : 'auto',
                             }}
                         >
-                            <Stack spacing={1}>
+                            <Stack
+                                spacing={1}
+                            >
                                 <FormControl
                                     error={isTitleError}
                                 >
