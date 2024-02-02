@@ -67,7 +67,7 @@ export default function RecipeCard(props) {
 
     let imagefile = recipe.imageFile && recipe.imageFile != 'None'
         ? `url("${process.env.REACT_APP_IMAGE_BASE_URL + "/" + recipe.imageFile}")`
-        : `url("${process.env.REACT_APP_IMAGE_BASE_URL + "/orange-panel.png"}")`
+        : ""
 
     return (
         <Grid item key={recipe.recipeId} >
@@ -79,6 +79,7 @@ export default function RecipeCard(props) {
                     justifyContent: 'end',
                     alignItems: 'end',
                     background: imagefile,
+                    backgroundColor: CustomColorScheme['softOrange'],
                     backgroundSize: isMobile ? 85 : 276,
                     backgroundRepeat: "no-repeat",
                     position: 'relative',
