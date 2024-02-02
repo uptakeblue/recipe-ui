@@ -91,7 +91,10 @@ const RecipeContent = forwardRef(function RecipeContent(props) {
   // components ////////////////
 
   const Title = (props) => {
-    const { title } = props;
+    const {
+      title
+    } = props;
+
     return (
       <Stack
         direction='row'

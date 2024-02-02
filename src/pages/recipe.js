@@ -1,6 +1,7 @@
 // general
 import '../App.css';
-import React, { useState, useEffect, useContext, useRef } from 'react';
+import 'react-medium-image-zoom/dist/styles.css'
+import { useState, useEffect, useContext, useRef } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { Parser } from "html-to-react";
 import { Helmet, HelmetProvider } from "react-helmet-async";
@@ -8,7 +9,6 @@ import { useMediaQuery } from 'react-responsive'
 import { useReactToPrint } from 'react-to-print';
 import { useImageSize } from 'react-image-size';
 import Zoom from 'react-medium-image-zoom'
-import 'react-medium-image-zoom/dist/styles.css'
 
 // material ui
 import Stack from '@mui/material/Stack';
@@ -25,7 +25,6 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 // icons
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import PrintIcon from '@mui/icons-material/Print';
 import EditIcon from '@mui/icons-material/Edit';
 import FilterNoneIcon from '@mui/icons-material/FilterNone';
@@ -181,10 +180,6 @@ export default function Recipe(props) {
     })
   }
 
-  const handleRecipeDelete = () => {
-    deleteRecipe(recipeMap.recipeId);
-  }
-
   const handleSnackbarTransition = (props) => {
     return <Slide {...props} direction="left" />;
   }
@@ -230,33 +225,25 @@ export default function Recipe(props) {
                   display='flex'
                   flexGrow={1}
                 />
-                <Tooltip title='Return'>
-                  <IconButton
-                    onClick={() => {
-                      setRecipeMap(null);
-                      navigate("/")
-                    }}
-                    sx={{
-                      ':hover': {
-                        color: 'white',
-                      },
-                    }}
-                  >
-                    <ArrowBackIosNewIcon />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title='Print this recipe!'>
-                  <IconButton
-                    onClick={handlePrint}
-                    sx={{
-                      ':hover': {
-                        color: CustomColorScheme['white'],
-                      },
-                    }}
-                  >
-                    <PrintIcon />
-                  </IconButton>
-                </Tooltip>
+                <Typography
+                  variant='text'
+                  sx={{
+                    color: CustomColorScheme['lightTan'],
+                    cursor: 'pointer',
+                    marginRight: 1,
+                    ':hover': {
+                      color: 'white',
+                      fontWeight: 'bold,',
+                      textDecoration: 'underline'
+                    },
+                  }}
+                  onClick={() => {
+                    setRecipeMap(null);
+                    navigate("/")
+                  }}
+                >
+                  Return
+                </Typography>
               </Stack>
 
               {/* recipe surface */}
@@ -335,6 +322,18 @@ export default function Recipe(props) {
                       justifyContent='end'
                       alignItems='center'
                     >
+                      <Tooltip title='Print this recipe!'>
+                        <IconButton
+                          onClick={handlePrint}
+                          sx={{
+                            ':hover': {
+                              color: CustomColorScheme['white'],
+                            },
+                          }}
+                        >
+                          <PrintIcon />
+                        </IconButton>
+                      </Tooltip>
                       {
                         isAuthenticated &&
                         <Tooltip title='Edit this recipe'>
