@@ -24,6 +24,7 @@ import Alert from '@mui/material/Alert';
 import CircularProgress from '@mui/material/CircularProgress';
 
 // icons
+import AddIcon from '@mui/icons-material/Add';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import PrintIcon from '@mui/icons-material/Print';
 import EditIcon from '@mui/icons-material/Edit';
@@ -220,16 +221,29 @@ export default function Recipe(props) {
                 direction="row"
                 paddingY={1}
                 marginRight={1}
+                display='flex'
+                alignItems='center'
               >
                 <Box
                   display='flex'
                   flexGrow={1}
+                  alignItems='center'
                 />
+                <span
+                  style={{
+                    paddingRight: 2,
+                    paddingBottom: 4,
+                    color: CustomColorScheme['white']
+                  }}
+                >
+                  {"< "}
+                </span>
                 <Typography
                   variant='text'
                   sx={{
                     color: CustomColorScheme['lightTan'],
                     cursor: 'pointer',
+                    paddingBottom: .5,
                     marginRight: 1,
                     ':hover': {
                       color: 'white',
@@ -242,7 +256,7 @@ export default function Recipe(props) {
                     navigate("/")
                   }}
                 >
-                  Return
+                  return
                 </Typography>
               </Stack>
 
@@ -622,7 +636,6 @@ export default function Recipe(props) {
             />
           </Box>
       }
-
       <Copywrite />
     </HelmetProvider >
   )

@@ -1,6 +1,6 @@
 // general
 import '../App.css';
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import { useMediaQuery } from 'react-responsive'
 import { useLocation } from 'react-router-dom';
@@ -28,6 +28,7 @@ import { CustomColorScheme } from '../components/CustomTheme';
 import Copywrite from '../components/Copywrite';
 import RecipeCard from '../components/RecipeCard';
 import { HomeContext } from '../components/AllContext';
+
 
 //////////////////////////////////
 

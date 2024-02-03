@@ -55,7 +55,7 @@ export default function Copywrite() {
         sx={{
           paddingLeft: 1,
           cursor: 'pointer',
-          ':hover': {
+          '&:hover': {
             fontWeight: 'bold',
             textDecoration: 'underline',
           }
@@ -67,9 +67,11 @@ export default function Copywrite() {
           isAuthenticated ? handleLogout() : handleLogin()
         }}
       >
-        {isAuthenticated
-          ? isMobile ? "logout" : "logout of admin area"
-          : isMobile ? "admin" : "admin login"}
+        {
+          isAuthenticated
+            ? "logout"
+            : isMobile ? "admin" : "admin login"
+        }
       </Typography>
       <LoginDialog
         dialogOpen={loginDialogOpen}

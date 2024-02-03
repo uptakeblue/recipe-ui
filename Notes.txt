@@ -11,3 +11,4 @@ alignItems: "top"/"center"/"bottom"
 NPM
 ----------------------------------
 npm start
+npm run build

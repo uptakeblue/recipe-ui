@@ -27,6 +27,7 @@ export default function App() {
   const [localKeyword, setLocalKeyword] = useState('');
   const [page, setPage] = useState(1);
   const [statusMessage, setStatusMessage] = useState('');
+  const [newRecipes, setNewRecipes] = useState();
 
   const navigate = useNavigate();
   const keyword = localStorage.getItem("keyword") !== null
@@ -39,6 +40,7 @@ export default function App() {
   const appbarContext = {
     createRecipe: createRecipe,
     getRecipeSearchResults: getRecipeSearchResults,
+    newRecipes: newRecipes,
   };
 
   const homeContext = {
@@ -350,6 +352,7 @@ export default function App() {
       .get(url)
       .then((response) => {
         setRecipeSearchResults(response.data.recipes);
+        setNewRecipes(response.data.newRecipes)
         setContentTitles(response.data.contentTitles);
       })
       .catch((error) => {
