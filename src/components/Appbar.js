@@ -44,7 +44,7 @@ export default function RecipeAppBar(props) {
 
   const { isAuthenticated } = useContext(AuthContext)
 
-  const isNewRecipes = newRecipes && newRecipes.length && (!isMobile || (isMobile && !isAuthenticated));
+  const isNewRecipes = Boolean(newRecipes && newRecipes.length && (!isMobile || (isMobile && !isAuthenticated)));
 
 
   // event handlers //////////////
