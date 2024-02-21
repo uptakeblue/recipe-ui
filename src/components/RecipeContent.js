@@ -126,7 +126,9 @@ const RecipeContent = forwardRef(function RecipeContent(props) {
         {
           isAuthenticated &&
           <>
-            <Tooltip title={contentIdx !== 0 ? 'Move content up' : ''}>
+            <Tooltip
+              title={contentIdx !== 0 ? 'Move content up' : ''}
+            >
               <span>
                 <IconButton
                   disabled={contentIdx === 0}
