@@ -24,7 +24,6 @@ import Alert from '@mui/material/Alert';
 import CircularProgress from '@mui/material/CircularProgress';
 
 // icons
-import AddIcon from '@mui/icons-material/Add';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import PrintIcon from '@mui/icons-material/Print';
 import EditIcon from '@mui/icons-material/Edit';
@@ -266,9 +265,10 @@ export default function Recipe(props) {
                 sx={{
                   padding: isMobile ? 1 : 4,
                   paddingTop: isMobile ? 1 : 2,
+                  paddingBottom: isMobile ? 2.5 : 1,
                   margin: 1,
                   '&.MuiPaper-root': {
-                    borderRadius: 5,
+                    borderRadius: isMobile ? 0 : 5,
                     backgroundColor: CustomColorScheme['tan']
                   }
                 }}
