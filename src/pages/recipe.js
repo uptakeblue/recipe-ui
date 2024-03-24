@@ -140,6 +140,11 @@ export default function Recipe(props) {
   const componentRef = useRef();
   const location = useLocation();
 
+  const marginTop = "25px"
+  const marginRight = "50px"
+  const marginBottom = "50px"
+  const marginLeft = "25px"
+
   const [imageDimensions] = useImageSize(imagefileUri);
 
   // event handlers //////////
@@ -147,6 +152,11 @@ export default function Recipe(props) {
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
     documentTitle: 'Recipe',
+    pageStyle: `@media print{
+      @page{
+        margin: ${marginTop} ${marginRight} ${marginBottom} ${marginLeft} !important;
+      }
+    }`,
     onAfterPrint: () => console.log('PDF printed successfully'),
   });
 
