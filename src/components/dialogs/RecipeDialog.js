@@ -219,7 +219,7 @@ const RecipeDialog = (props) => {
                       alignItems: 'center',
                     }}
                   >
-                    <Tooltip title='Delete thi recipe'>
+                    <Tooltip title='Delete this recipe'>
                       <IconButton
                         onClick={() => setDeleteConfirmationDialogOpen(true)}
 
