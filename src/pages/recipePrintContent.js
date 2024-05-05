@@ -78,6 +78,9 @@ export default function RecipePrintContent(props) {
         width="100%"
         spacing={2}
       >
+        <Typography>
+          Michael's Recipes
+        </Typography>
         <Typography
           display='flex'
           variant='h5'
