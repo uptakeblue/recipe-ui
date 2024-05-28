@@ -26,7 +26,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 
 // components
 import { CustomColorScheme } from '../components/CustomTheme';
-import Copywrite from '../components/Copywrite';
+import Copyright from '../components/Copyright';
 import RecipeCard from '../components/RecipeCard';
 import { HomeContext } from '../components/AllContext';
 
@@ -276,7 +276,7 @@ export default function Home(props) {
           {statusMessage.message}
         </Alert>
       </Snackbar>
-      <Copywrite />
+      <Copyright />
     </HelmetProvider>
   );
 }

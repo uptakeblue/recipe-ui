@@ -31,7 +31,7 @@ import FilterNoneIcon from '@mui/icons-material/FilterNone';
 
 // components
 import { CustomColorScheme } from '../components/CustomTheme';
-import Copywrite from '../components/Copywrite';
+import Copyright from '../components/Copyright';
 import RecipeContent from '../components/RecipeContent';
 import { RecipeContext } from '../components/AllContext';
 import RecipePrintContent from './recipePrintContent';
@@ -646,7 +646,7 @@ export default function Recipe(props) {
             />
           </Box>
       }
-      <Copywrite />
+      <Copyright />
     </HelmetProvider >
   )
 }

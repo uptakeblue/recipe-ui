@@ -6,18 +6,21 @@ import { useMediaQuery } from 'react-responsive'
 // material ui
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import { Typography } from '@mui/material';
+import Link from '@mui/material/Link';
+import Typography from '@mui/material/Typography';
 import { AuthContext } from '../AuthContext';
 
 // components
-import { CustomColorScheme } from './CustomTheme';
 import LoginDialog from './dialogs/LoginDialog';
+import { CustomColorScheme } from './CustomTheme';
 
 //////////////////////////////
 
-export default function Copywrite() {
+export default function Copyright() {
 
   const isMobile = useMediaQuery({ query: '(max-width: 1224px)' })
+  const uptakeblueUrl = 'https://d3rqy5efbrvoqx.cloudfront.net';
+
   const {
     signOut,
     isAuthenticated,
@@ -48,7 +51,19 @@ export default function Copywrite() {
       paddingBottom={2}
     >
       <Box>
-        Copyright 2006-{dayjs().format('YYYY')} © Michael Rubin{isMobile ? <br /> : ", "} All rights
+        Copyright 2006-{dayjs().format('YYYY')}
+        <Link
+          target="_blank"
+          href={uptakeblueUrl}
+          sx={{
+            color: CustomColorScheme['white'],
+            paddingX: 1,
+            textDecoration: 'none',
+          }}
+        >
+          @
+        </Link>
+        Michael Rubin{isMobile ? <br /> : ", "} All rights
         reserved
       </Box>
       <Typography
